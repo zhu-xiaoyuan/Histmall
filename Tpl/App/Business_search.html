@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <include file="./Tpl/App/Business_header.html"/>
+</head>
+<body>
+<div class="title-bg"><a href="{:U('App/Business/index')}" style="color: #ffffff"><i class="iconfont">&#xe679;</i>&nbsp;&nbsp;
+</a>你当前所在城市：<span id="city"
+                  style="font-weight: bold;">郑州市</span>
+    <a style="float: right;background-color: #ffffff;border-radius: 3px;color: #DD9972;padding:0px 5px;"
+       href="{:U('App/Business/selectCity')}">切换</a>
+</div>
+<div class="weui_cells weui_cells_access">
+    <volist name="menu_sm" id="vo">
+        <a class="weui_cell" href="{:U('App/Business/stores')}?id={$vo.id}">
+            <div class="weui_cell_hd"><img
+                    src="{$vo.imgurl}" style="width:20px;margin-right:5px;display:block"></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>{$vo.name}</p>
+            </div>
+            <div class="weui_cell_ft"></div>
+        </a>
+    </volist>
+</div>
+</body>
+<script>
+    $(function () {
+        localStorage.setItem("wemall_url", location.href);
+        if (window.localStorage) {
+            if (localStorage.getItem("wemall_city") == null) {
+                localStorage.setItem("wemall_city", "郑州市");
+                $("#city").html("郑州市");
+            } else {
+                $("#city").html(localStorage.getItem("wemall_city"));
+            }
+
+        } else {
+            localStorage.setItem("wemall_city", "郑州市");
+            $("#city").html("郑州市");
+        }
+    })
+</script>
+</html>

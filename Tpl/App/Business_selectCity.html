@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <include file="./Tpl/App/Business_header.html"/>
+</head>
+<body>
+<div class="title-bg"><a id="goback"><i class="iconfont">&#xe679;</i>返回</a></a>
+</div>
+<div class="weui_cells_title" style="font-weight: bold;">选择城市</div>
+<div class="weui_cells weui_cells_access">
+    <Volist name="city" id="vo">
+        <a class="weui_cell" href="#">
+            <!-- <div class="weui_cell_hd"><img src="{$vo.imgurl}" style="width:20px;margin-right:10px;display:block"></div>-->
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>{$vo.name}</p>
+            </div>
+            <div class="weui_cell_ft">
+            </div>
+        </a>
+    </Volist>
+</div>
+</body>
+<script>
+    $(function () {
+        $("#goback").on("click", function () {
+            window.history.go(-1);
+        });
+        $(".weui_cells_access>a").on("click", function () {
+            if (window.localStorage) {
+                localStorage.setItem("wemall_city", $(this).find("p").text());
+                location.href = localStorage.getItem("wemall_url");
+            }
+        });
+    });
+</script>
+</html>

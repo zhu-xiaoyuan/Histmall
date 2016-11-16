@@ -1,0 +1,147 @@
+<div class="row">
+    <div class="col-xs-12 col-md-12">
+        <div class="widget">
+            <div class="widget-header bg-blue">
+                <i class="widget-icon fa fa-arrow-down"></i>
+                <span class="widget-caption">团长列表</span>
+                <div class="widget-buttons">
+                    <a href="#" data-toggle="maximize">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a href="#" data-toggle="collapse">
+                        <i class="fa fa-minus"></i>
+                    </a>
+                    <a href="#" data-toggle="dispose">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="widget-body form-horizontal">
+                <div class="form-title">
+                    <a data-loadername="订单列表" data-loader="App-loader" class="btn btn-primary" href="{:U('Admin/Tuanzhang/lists')}">
+                        <i class="fa fa-mail-reply"></i>返回
+                    </a>
+                </div>
+
+                <div class="form-title h3">
+                    VIA基本信息
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div>
+                            <label class="col-sm-4 control-label">ID</label>
+                            <div class="col-sm-8">
+                                <input type="text" disabled value="{$tuanzhang_info['id']}" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div>
+                            <label class="col-sm-4 control-label">昵称</label>
+                            <div class="col-sm-8">
+                                <input type="text" disabled value="{$tuanzhang_info['nickname']}" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div>
+                            <label class="col-sm-4 control-label">姓名</label>
+                            <div class="col-sm-8">
+                                <input type="text" disabled value="{$tuanzhang_info['name']}" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div>
+                            <label class="col-sm-4 control-label">电话</label>
+                            <div class="col-sm-8">
+                                <input type="text" disabled value="{$tuanzhang_info['mobile']}" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div>
+                            <label class="col-sm-4 control-label">招商总数</label>
+                            <div class="col-sm-8">
+                                <input type="text" disabled value="{$tuanzhang_info['total_supplier_number']}" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div>
+                            <label class="col-sm-4 control-label">团长所获提成总额(￥)</label>
+                            <div class="col-sm-8">
+                                <input type="text" disabled value="{$tuanzhang_info['total_tuanzhang_tc']|number_format=###,2}" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div>
+                            <label class="col-sm-4 control-label">成为团长的时间</label>
+                            <div class="col-sm-8">
+                                <input type="text" disabled value="{$tuanzhang_info['reg_tuanzhang_time']|date='Y-m-d H:i:s',###}" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-title h3">
+                    招商信息
+                </div>
+                <table id="App-table" class="table table-bordered table-hover">
+                    <thead class="bordered-darkorange">
+                    <tr role="row">
+                        <th>商家名称</th>
+                        <th>商家地址</th>
+                        <th>入驻时间</th>
+                        <th>成交订单总数</th>
+                        <th>成交总额(￥)</th>
+                        <th>其他</th>
+                        <!--th class="text-center">操作</th-->
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <empty name="supplier_info">
+                        <tr><td colspan="6" class="h5">暂无信息</td></tr>
+                    </empty>
+                    <volist name="supplier_info" id="vo">
+                        <tr>
+                            <td>{$vo.name}</td>
+                            <td>{$vo.province} {$vo.city} {$vo.area} {$vo.address}</td>
+                            <td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
+                            <td>{$vo.total_order}</td>
+                            <td>{$vo.total_money|number_format=###,2}</td>
+                            <td>
+                                <a class="btn btn-xs btn-primary" href="{:U('Admin/Supplier/view',array('supplier_id'=>$vo['id'],'redirect'=>think_encrypt('__SELF__')))}" data-loadername="商家详情" data-loader="App-loader">商家详情</a>
+                            </td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </table>
+                <div class="row DTTTFooter">
+                    {$page}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--面包屑导航封装-->
+<div id="tmpbread" style="display: none;">{$breadhtml}</div>
+<script type="text/javascript">
+    setBread($('#tmpbread').html());
+</script>
+<!--/面包屑导航封装-->

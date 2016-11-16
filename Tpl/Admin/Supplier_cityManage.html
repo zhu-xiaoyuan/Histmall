@@ -1,0 +1,121 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="widget">
+            <div class="widget-header bg-blue">
+                <i class="widget-icon fa fa-arrow-down"></i>
+                <span class="widget-caption">城市管理</span>
+                <div class="widget-buttons">
+                    <a href="#" data-toggle="maximize">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a href="#" data-toggle="collapse">
+                        <i class="fa fa-minus"></i>
+                    </a>
+                    <a href="#" data-toggle="dispose">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="widget-body">
+                <!--数据列表-->
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-2">
+                        <div class="table-toolbar">
+                            <div class="table-toolbar">
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <select onchange="getCity(this)" class="form-control">
+                                            <option style="display:none" selected disabled>河南省</option>
+                                            <volist name="provinces" id="vo">
+                                                <option value="{$vo.id}">{$vo.name}</option>
+                                            </volist>
+                                        </select>
+                                    </div>
+                                    <form id="App-search">  <!--借用search跳转来添加-->
+                                    <div class="col-sm-4">
+                                        <select id="city" class="form-control" name="city_id">
+                                            <volist name="cities" id="vo">
+                                                <option value="{$vo.id}">{$vo.name}</option>
+                                            </volist>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-3 col-sm-offset-1">
+                                        <a class="btn btn-primary btn-sm" data-search="App-search" data-loadername="城市管理" data-loader="App-loader" href="/Admin/Supplier/cityManage">
+                                            <i class="fa fa-plus"></i>开通
+                                        </a>
+                                    </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="form-title">已开通城市列表</div>
+                            <table id="App-table" class="table table-bordered table-hover">
+                                <thead class="borderred-darkorange">
+                                <tr role="row">
+                                    <th>城市</th>
+                                    <th class="text-center">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <notempty name="openCities">
+                                        <volist name="openCities" id="vo">
+                                            <tr>
+                                                <td style="padding:10px" class="h5">{$vo.name}</td>
+                                                <td class="text-center">
+                                                    <a class="btn btn-darkorange btn-sm" data-content="确认要关闭吗？" data-ajax="/Admin/Supplier/closeCity/city_id/{$vo.id}" data-type="del" href="/Admin/Supplier/cityManage">关闭</a>
+                                                </td>
+                                            </tr>
+                                        </volist>
+                                    <else />
+                                            <tr>
+                                                <td colspan="2" class="h5 text-center">
+                                                    暂无数据
+                                                </td>
+                                            </tr>
+
+                                    </notempty>
+
+                                </tbody>
+                            </table>
+                            <div class="row DTTTFooter">
+                                {$page}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="tmpbread" style="display: none;">{$breadhtml}</div>
+<script type="text/javascript">
+    setBread($('#tmpbread').html());
+</script>
+<!--<script src="/Public/Admin/js/datetime/moment.js"></script>-->
+<!--<script src="/Public/Admin/js/datetime/daterangepicker.js"></script>-->
+<script>
+    //省变化后获取市区信息
+    function getCity(obj) {
+        //$('#province').change(function(){
+        var pid = $(obj).find('option:selected').val();
+        $.ajax({
+            url: '/Admin/Supplier/AjaxGetCities',
+            type: 'get',
+            dataType: 'json',
+            data: {pid: pid},
+            success: function (data) {
+                var str = '';
+                for (var i in data) {
+                    str += '<option value=' + data[i].id + '>' + data[i].name + '</option>';
+                }
+                $('#city').empty().html(str);
+                $('#city option:first-child').attr('selected', 'selected');
+            },
+            error: function () {
+                alert('something wrong');
+            }
+        })
+    }
+
+</script>

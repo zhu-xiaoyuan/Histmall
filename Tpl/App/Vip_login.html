@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>登录页面</title>
+	    <meta charset="utf-8" />
+		<!--页面优化-->
+		<meta name="MobileOptimized" content="320">
+		<!--默认宽度320-->
+		<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+		<!--viewport 等比 不缩放-->
+		<meta http-equiv="cleartype" content="on">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<!--删除苹果菜单-->
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		<!--默认颜色-->
+		<meta name="apple-mobile-web-app-title" content="yes">
+		<meta name="apple-touch-fullscreen" content="yes">
+		<!--加载全部后 显示-->
+		<meta content="telephone=no" name="format-detection" />
+		<!--不识别电话-->
+		<meta content="email=no" name="format-detection" />
+		<link rel="stylesheet" href="__PUBLIC__/App/css/style.css" />
+		<script type="text/javascript" src="__PUBLIC__/App/js/zepto.min.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/App/gmu/gmu.min.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/App/gmu/app-basegmu.js"></script>
+	</head>
+	<body class="reg">
+		<div class="reg-hd" style="margin-top: 32px"></div>
+		<div class="reg-c">
+			<div class="reg-frm">
+				<div class="reg-input">
+					<span class="icons iconfont fl">&#xe652</span>
+					<input type="text" class="inputs fl" placeholder="手机号码" id="mobile" value="{$mobile}"/>
+				</div>
+				<div class="reg-input">
+					<span class="icons iconfont fl">&#xe6c0</span>
+					<input type="password" class="inputs fl" placeholder="密码" id="password"/>
+				</div>
+			</div>
+			<a href="javascript:void(0)" class="reg-btn text-c">登录</a>
+			<div class="reg-ft">
+				<a href="javascript:history.go(-1)" class="fl"><span class="back fl"></span><span class="fl">&nbsp;返回</span></a>
+				<a href="{:U('App/Vip/reg')}" class="fr color8">还没有账号？立即注册</a>
+			</div>
+			<div class="reg-cpy text-c">
+				<p>如有任何疑问，请拨打客服电话</p>
+				<p><a href="tel:15378708792">15378708792</a></p>
+			</div>
+		</div>
+		<!--通用分享-->
+		<include file="./Tpl/App/Shop_share.html" />
+	</body>
+</html>
+
+<script>
+	$('.reg-btn').click(function(){
+		var mobile = $('#mobile').val();
+		var password = $('#password').val();
+		var backurl = '{$backurl}';
+		var re = /^1\d{10}$/;
+		if (re.test(mobile)==false) {
+			zbb_msg("手机号不正确！");
+			return;
+		}
+		if (password=='') {
+			zbb_msg("请输入密码！");
+			return;
+		}
+	    $.ajax({
+			type:'post',
+			data:{'mobile':mobile,'password':password},
+			url:"{:U('Vip/login')}",
+			dataType:'json',
+			success:function(e){
+				if(e.status == 1){
+					zbb_alert(e.msg,function(){
+						if (backurl=='') {
+							window.location.href= "{:U('App/Shop/index')}";
+						} else {
+							window.location.href=backurl;
+						}
+					});
+				}else{
+					zbb_alert(e.msg);
+					return false;
+				}
+			},
+			error:function(){
+			    zbb_alert('通讯失败！');
+				return false;
+			}
+		});	
+		return false;
+	});
+</script>

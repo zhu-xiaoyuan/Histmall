@@ -1,0 +1,111 @@
+<!-- 关注公众号条 -->
+<style>
+    .pp-follow {
+        padding: 0.2em 0px;
+        /*max-width:640px;*/
+        width: 100%;
+        background: #e4dcd1;
+        display: block;
+    }
+
+    .p-fopic {
+        margin-left: 1%;
+        float: left;
+        width: 12.5%;
+        border-radius: 3px;
+    }
+
+    .p-focon {
+        padding-left: 10px;
+        color: white;
+        font-size: 0.9em;
+        line-height: 3em;
+    }
+
+    .p-fofo {
+        margin-left: 1%;
+        float: left;
+        width: 50%;
+        color: #fff;
+        font-size: 0.9em;
+        text-align: center;
+        line-height: 2.5em;
+        background: #df0e11;
+        border-radius: 0.3em;
+        position: relative;
+        top: 4px;
+    }
+
+    .p-fofo a,
+    .p-fofo a:visited {
+        color: #fff;
+        font-size: 0.9em;
+        text-align: center;
+        line-height: 2.5em;
+    }
+
+    .p-close{
+        float: right;
+        margin: 0 1em;
+        padding:0.2em 0.9em;
+        color: #ccc;
+        font-size: 0.9em;
+        text-align: center;
+        line-height: 2.5em;
+    }
+
+    .clear {
+        clear: both;
+    }
+
+    .showImg-div {
+        height: 160px;
+    }
+
+    .wrapper {
+      width: 100%; /*页面总宽度*/
+      margin: 0 auto; /*水平居中*/
+      text-align: left; /*重置文本对齐方式*/
+    }
+    .sidebar {
+      padding-right: 10px; /*边栏间距，可自行修改*/
+      display: inline; /*防止IE6双边距*/
+      float: left;
+      margin-bottom: 5px; /*边栏与footer之间的垂直间距，可自行修改*/
+    }
+
+    .main-content {
+      width: 40%; /*主内容宽度*/
+      display: inline; /*防止IE6又边距*/
+      float: right;
+      margin-bottom: 5px; /*主内容与footer之间的垂直间距，可自行修改*/
+    }
+</style>
+
+<div class="pp-follow"
+     style="padding: 0.2em 0px;position: fixed;top: 0;z-index: 2;width:100%;background-color: rgba(0,0,0,0.8)" id="subbar">
+    <div>
+
+    </div>
+    <div class="clear"></div>
+
+    <div class="wrapper">
+        <div class="main-content">
+            <div class="p-fofo">
+                <a href="{$_SESSION['SET']['wxsuburl']}">关注我们</a>
+            </div>
+            <span class="p-close"><i class="weui_icon_clear"></i></span>
+        </div>
+        <div class="aside sidebar">
+            <div class="p-focon">
+                欢迎关注<span>{$_SESSION['WAP']['shopset']['name']}</span>哟！
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(".p-close").click(function(){
+        $("#subbar").remove();
+    });
+</script>

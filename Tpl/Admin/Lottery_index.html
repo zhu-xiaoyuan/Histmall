@@ -1,0 +1,154 @@
+<div class="row">
+    <div class="col-xs-12 col-md-12">
+        <div class="widget">
+            <div class="widget-header bg-blue">
+                <i class="widget-icon fa fa-arrow-down"></i>
+                <span class="widget-caption">充值名单</span>
+                <div class="widget-buttons">
+                    <a href="#" data-toggle="maximize">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a href="#" data-toggle="collapse">
+                        <i class="fa fa-minus"></i>
+                    </a>
+                    <a href="#" data-toggle="dispose">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="widget-body" style="min-height:130px">
+                <div class="h4">
+                    录入充值名单
+                </div>
+                <form class="form-inline" id="add_places" action="">
+                    <!--会员ID-->
+                    <div class="form-group">
+                        <div class="input-group input-group-mi">
+                            <span class="input-group-addon" style="margin-left: 10px">会员ID</span>
+                            <input type="text" class="form-control" name="su_id" id="su_id" placeholder="输入会员ID" data-bv-numeric="true" data-bv-notempty="true" data-bv-notempty-message="会员ID不能为空" data-bv-numeric-message="会员ID为数字" data-bv-field="su_id" style="width: 150px"/>
+                        </div>
+                    </div>
+                    <!--会员姓名-->
+                    <div class="form-group">
+                        <div class="input-group input-group-mi" style="margin-left: 10px">
+                            <span class="input-group-addon">会员姓名</span>
+                            <input type="text" class="form-control" name="su_name" id="su_name" placeholder="输入会员姓名" data-bv-notempty-message="会员姓名不能为空" data-bv-notempty="true" data-bv-field="su_name" style="width: 150px">
+                        </div>
+                    </div>
+                    <!--会员手机号-->
+                    <div class="form-group">
+                        <div class="input-group input-group-mi" style="margin-left: 10px">
+                            <span class="input-group-addon">会员手机号</span>
+                            <input type="text" class="form-control" name="su_mobile" id="su_mobile" placeholder="请输入会员手机号" data-bv-notempty="true" data-bv-notempty-message="手机号不能为空" style="width: 150px">
+                        </div>
+                    </div>
+                    <!--充值金额-->
+                    <div class="form-group">
+                        <div class="input-group input-group-mi" style="margin-left: 10px">
+                            <span class="input-group-addon">充值金额</span>
+                            <input type="text" class="form-control" name="su_money" id="su_money" placeholder="请输入充值金额" data-bv-notempty-message="请输入充值金额" data-bv-notempty="true" data-bv-numeric="true" data-bv-numeric-message="充值金额为数字" data-bv-field="su_money" style="width: 150px"/>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-left: 10px">
+                        <button type='submit' class="btn btn-lg btn-blue next_step" data-loader="App-loader">
+                            保存
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="widget">
+            <div class="widget-header bg-blue">
+                <i class="widget-icon fa fa-arrow-down"></i>
+                <span class="widget-caption">名单列表</span>
+
+                <div class="widget-buttons">
+                    <a href="#" data-toggle="maximize">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a href="#" data-toggle="collapse">
+                        <i class="fa fa-minus"></i>
+                    </a>
+                    <a href="#" data-toggle="dispose">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="widget-body">
+                <div class="table-toolbar">
+                    <div class="pull-right">
+                        <form id="App-search" class="margin-bottom-10 form-inline">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <input name="search" type="search" class="form-control input-sm"
+                                           placeholder="会员ID/名称/手机号" value="{$search}">
+                                    <a href="{:U('Admin/Lottery/index/')}" class="btn btn-success" data-loader="App-loader"
+                                       data-loadername="会员列表" data-search="App-search">
+                                        <i class="fa fa-search"></i>搜索
+                                    </a>
+                                    <a href="#" class="btn btn-success" id="exportList">
+                                        <i class="fa fa-table"></i>导出Excel
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <table id="App-table" class="table table-bordered table-hover">
+                    <thead class="bordered-darkorange">
+                    <tr role="row">
+                        <th>会员ID</th>
+                        <th>会员名称</th>
+                        <th>手机号</th>
+                        <th>充值金额</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <volist name="data" id="vo">
+                        <tr data-id="{$vo.id}">
+                            <td>{$vo.vip_id}</td>
+                            <td>{$vo.name}</td>
+                            <td>{$vo.mobile}</td>
+                            <td>{$vo.money}</td>
+                            <td>
+                                <empty name="vo5.soncate">&nbsp;&nbsp;<a class="btn btn-danger btn-xs" data-type="del" data-ajax="{:U('Admin/Lottery/delLottery/',array('id'=>$vo['id']))}"><i class="fa fa-trash-o"></i> 删除</a>
+                                </empty>
+                            </td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </table>
+                <div class="row DTTTFooter">
+                    {$page}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--面包屑导航封装-->
+<div id="tmpbread" style="display: none;">{$breadhtml}</div>
+<script type="text/javascript">
+    setBread($('#tmpbread').html());<!--/面包屑导航封装-->
+    $(function(){
+        // 点击下一步、数据验证，成功后跳转
+        $('#add_places').bootstrapValidator({
+            submitHandler   : function(validator,form,submitButton){
+                var toUrl = '{:U("Admin/Lottery/save")}';
+                var data = $('#add_places').serialize();
+                var callok = function () {
+                    //成功删除后刷新
+                    $('#refresh-toggler').trigger('click');
+                    return false;
+                };
+                $.App.ajax('post', toUrl, data, callok);
+                //$.App.ajax('post', toUrl, data, redirectToStep2,null); //成功后执行redirectToStep2
+            }
+        });
+    })
+    //导出会员数据
+    $('#exportList').on('click', function () {
+        window.open("{:U('Admin/Lottery/ListExport')}");
+    })
+</script>

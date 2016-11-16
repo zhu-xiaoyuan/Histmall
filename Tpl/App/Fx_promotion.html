@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>招募推广人员</title>
+	    <meta charset="utf-8" />
+		<!--页面优化-->
+		<meta name="MobileOptimized" content="320">
+		<!--默认宽度320-->
+		<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+		<!--viewport 等比 不缩放-->
+		<meta http-equiv="cleartype" content="on">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<!--删除苹果菜单-->
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		<!--默认颜色-->
+		<meta name="apple-mobile-web-app-title" content="yes">
+		<meta name="apple-touch-fullscreen" content="yes">
+		<!--加载全部后 显示-->
+		<meta content="telephone=no" name="format-detection" />
+        <!--weui-->
+        <link href="http://cdn.bootcss.com/weui/0.4.2/style/weui.min.css" rel="stylesheet">
+		<!--不识别电话-->
+		<meta content="email=no" name="format-detection" />
+		<link rel="stylesheet" href="__PUBLIC__/App/css/style.css" />
+	</head>
+	<body class="back1">
+
+    <div class="weui_msg">
+        <div>
+			<img src="{:U('App/Fx/promotionQrcode',array('expire'=>'60'))}" style="width:80%;"/>
+        </div>
+        <div class="weui_opr_area" style="padding-top: 30px;">
+            <h3 class="weui_msg_title">扫描二维码 申请成为推广人员</h3>
+			<p class="weui_msg_desc">可长按二维码“发送给朋友”,此二维码有效期为60分钟</p>
+        </div>
+
+    </div>
+
+		<div class="insert1"></div>
+		<div class="dtl-ft ovflw">
+				<div class=" fl dtl-icon dtl-bck ovflw">
+					<a href="{:U('App/Fx/index')}" style="height:40px; line-height:40px;">
+						<i class="iconfont">&#xe679</i>
+					</a>
+				</div>
+		</div>
+		<!--通用分享-->
+	</body>
+	
+</html>

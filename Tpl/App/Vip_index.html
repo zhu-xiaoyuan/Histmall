@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>个人中心</title>
+    <meta charset="utf-8"/>
+    <!--页面优化-->
+    <meta name="MobileOptimized" content="320">
+    <!--默认宽度320-->
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <!--viewport 等比 不缩放-->
+    <meta http-equiv="cleartype" content="on">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!--删除苹果菜单-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!--默认颜色-->
+    <meta name="apple-mobile-web-app-title" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <!--加载全部后 显示-->
+    <meta content="telephone=no" name="format-detection"/>
+    <!--不识别电话-->
+    <meta content="email=no" name="format-detection"/>
+    <link rel="stylesheet" href="__PUBLIC__/App/css/style.css"/>
+    <script type="text/javascript" src="__PUBLIC__/App/js/zepto.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/App/js/countUp.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/App/gmu/gmu.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/App/gmu/app-basegmu.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/App/js/canvas.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/App/js/qrcode.js"></script>
+</head>
+
+<body class="back1">
+<div class="info-bg" style="text-align: center;display: none;z-index: 99;background:rgba(0, 0, 0, 0.7);">
+    <canvas id="canvas" style="width: 90%;margin-top: 10%" data="http://www.baidu.com/">
+
+    </canvas>
+</div>
+<div class="home-hd" style="background: url({$qiniu_domain}/vip_head_bg.png) no-repeat;background-size: 100% 100%;">
+    <div class="home-hdc ovflw">
+        <div style="margin: 16px;">
+            <img src="{$data.headimgurl}" style="width: 62px;height: 62px;border-radius: 50%;box-shadow: 0 0 0 1px #ffffff;float: left">
+        </div>
+        <div class="fl home-info" style="padding-top: 0px;">
+            <p>
+                <notempty name="data.name">
+                    {$data.name}
+                    <else/>
+                    {$data.nickname}
+                </notempty>
+            </p>
+
+            <p style="font-size:0.8em;">ID：<span>{$data.id}</span></p>
+
+            <p style="font-size:0.8em;">
+                {$data.roleName}
+                <!--<neq name="data.supplier_id" value="0"><span class="home-label home-supplier">商家</span></neq>
+                <eq name="data.isfx" value="1"><span class="home-label home-fx">分销商</span></eq>
+                <eq name="data.is_tuanzhang" value="1"><span class="home-label home-via">VIA</span></eq>-->
+            </p>
+        </div>
+    </div>
+    <div class="clr"></div>
+</div>
+</div>
+<div class="home-cc">
+    <div class="home-lst2 border-b1 border-t1 ovflw back2">
+        <a href="{:U('App/Vip/money')}" class="border-b1 ovflw home-li">
+            <span class="iconfont fl icon text-c icon-bc3">&#xe6ed;</span>
+            <span class="home-tt color6">账户余额</span>
+            <span class="iconfont fr icon-r">{$data.money} 元&nbsp;&#xe6a3</span>
+
+        </a>
+        <!--<a href="{:U('App/Vip/cashBack')}" class="border-b1 ovflw home-li">
+            <span class="iconfont fl icon text-c icon-bc7">&#xe6ed;</span>
+            <span class="home-tt color6">消费分红</span>
+            <span class="iconfont fr icon-r">{$data.total_got_bonus}&nbsp;&#xe6a3</span>
+        </a>-->
+        <a href="{:U('App/Vip/txList')}" class="border-b1 ovflw home-li">
+            <span class="iconfont fl icon text-c icon-bc4">&#xe6ed;</span>
+            <span class="home-tt color6">累计提现</span>
+            <span class="iconfont fr icon-r">{$data.total_tx} 元&nbsp;&#xe6a3</span>
+        </a>
+    </div>
+    <div class="home-lst2 border-b1 border-t1 ovflw back2">
+        <a href="{:U('App/Shop/orderList')}?sid=0" class="border-b1 ovflw home-li">
+            <span class="iconfont fl icon text-c icon-bc5">&#xe699;</span>
+            <span class="home-tt color6">我的订单</span>
+            <span class="iconfont fr icon-r">&#xe6a3</span>
+        </a>
+        <a href="{:U('App/Shop/groupOrderList')}?sid=0" class="border-b1 ovflw home-li">
+            <span class="iconfont fl icon text-c icon-bc2">&#xe676;</span>
+            <span class="home-tt color6">我的拼团</span>
+            <span class="iconfont fr icon-r">&#xe6a3</span>
+        </a>
+       <!-- <a href="{:U('App/Vip/store')}" class="border-b1 ovflw home-li">
+            <span class="iconfont fl icon text-c icon-bc2">&#xe676;</span>
+            <span class="home-tt color6">我的店铺</span>
+            <span class="iconfont fr icon-r">&#xe6a3</span>
+        </a>
+        <a href="{:U('App/Vip/merchant')}" class="border-b1 ovflw home-li">
+            <span class="iconfont fl icon text-c icon-bc1">&#xe672;</span>
+            <span class="home-tt color6">我的招商</span>
+            <span class="iconfont fr icon-r">&#xe6a3</span>
+        </a>-->
+        <a href="{:U('App/Vip/message')}" class="ovflw home-li">
+            <span class="iconfont fl icon text-c icon-bc4">&#xe6bc</span>
+            <span class="home-tt color6 fl">我的消息&nbsp;&nbsp;</span>
+            <if condition="$data.unread gt 0"><b>{$data.unread}</b></if>
+            <span class="iconfont fr icon-r">&#xe6a3</span>
+        </a>
+    </div>
+
+    <div class="home-lst2 border-b1 border-t1 back2 ovflw">
+        <eq name="data.role" value="0">
+            <a href="{:U('App/Fx/myuser')}" class="ovflw home-li">
+                <span class="iconfont fl icon text-c icon-bc7">&#xe67c;</span>
+                <span class="home-tt color6">
+                    我的亲友团</span>
+                <span class="iconfont fr icon-r arrow">{$data.xx_total} 人&nbsp;&#xe6a3;</span>
+            </a>
+        <else/>
+            <a href="{:U('App/Fx/index')}" class="border-b1 ovflw home-li">
+                <span class="iconfont fl icon text-c icon-bc7">&#xe67c;</span>
+                <span class="home-tt color6">推广中心</span>
+                <span class="iconfont fr icon-r">&#xe6a3</span>
+            </a>
+        </eq>
+    </div>
+
+    <div class="home-lst2 border-b1 border-t1 back2 ovflw">
+        <a href="{:U('App/Vip/txOrder')}" class="border-b1 ovflw home-li">
+            <span class="iconfont fl icon text-c icon-bc4">&#xe6ed;</span>
+            <span class="home-tt color6">申请提现</span>
+            <span class="iconfont fr icon-r">&#xe6a3</span>
+        </a>
+        <a href="{:U('App/Vip/tx')}" class="border-b1 ovflw home-li">
+            <span class="iconfont fl icon text-c icon-bc1">&#xe6e0;</span>
+            <span class="home-tt color6">提现资料</span>
+            <span class="iconfont fr icon-r">&#xe6a3</span>
+        </a>
+        <a href="{:U('App/Vip/info')}" class="border-b1 ovflw home-li">
+            <span class="iconfont fl icon text-c icon-bc2">&#xe649;</span>
+            <span class="home-tt color6">资料绑定</span>
+            <span class="iconfont fr icon-r">&#xe6a3</span>
+        </a>
+        <a href="{:U('App/Vip/address')}" class="border-b1 ovflw home-li">
+            <span class="iconfont fl icon text-c icon-bc3">&#xe651;</span>
+            <span class="home-tt color6">收货地址</span>
+            <span class="iconfont fr icon-r">&#xe6a3</span>
+        </a>
+
+    </div>
+    <div class="home-lst2 border-b1 border-t1 back2 ovflw mr-b">
+        <a href="tel:{$_SESSION['WAP']['shopset']['phone']}" class="border-b1 ovflw home-li">
+            <span class="iconfont fl icon text-c icon-bc5">&#xe652</span>
+            <span class="home-tt color6">客服热线</span>
+            <span class="iconfont fr icon-r">&#xe6a3</span>
+        </a>
+        <a href="{:U('App/Vip/about')}" class="border-b1 ovflw home-li">
+            <span class="iconfont fl icon text-c icon-bc6">&#xe6cc</span>
+            <span class="home-tt color6">关于我们</span>
+            <span class="iconfont fr icon-r">&#xe6a3</span>
+        </a>
+        <a href="{$_SESSION['SET']['wxsuburl']}" class="ovflw home-li">
+            <span class="iconfont fl icon text-c icon-bc7">&#xe6f1</span>
+            <span class="home-tt color6">关注我们</span>
+            <span class="iconfont fr icon-r">&#xe6a3</span>
+        </a>
+    </div>
+</div>
+<!-- 底部导航 -->
+<include file="./Tpl/App/Shop_footer.html"/>
+<script>
+    $(function () {
+        $(".info-bg").on("click", function () {
+            $(this).hide();
+        })
+    });
+    function showCode() {
+        var canvasObj = new createQRImage("canvas");
+        canvasObj.changeText($("#canvas").attr("data"));
+        $(".info-bg").show();
+    }
+    $('#home-qd').click(function () {
+        $.getJSON("{:U('App/Vip/sign')}", {}, function (e) {
+            if (e.status == '1') {
+                if (e.data.score > 0) {
+                    var jf = parseInt($('#home-jf').text());
+                    var add_if = parseInt(e.data.score);
+
+                    $('#add-jf').html("+" + add_if);
+                    $('#add-jf').animate({
+                        opacity: 0
+                    }, 2000, 'ease-out', function () {
+                        $('#add-jf').html("")
+                    });
+
+                    var jf_obj = new countUp("home-jf", jf + add_if);
+                    jf_obj.start();
+                }
+                if (e.data.exp > 0) {
+                    var jy = parseInt($('#home-jy').text());
+                    var add_jy = parseInt(e.data.exp);
+
+                    $('#add-jy').html("+" + add_jy);
+                    $('#add-jy').animate({
+                        opacity: 0
+                    }, 2000, 'ease-out', function () {
+                        $('#add-jy').html("")
+                    });
+
+                    var jy_obj = new countUp("home-jy", jy + add_jy);
+                    jy_obj.start();
+                }
+                $('.home-yq').show();
+                $('#levelname').text(e.data.levelname);
+            } else {
+                zbb_msg(e.msg);
+            }
+        });
+    });
+</script>
+<!--通用分享-->
+<include file="./Tpl/App/Shop_share.html"/>
+<eq name="_SESSION['WAP']['vip']['school_id']" value="0">
+    <include file="./Tpl/App/Shop_selectSchool.html"/>
+</eq>
+</body>
+
+</html>

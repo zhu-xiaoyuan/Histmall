@@ -1,0 +1,724 @@
+<!--百度编辑器-->
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/Admin/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/Admin/ueditor/ueditor.all.min.js"></script>
+<div class="row">
+    <div class="col-xs-12 col-md-12">
+        <div class="widget">
+            <div class="widget-header bg-blue">
+                <i class="widget-icon fa fa-arrow-down"></i>
+                <span class="widget-caption">商家入驻</span>
+                <div class="widget-buttons">
+                    <a href="#" data-toggle="maximize">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a href="#" data-toggle="collapse">
+                        <i class="fa fa-minus"></i>
+                    </a>
+                    <a href="#" data-toggle="dispose">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="widget-body">
+                <div class="form-title">
+                    <empty name="Think.get.redirect">
+                        <a data-loadername="会员列表" data-loader="App-loader" class="btn btn-primary" href="{:U('Admin/Supplier/lists')}"><i class="fa fa-mail-reply"></i>返回</a>
+                    <else />
+                        <a data-loadername="会员列表" data-loader="App-loader" class="btn btn-primary" href="{$Think.get.redirect|think_decrypt}"><i class="fa fa-mail-reply"></i>返回</a>
+                    </empty>
+                </div>
+                <div class="h4">
+                    填写商家信息
+                </div>
+                <form class="form-horizontal" id="add_supplier">
+                    <!--会员ID-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">会员ID</label>
+                                <div class="col-sm-3">
+                                    <input type="text" class="form-control" name="vip_id" id="vip_id" placeholder="商家在平台的会员ID(可暂时不填)"
+                                           data-bv-numeric="true" data-bv-numeric-message="会员ID为数字" data-bv-field="vip_id"/>
+                                </div>
+                                <div class="col-sm-5" id="vip_id_tips">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--商家名称-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="su_name" class="control-label col-sm-2">商家名称<i style="color:#f00;">*</i></label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" name="su_name" id="su_name" placeholder="输入商家名称" data-bv-notempty-message="不能为空" data-bv-notempty="true" data-bv-field="su_name">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--联系地址-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">联系地址<i style="color:#f00;">*</i></label>
+                                <div class="col-sm-2">
+                                    <select onchange="getCity('su_province','su_city','su_area')" type="text" class="form-control" name="su_province" id="su_province" data-bv-notempty-message="请选择省份" data-bv-notempty="true" data-bv-field="su_province">
+                                        <option value="河南" data-id="16">河南</option>
+                                        <volist name="provinces" id="vo">
+                                            <option data-id="{$vo.id}" value="{$vo.name}">{$vo.name}</option>
+                                        </volist>
+                                    </select>
+                                </div>
+                                <div class="col-sm-2">
+                                    <select onchange="getArea('su_city','su_area')" type="text" class="form-control" name="su_city" id="su_city" data-bv-notempty-message="请选择城市" data-bv-notempty="true" data-bv-field="su_city">
+                                        <potion value="郑州市" data-id="152" selected style="display:none">郑州市</potion>
+                                        <volist name="cities" id="vo">
+                                            <option value="{$vo.name}" data-id="{$vo.id}">{$vo.name}</option>
+                                        </volist>
+                                    </select>
+                                </div>
+                                <div class="col-sm-2">
+                                    <select type="text" class="form-control" name="su_area" id="su_area" data-bv-notempty-message="请选择区/镇" data-bv-notempty="true" data-bv-field="su_area">
+                                        <volist name="areas" id="vo">
+                                            <option value="{$vo.name}" data-id="{$vo.id}">{$vo.name}</option>
+                                        </volist>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10 col-sm-offset-2">
+                            <div class="form-group">
+                                <label class="sr-only"></label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" name="su_address" id="su_address" placeholder="请输入街道信息等" data-bv-notempty-message="请输入详细地址信息" data-bv-notempty="true" data-bv-field="su_address"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--纸质合同编号-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="su_contract_code" class="control-label col-sm-2">纸质合同编号</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" name="su_contract_code" id="su_contract_code" placeholder="请输入纸质合同编号">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--推荐人/VIA ID-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">VIA/推荐人ID<i style="color:#f00;">*</i></label>
+                                <div class="col-sm-3">
+                                    <input type="text" class="form-control" name="su_inviter_id" id="su_inviter_id" placeholder="请输入推荐人/VIA ID" data-bv-notempty-message="请输入VIA/推荐人ID" data-bv-notempty="true" data-bv-numeric="true" data-bv-numeric-message="VIA/推荐人ID应为数字" data-bv-field="su_inviter_id"/>
+                                </div>
+                                <div class="col-sm-5" id="inviter_id_tips"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--联系人姓名-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="su_contact_name" class="control-label col-sm-2">联系人姓名<i style="color:#f00;">*</i></label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" name="su_contact_name" id="su_contact_name" placeholder="请输入联系人姓名" data-bv-notempty-message="请输入联系人姓名" data-bv-notempty="true" data-bv-field="su_contact_name">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--联系人电话-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="su_contact_phone" class="control-label col-sm-2">联系人电话<i style="color:#f00;">*</i></label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" name="su_contact_phone" id="su_contact_phone" placeholder="请输入联系人电话" data-bv-notempty-message="请输入联系人电话" data-bv-notempty="true" data-bv-field="su_contact_phone">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--联系人性别-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">联系人性别</label>
+                                <div class="col-sm-8">
+                                    <div class="radio col-sm-2">
+                                        <label>
+                                            <input checked value="1" class="colored-success" type="radio" name="su_sex">
+                                            <span class="text"> 男</span>
+                                        </label>
+                                    </div>
+                                    <div class="radio col-sm-2">
+                                        <label>
+                                            <input value="2" class="colored-success" type="radio" name="su_sex">
+                                            <span class="text"> 女</span>
+                                        </label>
+                                    </div>
+                                    <div class="radio col-sm-2">
+                                        <label>
+                                            <input value="0" class="colored-success" type="radio" name="su_sex">
+                                            <span class="text"> 未知</span>
+                                        </label>
+                                    </div>
+                                    <div class="radio col-sm-2" style="display:none;">
+                                        <!--经常最后一个radio会显示不出来，所以多添加一个-->
+                                        <label>
+                                            <input  name="su_sex" class="colored-success" type="radio">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--身份证号-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="su_contact_idcard" class="control-label col-sm-2">身份证号</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" name="su_contact_idcard" id="su_contact_idcard" placeholder="请输入身份证号"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--生日-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="su_contact_birthday" class="control-label col-sm-2">出生日期</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" name="su_contact_birthday" id="su_contact_birthday">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--支付宝alipay_code-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="su_alipay_code" class="control-label col-sm-2">支付宝账号</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" name="su_alipay_code" id="su_alipay_code" placeholder="请输入支付宝账号"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--收款银行bank_name-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="su_bank_name" class="control-label col-sm-2">银行名称<i style="color:#f00;">*</i></label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" name="su_bank_name" id="su_bank_name" placeholder="请输入银行名称" data-bv-notempty-message="请输入银行名称" data-bv-notempty="true" data-bv-field="su_bank_name">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--银行分行/支行sub_bank_name-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="sub_bank_name" class="control-label col-sm-2">银行支行</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" name="su_sub_bank_name" id="sub_bank_name" placeholder="请输入银行支行">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--户主姓名cardholder-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="su_cardholder" class="control-label col-sm-2">户主姓名<i style="color:#f00;">*</i></label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" name="su_cardholder" id="su_cardholder" placeholder="请输入户主姓名" data-bv-notempty-message="请输入户主姓名" data-bv-notempty="true" data-bv-field="su_cardholder">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--银行账号bank_code-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="su_bank_code" class="control-label col-sm-2">银行账号<i style="color:#f00;">*</i></label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" name="su_bank_code" id="su_bank_code" placeholder="请输入银行账号" data-bv-notempty-message="请输入银行账号" data-bv-notempty="true" data-bv-field="su_bank_code">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--第二个表单-->
+                    <div class="h4" style="padding:10px">
+                        店铺信息
+                    </div>
+                    <!--店铺名称-->
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">店铺状态</label>
+                                <div class="col-sm-8">
+                                    <label class="control-label st_status">
+                                        <span class="red ok">未绑定会员ID，暂时不可用  (可以先填写信息)</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="st_name" class="control-label col-sm-2">店铺名称<i style="color:#f00;">*</i></label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" name="st_name" id="st_name" placeholder="请输入店铺名称"
+                                           data-bv-notempty-message="不能为空" data-bv-notempty="true" data-bv-field="st_name">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--店铺简介-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">店铺简介</label>
+                                <div class="col-sm-4">
+                                    <textarea type="text" class="form-control" name="st_caption" id="st_caption" placeholder="请输入店铺简介"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--联系电话-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">联系电话<i style="color:#f00;">*</i></label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" name="st_phone" id="st_phone" placeholder="请输入联系电话" data-bv-notempty-message="请输入联系电话" data-bv-notempty="true" data-bv-field="st_phone">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--店铺地址-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label  class="control-label col-sm-2">联系地址<i style="color:#f00;">*</i></label>
+                                <div class="col-sm-2">
+                                    <select type="text" onchange="getCity('st_province','st_city','st_area')" class="form-control" name="st_province" id="st_province" data-bv-notempty-message="请选择省份" data-bv-notempty="true" data-bv-field="st_province">
+                                        <option value="河南" data-id="16">河南</option>
+                                        <volist name="provinces" id="vo">
+                                            <option data-id="{$vo.id}" value="{$vo.name}">{$vo.name}</option>
+                                        </volist>
+                                    </select>
+                                </div>
+                                <div class="col-sm-2">
+                                    <select type="text" onchange="getArea('st_city','st_area')" class="form-control" name="st_city" id="st_city" data-bv-notempty-message="请选择城市" data-bv-notempty="true" data-bv-field="st_city">
+                                        <option value="郑州市" data-id="152" style="display:none">郑州市</option>
+                                        <volist name="cities" id="vo">
+                                            <option data-id="{$vo.id}" value="{$vo.name}">{$vo.name}</option>
+                                        </volist>
+                                    </select>
+                                </div>
+                                <div class="col-sm-2">
+                                    <select type="text" class="form-control" name="st_area" id="st_area" data-bv-notempty-message="请选择区/镇" data-bv-notempty="true" data-bv-field="st_area">
+                                        <volist name="areas" id="vo">
+                                            <option data-id="{$vo.id}" value="{$vo.name}">{$vo.name}</option>
+                                        </volist>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10 col-sm-offset-2">
+                            <div class="form-group">
+                                <label class="sr-only"></label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" name="st_address" id="st_address" placeholder="请输入街道信息等" data-bv-notempty-message="请输入详细地址信息" data-bv-notempty="true" data-bv-field="st_address"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--地图定位-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label  class="control-label col-sm-2">地图定位</label>
+                                <div class="col-sm-4">
+                                    <div class="input-group input-group-sm">
+                                        <input type="text" class="form-control" id="App-address"/>
+                                        <span class="input-group-btn">
+                                            <button onclick="baiduDitu('App-address','App-lng','App-lat')" type="button" class="btn btn-default shiny"><i class="glyphicon glyphicon-picture"></i>地图</button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <span class='help-block'>请点击“地图”按钮 确认地址坐标</span>
+                            </div>
+                            <div class="form-group has-feedback">
+                                <label class="col-sm-2 control-label"></label>
+                                <div class="col-sm-2">
+                                    <div class="input-group input-group-xs">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-palegreen">坐标：Lng</button>
+                                        </span>
+                                        <input type="text" class="form-control" name="st_lng" id="App-lng"/>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="input-group input-group-xs">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-palegreen">坐标：Lat</button>
+                                        </span>
+                                        <input type="text" class="form-control" name="st_lat" id="App-lat">
+                                    </div>
+                                </div>
+                                <span class='help-block'>请在(上栏)'地图定位'中确认坐标</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--经营范围-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">经营分类<i style="color:#f00;">*</i></label>
+                                <div class="col-sm-4">
+                                    <select type="text" class="form-control" name="st_category_id" id="st_category_id" placeholder="请选择经营分类" data-bv-notempty-message="请选择经营分类" data-bv-notempty="true" data-bv-field="category_id">
+                                        <volist name="shopCate" id="vo">
+                                            <option value="{$vo.id}">{$vo.name}</option>
+                                        </volist>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--商盟首页显示-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">是否在商盟首页显示<i style="color:#f00">*</i></label>
+                                <div class="col-sm-4">
+                                    <input value="0" type="text" class="form-control" name="st_order_index" id="st_order_index" placeholder="0"
+                                           data-bv-notempty-message="请输入数值" data-bv-notempty="true" data-bv-field="st_order_index"
+                                            data-bv-numeric="true" data-bv-numeric-message="请输入数值"/>
+                                </div>
+                                <span class='help-block'>请填写数值：数值越大，排名越靠前; 0表示不显示</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--店铺照片-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">店铺照片</label>
+                                <div class="col-sm-4">
+                                    <div class="input-group input-group-sm">
+                                        <input type="text" id="st_pics" name="st_pics" class="form-control" data-bv-field="st_pics"
+                                            placeholder="推荐尺寸：1000*600px">
+                                        <span class="input-group-btn">
+                                            <button onclick="appImgviewer('st_pics')" type="button" class="btn btn-default shiny"><i class="fa fa-camera-retro"></i>预览</button>
+                                            <button onclick="appImguploader('st_pics',true)" type="button" class="btn btn-default shiny"><i class="glyphicon glyphicon-picture"></i>上传</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">首页列表图片<i style="color:#f00">*</i></label>
+                                <div class="col-sm-4">
+                                    <div class="input-group input-group-sm">
+                                        <input type="text" id="thumb" name="thumb" class="form-control" data-bv-field="thumb"
+                                               data-bv-notempty="true" data-bv-notempty-message="请指定店铺主图"
+                                                placeholder="推荐尺寸: 120*120px">
+                                        <span class="input-group-btn">
+                                            <button onclick="appImgviewer('thumb')" type="button" class="btn btn-default shiny"><i class="fa fa-camera-retro"></i>预览</button>
+                                            <button onclick="appImguploader('thumb',true)" type="button" class="btn btn-default shiny"><i class="glyphicon glyphicon-picture"></i>上传</button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <span class="col-sm-4 help-block orange">
+                                    微信 店铺列表展示 时使用
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--运营时间-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">运营时间</label>
+                                <div class="col-sm-4">
+                                    <input value="8:00 - 20:00" type="text" class="form-control" name="st_business_hours" placeholder="例如：8:00--20:00"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--详细描述-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">店铺详细描述</label>
+                                <div class="col-sm-8">
+                                    <input type="hidden">
+                                    <script type="text/plain" id="J-ueditor" style="width: 600px;height:380px;position:relative">
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container text-center" style="max-width:1000px;margin-top:20px;">
+                        <button type='submit' class="btn btn-lg btn-blue next_step">
+                            保存
+                        </button>
+                    </div>
+                </form>
+                <a href="{:U('Admin/Supplier/lists')}" style="display:none" id="next_step" data-loadername="商家管理" data-loader="App-loader"></a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--面包屑导航封装-->
+<div id="tmpbread" style="display: none;">{$breadhtml}</div>
+<script type="text/javascript">
+    setBread($('#tmpbread').html());<!--/面包屑导航封装-->
+    $(function(){
+        //富文本编辑器
+        UE.getEditor('J-ueditor', {
+            textarea: 'st_desc' //提交字段名，必须填写，数据库必须有此字段
+        });
+
+        // 点击下一步、数据验证，成功后跳转
+        $('#add_supplier').bootstrapValidator({
+            submitHandler   : function(validator,form,submitButton){
+                var toUrl = '{:U("Admin/Supplier/save")}';
+                var data = $('#add_supplier').serialize();
+                //$.App.ajax('post', toUrl, data, redirectToStep2,null); //成功后执行redirectToStep2
+                $.ajax({
+                    url     : toUrl,
+                    dataType: 'json',
+                    method  : 'post',
+                    data    : data,
+                    success : function(data){
+                        if(data.status){
+                            $.App.alert('success',data.msg);
+                            $('#next_step').trigger('click');
+                        }else{
+                            $.App.alert('danger',data.msg);
+                        }
+                    },
+                    error   : function(){
+                        alert('something wrong');
+                    }
+                })
+            }
+        });
+    })
+    //省 变化后，联动 市
+    function getCity(pIdName,sIdName,ssIdName) {
+        //$('#province').change(function(){
+        var pid = $('#'+pIdName).find('option:selected').attr('data-id');
+        //***商家位置，带动，店铺位置***
+        if(pIdName == 'su_province'){
+            $('#st_province').find('option[data-id='+pid+']').attr('selected','selected');
+        }
+
+        $.ajax({
+            url: '{:U("Admin/Supplier/AjaxGetCities")}',
+            type: 'get',
+            dataType: 'json',
+            data: {pid: pid},
+            success: function (data) {
+                var str = '';
+                for (var i in data) {
+                    str += '<optioin>请选择...</option>';
+                    str += '<option value=' + data[i].name + ' data-id=' + data[i].id + '>' + data[i].name + '</option>';
+                }
+                $('#'+sIdName).html(str);
+                //***商家位置，带动，店铺位置***
+                if(pIdName == 'su_province') $('#st_city').html(str);
+
+                $('#'+sIdName+' option:first-child').attr('selected', 'selected');
+
+                getArea(sIdName,ssIdName);      //如果长度只有1，则没有change事件，下一级无法选择，所以为1时，自动执行
+                //getArea('st_city','st_area');      //如果长度只有1，则没有change事件，下一级无法选择，所以为1时，自动执行
+            },
+            error: function () {
+                alert('something wrong');
+            }
+        })
+    }
+
+    //市变化后 联动 区/镇
+    function getArea(pIdName,sIdName){
+        var pid = $('#'+pIdName).find('option:selected').attr('data-id');
+        //***商家位置，带动，店铺位置***
+        if(pIdName == 'su_city'){
+            $('#st_city').find('option[data-id='+pid+']').attr('selected','selected');
+        }
+
+        $.ajax({
+            url     : '{:U("Admin/Supplier/AjaxGetAreas")}',
+            dataType: 'json',
+            type    : 'get',
+            data    : {pid:pid},
+            success : function(data){
+                var str = '';
+                for(var i in data){
+                    str += '<optioin name="" value="">请选择...</option>';
+                    str += '<option value='+data[i].name+' data-id='+data[i].id+'>'+data[i].name+'</option>';
+                }
+                $('#'+sIdName).html(str);
+                //***商家位置，带动，店铺位置***
+                if(pIdName == 'su_city')
+                    $('#st_area').html(str);
+            },
+            error   : function(){
+                alert('something wrong');
+            }
+        })
+    }
+
+    //商家 ‘区’ 带动 店家 ‘区’
+    $('#su_area').change(function(){
+        var id = $(this).find('option:selected').data('id');
+        $('#st_area').find('option[data-id='+id+']').attr('selected','selected');
+    })
+    //商家‘详细地址’ 带动 店家‘详细地址’
+    $('#su_address').blur(function(){
+        $('#st_address').val($(this).val())
+
+        //同时补全地图地址
+        var province = $('#su_province').val();
+        var city = $('#su_city').val();
+        var area = $('#su_area').val();
+        var address = $('#su_address').val();
+        $('#App-address').val(province+city+area+address);
+    })
+
+    //异步检测会员ID是否存在，是否已经是是商家了
+    $('#vip_id').blur(function(){
+        var noHtml = '<span class="red">未指定会员ID，暂时不可用  (可以先填写信息)</span>';
+        var okHtml = '<span class="blue">已指定会员ID,可以使用</span>';
+
+        var vip_id = $.trim($(this).val());
+        if(vip_id!='' && !isNaN(vip_id)){   //vip_id不为空 且为数字
+            $.ajax({
+                url     : '{:U("Admin/Supplier/isSupplier")}'+'/vip_id/'+vip_id,
+                success : function(data){
+                    if(data.status == 1){
+                        var msg = '可以使用：';
+                        var img = data.vip_info.headimgurl?data.vip_info.headimgurl:'http://wx.qlogo.cn/mmopen/A7sq8BD8oew43MlxthPiaqrFh731N54DX2NujodUBuVFBvzrIZSuMJ1CAs7iaDkiboFZo1wicNDNic95EEpr1rAp5iclSg7zBoRx5I/0';
+                        var name = data.vip_info.nickname?data.vip_info.nickname:'(未填写)';
+                        var mobile = data.vip_info.mobile?data.vip_info.mobile:'(未填写)';
+                        var html = '<span id="vip_msg" class="pull-left help-block"><span class="blue">'+msg+'</span></span>'+
+                        '<div class="pull-left">&nbsp;<img id="vip_img" title="头像" width="35" src="'+img+'" />&nbsp;</div>'+
+                        '<div class="pull-left">昵称:<span class="red" id="vip_name">'+name+'</span><br/>电话:<span class="red" id="vip_phone">'+mobile+'</span></div>'
+                        $('#vip_id_tips').html(html);
+                        //店铺状态提示
+                        $('.st_status').html(okHtml);
+
+                        //更新联系人姓名和联系人电话
+                        if(data.vip_info.name){
+                            $('#su_contact_name').val(data.vip_info.name);
+                        }else{
+                            $('#su_contact_name').val('');
+                        }
+                        if(data.vip_info.mobile){
+                            $('#su_contact_phone').val(data.vip_info.mobile);
+                            $('#st_phone').val(data.vip_info.mobile);
+                        }else{
+                            $('#su_contact_phone').val('');
+                            $('#st_phone').val('');
+                        }
+                    }else{
+                        $('#vip_id_tips').html('<span class="help-block red">'+data.msg+'</span>');
+                        //店铺状态提示
+                        $('.st_status').html(noHtml);
+                    }
+                }
+            })
+        }else{
+            $('#vip_id_tips').empty('');
+            //清空联系人姓名和联系人电话
+            $('#su_contact_name').val('');
+            $('#su_contact_phone').val('');
+            $('#st_phone').val('');
+            //店铺状态提示
+            $('.st_status').html(noHtml);
+        }
+    })
+
+    //异步检测inviter_id的信息
+    $('#su_inviter_id').blur(function(){
+        var inviter_id = $.trim($(this).val());
+        if(inviter_id!='' && !isNaN(inviter_id)){   //vip_id不为空 且为数字
+            $.ajax({
+                url     : '{:U("Admin/Supplier/isTuanZhang")}'+'/inviter_id/'+inviter_id,
+                success : function(data){
+                    var tips = $('#inviter_id_tips');
+                    if(data.status == 0){
+                        $('#inviter_id_tips').html('<span class="help-block red">'+data.msg+'</span>')
+                    }else{
+                        var msg = '可以使用：';
+                        var img = data.vip_info.headimgurl?data.vip_info.headimgurl:'http://wx.qlogo.cn/mmopen/A7sq8BD8oew43MlxthPiaqrFh731N54DX2NujodUBuVFBvzrIZSuMJ1CAs7iaDkiboFZo1wicNDNic95EEpr1rAp5iclSg7zBoRx5I/0';
+                        var name = data.vip_info.nickname?data.vip_info.nickname:'(未填写)';
+                        var mobile = data.vip_info.mobile?data.vip_info.mobile:'(未填写)';
+                        var html = '<span id="vip_msg" class="pull-left help-block"><span class="blue">'+msg+'</span></span>'+
+                                '<div class="pull-left">&nbsp;<img id="vip_img" title="头像" width="35" src="'+img+'" />&nbsp;</div>'+
+                                '<div class="pull-left">昵称:<span class="red" id="vip_name">'+name+'</span><br/>电话:<span class="red" id="vip_phone">'+mobile+'</span></div>'
+                        $('#inviter_id_tips').html(html);
+                    }
+                }
+            })
+        }else{
+            $('#inviter_id_tips').empty();
+        }
+    })
+
+    $(function(){
+        //商家与商店 的 商店名称和电话 联动
+        $('#su_name').blur(function(){
+            $('#st_name').val($(this).val());
+        })
+        $('#su_contact_phone').blur(function(){
+            $('#st_phone').val($(this).val());
+        })
+
+        //若商店地址做了更改，则地图定位跟着做出改变
+        $('#st_address').blur(function(){
+            $('#App-address').val(getDetailAddress())
+        })
+
+
+        //主要获取商店的具体地址，以供地图定位时使用
+        function getDetailAddress(){
+            var province = $('#st_province').val();
+            var city = $('#st_city').val();
+            var area = $('#st_area').val();
+            var address = $('#st_address').val();
+            return province+city+area+address;
+        }
+    })
+</script>

@@ -1,0 +1,243 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="widget">
+            <div class="widget-header bg-blue">
+                <i class="widget-icon fa fa-arrow-down"></i>
+                <span class="widget-caption">学校管理</span>
+                <div class="widget-buttons">
+                    <a href="#" data-toggle="maximize">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a href="#" data-toggle="collapse">
+                        <i class="fa fa-minus"></i>
+                    </a>
+                    <a href="#" data-toggle="dispose">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="widget-body">
+                <!--数据列表-->
+                <div class="row">
+                    <div class="col-sm-9 col-sm-offset-1">
+                        <div class="table-toolbar">
+                            <div class="table-toolbar">
+                                <form class="form-horizontal" id="add_school">
+                                    <!--城市-->
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">省份<span style="color:#f00"> * </span></label>
+                                        <div class="col-sm-4">
+                                            <select onchange="getCity(this)" class="form-control">
+                                                <option style="display:none" selected disabled>河南省</option>
+                                                <volist name="provinces" id="vo">
+                                                    <option value="{$vo.id}" <eq name="name" value="vo.id">selected</eq>>{$vo.name}</option>
+                                                </volist>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">城市<span style="color:#f00">  *</span></label>
+                                        <div class="col-sm-4">
+                                            <select id="city" class="form-control" name="city_id">
+                                                <volist name="cities" id="vo">
+                                                    <option value="{$vo.id}">{$vo.name}</option>
+                                                </volist>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!--学校名称-->
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">学校名称<span style="color:#f00"> *</span></label>
+                                        <div class="col-sm-4">
+                                            <input type="text" id="school_name" name="school_name" class="form-control" placeholder="输入学校名称"
+                                                   data-bv-notempty="true" data-bv-notempty-message="请输入学校名称"/>
+                                        </div>
+                                    </div>
+                                    <!--总监ID信息-->
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">总监ID<span style="color:#f00"> *</span></label>
+                                        <div class="col-sm-4">
+                                            <input type="text" id="dire_id" name="role_1_id" class="form-control" placeholder="输入总监ID"
+                                                   data-bv-notempty="true" data-bv-notempty-message="请输入总监ID"
+                                                   data-bv-numeric="true"  data-bv-numeric-message="总监ID应为数字"/>
+                                        </div>
+                                        <div class="col-sm-6" id="dire_info">
+
+                                        </div>
+                                    </div>
+                                    <!--VIA-ID信息-->
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">VIA-ID<span style="color:#f00"> *</span></label>
+                                        <div class="col-sm-4">
+                                            <input type="text" id="via_id" name="role_2_id" class="form-control" placeholder="输入VIA-ID"
+                                                   data-bv-notempty="true" data-bv-notempty-message="请输入VIA-ID"
+                                                   data-bv-numeric="true"  data-bv-numeric-message="VIA-ID应为数字"/>
+                                        </div>
+                                        <div class="col-sm-6" id="via_info">
+
+                                        </div>
+                                    </div>
+                                    <!--按钮-->
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-3"></label>
+                                                <div class="col-sm-4">
+                                                    <button type='submit' class="btn btn-lg btn-blue next_step">
+                                                        保存
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="form-title">已开通学校列表</div>
+                            <table id="App-table" class="table table-bordered table-hover">
+                                <thead class="borderred-darkorange">
+                                <tr role="row">
+                                    <th>学校名称</th>
+                                    <th>总监ID</th>
+                                    <th>总监姓名<span style="color:blue">【昵称】</span></th>
+                                    <th>VIA-ID</th>
+                                    <th>VIA姓名<span style="color:blue">【昵称】</span></th>
+                                    <th class="text-center">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <notempty name="openSchool">
+                                        <volist name="openSchool" id="vo">
+                                            <tr>
+                                                <td style="padding:10px" class="h5">{$vo.school_name}</td>
+                                                <td style="padding:10px" class="h5">{$vo.zj_id}</td>
+                                                <td style="padding:10px" class="h5">{$vo.zj_name}<span style="color:blue">【{$vo.zj_nickname}】</span></td>
+                                                <td style="padding:10px" class="h5">{$vo.via_id}</td>
+                                                <td style="padding:10px" class="h5">{$vo.via_name}<span style="color:blue">【{$vo.via_nickname}】</span></td>
+                                                <td class="text-center">
+                                                    <a href="/Admin/Supplier/setSchool/id/{$vo.id}" class="btn btn-success btn-sm" data-loader="App-loader" data-loadername="学校设置"><i class="fa fa-edit"></i> 编辑</a>
+                                                    <if condition="$vo.is_open eq 1">
+                                                        <a class="btn btn-darkorange btn-sm" data-content="确认要关闭吗？" data-ajax="{:U('/Admin/Supplier/editSchool/',array('School_id'=>$vo['id'],'isClose'=>$vo['is_open']))}" data-type="del" href="/Admin/Supplier/schoolManage"><i class="fa fa-trash-o"></i>关闭</a>
+                                                        <else />
+                                                        <a class="btn btn-primary btn-sm"  data-content="确认要开通吗？" data-ajax="{:U('/Admin/Supplier/editSchool/',array('School_id'=>$vo['id'],'isClose'=>$vo['is_open']))}" data-type="del" href="/Admin/Supplier/schoolManage"><i class="fa fa-plus"></i>开通</a>
+                                                    </if>
+                                                    <!--<a class="btn btn-darkorange btn-sm" data-content="确认要删除吗？" data-ajax="/Admin/Supplier/editSchool/School_id/{$vo.id}" data-type="del" href="/Admin/Supplier/schoolManage"><i class="fa fa-trash-o"></i>删除</a>-->
+                                                </td>
+                                            </tr>
+                                        </volist>
+                                    <else />
+                                            <tr>
+                                                <td colspan="6" class="h5 text-center">
+                                                    暂无数据
+                                                </td>
+                                            </tr>
+                                    </notempty>
+                                </tbody>
+                            </table>
+                            <div class="row DTTTFooter">
+                                {$page}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="tmpbread" style="display: none;">{$breadhtml}</div>
+<script type="text/javascript">
+    setBread($('#tmpbread').html());
+</script>
+<!--<script src="/Public/Admin/js/datetime/moment.js"></script>-->
+<!--<script src="/Public/Admin/js/datetime/daterangepicker.js"></script>-->
+<script>
+    //省变化后获取市区信息
+    function getCity(obj) {
+        //$('#province').change(function(){
+        var pid = $(obj).find('option:selected').val();
+        $.ajax({
+            url: '/Admin/Supplier/AjaxGetCities',
+            type: 'get',
+            dataType: 'json',
+            data: {pid: pid},
+            success: function (data) {
+                var str = '';
+                for (var i in data) {
+                    str += '<option value=' + data[i].id + '>' + data[i].name + '</option>';
+                }
+                $('#city').empty().html(str);
+                $('#city option:first-child').attr('selected', 'selected');
+            },
+            error: function () {
+                alert('something wrong');
+            }
+        })
+    }
+    $(function(){
+        // 点击下一步、数据验证，成功后跳转
+        $('#add_school').bootstrapValidator({
+            submitHandler   : function(validator,form,submitButton){
+                var toUrl = '{:U("Admin/Supplier/schoolManage")}';
+                var data = $('#add_school').serialize();
+                var callok = function () {
+                    //成功删除后刷新
+                    $('#refresh-toggler').trigger('click');
+                    return false;
+                };
+                $.App.ajax('post', toUrl, data,callok);
+            }
+        });
+
+        //获取总监信息
+        $('#dire_id').on('input',function(e){
+            var dire_id = $.trim($(this).val());
+            //如果为假或不为数字，不执行
+            if(!dire_id || isNaN(dire_id)){
+                return false;
+            }
+            $.ajax({
+                url     : '/Admin/Supplier/getVipInfo',
+                dataType: 'json',
+                data    : {vip_id:dire_id},
+                success : function(data){
+                    if(data.status == 1){   //成功返回数据
+                        var str = "<span class='pull-left'><img src="+data.info.headimgurl+" height='35'/></span>";
+                        str += "<span class='pull-left'>昵称 ：<span style='color:#428bca'>"+data.info.nickname+"</span><br/>手机号 ： <span style='color:#428bca'>"+data.info.mobile+"</span></span>";
+                        $('#dire_info').empty().append(str);
+                        canSubmit = true;
+                    }else{
+                        $('#dire_info').empty().append('<span style="color:#f00">'+data.msg+'</span>')
+                        canSubmit = false;
+                    }
+                }
+            })
+        })
+
+        //获取总监信息
+        $('#via_id').on('input',function(e){
+            var via_id = $.trim($(this).val());
+            //如果为假或不为数字，不执行
+            if(!via_id || isNaN(via_id)){
+                return false;
+            }
+            $.ajax({
+                url     : '/Admin/Supplier/getVipInfo',
+                dataType: 'json',
+                data    : {vip_id:via_id},
+                success : function(data){
+                    if(data.status == 1){   //成功返回数据
+                        var str = "<span class='pull-left'><img src="+data.info.headimgurl+" height='35'/></span>";
+                        str += "<span class='pull-left'>昵称 ：<span style='color:#428bca'>"+data.info.nickname+"</span><br/>手机号 ： <span style='color:#428bca'>"+data.info.mobile+"</span></span>";
+                        $('#via_info').empty().append(str);
+                        canSubmit = true;
+                    }else{
+                        $('#via_info').empty().append('<span style="color:#f00">'+data.msg+'</span>')
+                        canSubmit = false;
+                    }
+                }
+            })
+        })
+    })
+
+</script>

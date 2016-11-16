@@ -1,0 +1,206 @@
+<div class="row">
+	<div class="col-xs-12 col-md-12">
+		<div class="widget">
+			<div class="widget-header bg-blue">
+				<i class="widget-icon fa fa-arrow-down"></i>
+				<span class="widget-caption">会员提现订单</span>
+				<div class="widget-buttons">
+					<a href="#" data-toggle="maximize">
+						<i class="fa fa-expand"></i>
+					</a>
+					<a href="#" data-toggle="collapse">
+						<i class="fa fa-minus"></i>
+					</a>
+					<a href="#" data-toggle="dispose">
+						<i class="fa fa-times"></i>
+					</a>
+				</div>
+			</div>
+			<div class="widget-body">
+				<div class="table-toolbar">
+					<eq name="status" value="1">
+					<a id="App-txok" href="#" class="btn btn-success">
+						<i class="fa fa-delicious"></i>批量完成提现
+					</a>
+					</eq>
+					<button href="javascript:void(0)" class="btn btn-primary" id="exportTxorder"><i class="fa fa-save"></i>导出提现订单</button>
+					<div class="pull-right">
+						<form id="App-search">
+							<label style="margin-bottom: 0px;">
+								<input name="searchkey" type="search" placeholder="VIPID/提现姓名/手机号" class="form-control input-sm" value="{$searchkey}">
+							</label>
+							<a href="{:U('Admin/Wxhongbao/wxtxorder/')}" class="btn btn-success" data-loader="App-loader" data-loadername="提现订单" data-search="App-search">
+								<i class="fa fa-search"></i>搜索
+							</a>
+						</form>
+					</div>
+				</div>
+
+				<table id="App-table" class="table table-bordered table-hover">
+					<thead class="bordered-darkorange">
+						<tr role="row">
+							<th width="30px"><div class="checkbox" style="margin-bottom: 0px; margin-top: 0px;">
+									<label style="padding-left: 4px;"> <input type="checkbox" class="App-checkall colored-blue">
+                                     <span class="text"></span>
+									</label>                                    
+                                </div></th>
+							<th>ID</th>
+							<th>VIPID</th>
+							<th>申请编号</th>
+							<th>提现金额</th>
+							<th>手续费</th>
+							<th>提现姓名</th>
+							<th>提现电话</th>
+							<th>提现微信号</th>
+							<th>申请时间</th>
+							<th>红包状态</th>
+						    <th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<volist name="cache" id="vo">
+							<tr id="item{$vo.id}">
+								<td>
+									<div class="checkbox" style="margin-bottom: 0px; margin-top: 0px;">
+										<label style="padding-left: 4px;"> <input name="checkvalue" type="checkbox" class="colored-blue App-check" value="{$vo.id}">
+	                                     <span class="text"></span>
+										</label>                                    
+	                                </div>
+								</td>
+								<td class=" sorting_1">{$vo.id}</td>
+								<td class=" ">{$vo.vip_id}</td>
+								<td class=" ">{$vo.billno}</td>
+								<td class=" ">{$vo.txprice}</td>
+								<td class=" ">{$vo.tx_fee}</td>
+
+								<td class=" ">{$vo.txname}</td>
+								<td class=" ">{$vo.txmobile}</td>
+								<td class=" ">{$vo.txcard}</td>
+								<td class=" ">{$vo.txtime|date='Y/m/d H:i',###}</td>
+								<td class=" ">
+								    <if condition="$vo.status eq 0"><span class="label label-warning">未发放</span>
+                                    <elseif condition="$vo.status eq 1"/><span class="label label-maroon">待领取</span>
+                                    <elseif condition="$vo.status eq 2"/><span class="label label-success">已领取</span>
+                                        <elseif condition="$vo.status eq 3"/><span class="label label-default">已取消</span>
+                                        <else/><span class="label label-danger">未知</span>
+                                    </if>
+								</td>
+								<td class="center ">
+
+									<eq name="vo.status" value="0">
+									    <button class="btn btn-success btn-xs btnsendredbag" data-id = "{$vo.id}">
+                                            <i class="glyphicon glyphicon-send"></i> 发红包
+									    </button>
+                                        <button class="btn btn-danger btn-xs txordercancel" data-id = "{$vo.id}"><i class="glyphicon glyphicon-remove"></i> 取消申请</button>
+									</eq>
+								</td>
+							</tr>
+						</volist>
+												
+					</tbody>
+				</table>
+				<div class="row DTTTFooter">
+					{$page}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!--面包屑导航封装-->
+<div id="tmpbread" style="display: none;">{$breadhtml}</div>
+<script type="text/javascript">
+	setBread($('#tmpbread').html());
+</script>
+<!--/面包屑导航封装-->
+<!--全选特效封装/全部删除-->
+<script type="text/javascript">
+    //全选
+    var checkall=$('#App-table .App-checkall');
+    var checks=$('#App-table .App-check');
+    var trs=$('#App-table tbody tr');
+    $(checkall).on('click',function(){
+        if($(this).is(":checked")){
+            $(checks).prop("checked","checked");
+        }else{
+            $(checks).removeAttr("checked");
+        }
+    });
+    $(trs).on('click',function(){
+        var c=$(this).find("input[type=checkbox]");
+        if($(c).is(":checked")){
+            $(c).removeAttr("checked");
+        }else{
+            $(c).prop("checked","checked");
+        }
+    });
+
+	//取消订单
+	var btntxcancel=$('.btnsendredbag');
+	$(btntxcancel).on('click',function(){
+		var id=$(this).data('id');
+		var funok=function(){			
+			$.ajax({
+				type:"post",
+				url:"{:U('Admin/Wxhongbao/wxtxorderOk')}",
+				async:false,
+				data:{'id':id},
+				success:function(info){
+				    if(info['status']){
+				           $.App.alert('success',info['msg']);
+				           $('#App-reloader').trigger('click');
+				    }else{
+				           $.App.alert('danger',info['msg']);
+				         }
+				         return false;
+				   },
+				error:function(xhr){
+					$.App.alert('danger','通讯失败！请重试！');
+					return false;
+				}
+			});
+		}
+		$.App.confirm("确认要给此人发放微信红包吗？此操作不可逆转！",funok);
+	
+	});
+
+    $('.txordercancel').on('click',function(){
+        var id=$(this).data('id');
+        var funok=function(){
+            $.ajax({
+                type:"post",
+                url:"{:U('Admin/Wxhongbao/wxtxorderCancel')}",
+                async:false,
+                data:{'id':id},
+                success:function(info){
+                    if(info['status']){
+                        $.App.alert('success',info['msg']);
+                        $('#App-reloader').trigger('click');
+                    }else{
+                        $.App.alert('danger',info['msg']);
+                    }
+                    return false;
+                },
+                error:function(xhr){
+                    $.App.alert('danger','通讯失败！请重试！');
+                    return false;
+                }
+            });
+        }
+        $.App.confirm("确认要取消此笔提现操作吗？此操作不可逆转！",funok);
+
+    });
+
+    //导出提现帐单
+	$('#exportTxorder').on('click',function(){
+		var checks=$(".App-check:checked");
+		var chk='';
+		$(checks).each(function(){
+			chk+=$(this).val()+',';
+		});
+		window.open("{:U('Admin/Wxhongbao/wxtxorderExport')}/id/"+chk);
+	})
+</script>
+<!--/全选特效封装-->
+
+
+	

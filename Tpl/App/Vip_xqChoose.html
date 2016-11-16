@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>选择小区</title>
+	    <meta charset="utf-8" />
+		<!--页面优化-->
+		<meta name="MobileOptimized" content="320">
+		<!--默认宽度320-->
+		<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+		<!--viewport 等比 不缩放-->
+		<meta http-equiv="cleartype" content="on">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<!--删除苹果菜单-->
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		<!--默认颜色-->
+		<meta name="apple-mobile-web-app-title" content="yes">
+		<meta name="apple-touch-fullscreen" content="yes">
+		<!--加载全部后 显示-->
+		<meta content="telephone=no" name="format-detection" />
+		<!--不识别电话-->
+		<meta content="email=no" name="format-detection" />
+		<link rel="stylesheet" href="__PUBLIC__/App/css/style.css" />
+		<script type="text/javascript" src="__PUBLIC__/App/js/zepto.min.js"></script>
+	</head>
+	<body class="back5">
+		<div class="site-srch ovflw">
+			<i class="iconfont fl site-bck" onclick="javascript:history.go(-1)">&#xe679</i>
+			<div class="site-ipt fl"><i class="iconfont fl">&#xe65c</i><input type="text" placeholder="查找小区" id="search"/></div>
+		</div>
+		<div class="site-cc">
+			<volist name="data" id="vo">
+			<eq name="vo.charshow" value="1"><p>{$vo.char}</p></eq>
+			<ul class="site-list ovflw">
+				<li class="border-b1" data-id="{$vo.id}">{$vo.name}</li>
+			</ul>
+			</volist>
+		</div>
+		<!--通用分享-->
+		<include file="./Tpl/App/Shop_share.html" />
+	</body>
+</html>
+<script>
+	$('li').click(function(){
+		var xqid=$(this).data('id');
+		var url_attr=("{$addressid}"=='')?'':"/id/{$addressid}";
+		location.href="U('/App/Vip/addressSet')/xqid/"+xqid+url_attr;
+	})
+	
+	$("#search").on('input',function(e){
+		var search=$(this).val();
+		if (search!='') {
+			$('li').hide();
+			$('p').hide();
+			$("li").each(function(){
+		    	var xqname=$(this).text();
+		    	if (xqname.indexOf(search)>=0) {
+		    		$(this).show();
+		    	}
+		    });
+		} else {
+			$('li').show();
+			$('p').show();
+		}
+	});
+</script>

@@ -1,0 +1,121 @@
+<div class="row">
+    <div class="col-xs-12 col-md-12">
+        <div class="widget">
+            <div class="widget-header bg-blue">
+                <i class="widget-icon fa fa-arrow-down"></i>
+                <span class="widget-caption">红包详情</span>
+                <div class="widget-buttons">
+                    <a href="#" data-toggle="maximize">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a href="#" data-toggle="collapse">
+                        <i class="fa fa-minus"></i>
+                    </a>
+                    <a href="#" data-toggle="dispose">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="widget-body">
+                <div class="table-toolbar">
+                    <div class="pull-right">
+                        <form id="App-search">
+                            <label style="margin-bottom: 0px;">
+                                <input name="name" type="search" class="form-control input-sm" value="{$name}" placeholder="">
+                            </label>
+                            <a href="" class="btn btn-success" data-loader="App-loader" data-loadername="红包详情" data-search="App-search">
+                                <i class="fa fa-search"></i>搜索
+                            </a>
+                        </form>
+                    </div>
+                </div>
+
+                <table id="App-table" class="table table-bordered table-hover">
+                    <thead class="bordered-darkorange">
+                    <tr role="row">
+                        <th>ID</th>
+                        <th>红包口令</th>
+                        <th>总金额</th>
+                        <th>红包个数</th>
+                        <th>抽奖开始时间</th>
+                        <th>已领个数</th>
+                        <th>状态</th>
+                        <th>模板消息</th>
+                        <th>创建时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <volist name="cache" id="vo">
+                        <tr>
+                            <td>{$vo.id}</td>
+                            <td>{$vo.command}</td>
+                            <td>{$vo.total_money}</td>
+                            <td>{$vo.total_num}</td>
+                            <td>{$vo.start_time|date="Y-m-d H:i:s",###}</td>
+                            <td>{$vo.taken_num}</td>
+                            <td>
+                                <eq name="vo.is_enable" value="1">
+                                    <span class="label label-primary"> 开启 </span>
+                                <else/>
+                                    <span class="label label-danger"> 关闭 </span>
+                                </eq>
+                            </td>
+                            <td>
+                                <eq name="vo.is_wxtemplate" value="1">
+                                    <span class="label label-primary"> 已发送 </span>
+                                    <else/>
+                                    <span class="label label-danger"> 未发送 </span>
+                                </eq>
+                            </td>
+                            <td>{$vo.create_time|date="Y-m-d H:i:s",###}</td>
+                            <td>
+                                <a class="btn btn-primary btn-xs" data-loadername="红包详情" data-loader="App-loader" href="{:U('Admin/Lucky/set',array('id'=>$vo['id']))}">
+                                    <i class="fa fa-eye"></i>
+                                    详 情
+                                </a>
+                                <eq name="vo.is_wxtemplate" value="0">
+                                    <span data-id="{$vo.id}" class="push_wxtemplate btn btn-azure btn-xs"> <i class="glyphicon glyphicon-send"></i>发送模板消息 </span>
+                                </eq>
+                            </td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </table>
+                <div class="row DTTTFooter">
+                    {$page}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--面包屑导航封装-->
+<div id="tmpbread" style="display: none;">{$breadhtml}</div>
+<script type="text/javascript">
+    setBread($('#tmpbread').html());
+
+    //发送模板消息
+    $('.push_wxtemplate').click(function(){
+        var id = $(this).data('id');
+        alert(id)
+        $.App.confirm('确定发送模板消息？<br/>将向所有会员发送 通知参与红包抽奖 的模板消息 ',function(){
+            $.ajax({
+                url     : "{:U('Admin/Lucky/lotteryNotify')}",
+                type    : 'post',
+                data    : {id:id},
+                success : function(data){
+                    if(data.status){
+                        $.App.alert('success',data.msg);
+                        $('#refresh-toggler').trigger('click');
+                    }else{
+                        $.App.alert('danger',data.msg);
+                    }
+                },
+                error   : function(){
+                    alert('通讯失败，刷新后尝试');
+                }
+            })
+        });
+    })
+</script>
+

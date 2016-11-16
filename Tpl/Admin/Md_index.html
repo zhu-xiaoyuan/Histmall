@@ -1,0 +1,111 @@
+<div class="row">
+	<div class="col-xs-12 col-md-12">
+		<div class="widget">
+			<div class="widget-header bordered-bottom bordered-yellow">
+				<span class="widget-caption">Search on All Columns</span>
+				<div class="widget-buttons">
+					<a href="#" data-toggle="maximize">
+						<i class="fa fa-expand"></i>
+					</a>
+					<a href="#" data-toggle="collapse">
+						<i class="fa fa-minus"></i>
+					</a>
+					<a href="#" data-toggle="dispose">
+						<i class="fa fa-times"></i>
+					</a>
+				</div>
+			</div>
+			<div class="widget-body no-padding">
+				<table class="table table-bordered table-hover table-striped" id="searchable">
+					<thead class="bordered-darkorange">
+						<tr role="row">
+							<th>Rendering engine</th>
+							<th>Browser</th>
+							<th>Platform(s)</th>
+							<th>Engine version</th>
+							<th>CSS grade</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class=" sorting_1">Gecko</td>
+							<td class=" ">Firefox 1.0</td>
+							<td class=" ">Win 98+ / OSX.2+</td>
+							<td class="center ">1.7</td>
+							<td class="center ">A</td>
+						</tr>
+						<tr>
+							<td class=" sorting_1">Gecko</td>
+							<td class=" ">Firefox 1.5</td>
+							<td class=" ">Win 98+ / OSX.2+</td>
+							<td class="center ">1.8</td>
+							<td class="center ">A</td>
+						</tr>
+						<tr>
+							<td class=" sorting_1">Gecko</td>
+							<td class=" ">Firefox 2.0</td>
+							<td class=" ">Win 98+ / OSX.2+</td>
+							<td class="center ">1.8</td>
+							<td class="center ">A</td>
+						</tr>
+						<tr>
+							<td class=" sorting_1">Gecko</td>
+							<td class=" ">Firefox 3.0</td>
+							<td class=" ">Win 2k+ / OSX.3+</td>
+							<td class="center ">1.9</td>
+							<td class="center ">A</td>
+						</tr>
+						<tr>
+							<td class=" sorting_1">Gecko</td>
+							<td class=" ">Camino 1.0</td>
+							<td class=" ">OSX.2+</td>
+							<td class="center ">1.8</td>
+							<td class="center ">A</td>
+						</tr>
+						<tr>
+							<td class=" sorting_1">Gecko</td>
+							<td class=" ">Camino 1.5</td>
+							<td class=" ">OSX.3+</td>
+							<td class="center ">1.8</td>
+							<td class="center ">A</td>
+						</tr>
+						<tr>
+							<td class=" sorting_1">Gecko</td>
+							<td class=" ">Netscape 7.2</td>
+							<td class=" ">Win 95+ / Mac OS 8.6-9.2</td>
+							<td class="center ">1.7</td>
+							<td class="center ">A</td>
+						</tr>
+						<tr>
+							<td class=" sorting_1">Gecko</td>
+							<td class=" ">Netscape Browser 8</td>
+							<td class=" ">Win 98SE+</td>
+							<td class="center ">1.7</td>
+							<td class="center ">A</td>
+						</tr>
+						<tr>
+							<td class=" sorting_1">Gecko</td>
+							<td class=" ">Netscape Navigator 9</td>
+							<td class=" ">Win 98+ / OSX.2+</td>
+							<td class="center ">1.8</td>
+							<td class="center ">A</td>
+						</tr>
+						<tr>
+							<td class=" sorting_1">Gecko</td>
+							<td class=" ">Mozilla 1.0</td>
+							<td class=" ">Win 95+ / OSX.1+</td>
+							<td class="center ">1</td>
+							<td class="center ">A</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<!--面包屑导航封装-->
+<div id="tmpbread" style="display: none;">{$breadhtml}</div>
+<script type="text/javascript">
+	setBread($('#tmpbread').html());
+</script>
+<!--/面包屑导航封装-->

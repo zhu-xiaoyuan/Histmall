@@ -1,0 +1,330 @@
+<div class="row">
+    <div class="col-xs-12 col-xs-12">
+        <div class="widget radius-bordered">
+            <div class="widget-header bg-blue">
+                <i class="widget-icon fa fa-arrow-down"></i>
+                <span class="widget-caption">返现佣金配置</span>
+
+                <div class="widget-buttons">
+                    <a href="#" data-toggle="maximize">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a href="#" data-toggle="collapse">
+                        <i class="fa fa-minus"></i>
+                    </a>
+                    <a href="#" data-toggle="dispose">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="widget-body">
+                <form id="AppForm" action="sss" method="post" class="form-horizontal" data-bv-message=""
+                      data-bv-feedbackicons-valid="glyphicon glyphicon-ok2"
+                      data-bv-feedbackicons-invalid="glyphicon glyphicon-remove2"
+                      data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">返现/佣金总金额</label>
+
+                        <div class="col-lg-4">
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control" name="total_commission_rate"
+                                       value="{$cache.total_commission_rate}">
+
+                                <div class="input-group-addon">%</div>
+                            </div>
+                            <span class="text text-info">一天销售额的百分之多少用于返给一二三级推广人员</span>
+                        </div>
+                    </div>
+
+                    <!--<div class="form-group">
+                        <label class="col-lg-2 control-label">团长提成</label>
+
+                        <div class="col-lg-4">
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control" name="tuanzhang_rate"
+
+                                       value="{$cache.tuanzhang_rate}">
+
+                                <div class="input-group-addon">%</div>
+                            </div>
+                            <span class="text text-info">占 返现/佣金总金额 的百分比</span>
+                        </div>
+                    </div>-->
+
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">佣金设置</label>
+
+                        <div class="col-lg-4">
+                            <div class="input-group input-group-xs">
+                                <div class="input-group-addon">一级(营销总监)：</div>
+                                <input name="role1rate" type="text" class="form-control" value="{$cache.role1rate}">
+
+                                <div class="input-group-addon">%</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label"></label>
+
+                        <div class="col-lg-4">
+                            <div class="input-group input-group-xs">
+                                <div class="input-group-addon">二级(VIA)：</div>
+                                <input name="role2rate" type="text" class="form-control"
+                                       value="{$cache.role2rate}">
+
+                                <div class="input-group-addon">%</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label"></label>
+
+                        <div class="col-lg-4">
+                            <div class="input-group input-group-xs">
+                                <div class="input-group-addon">三级(推广人员)：</div>
+                                <input name="role3rate" type="text" class="form-control"
+                                       value="{$cache.role3rate}">
+                                <div class="input-group-addon">%</div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <!--<div class="form-group">
+                        <label class="col-lg-2 control-label">消费者返现占比</label>
+
+                        <div class="col-lg-4">
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control" name="buyer_rate"
+                                       value="{$cache.buyer_rate}">
+
+                                <div class="input-group-addon">%</div>
+                            </div>
+                            <span class="text text-info">占 返现/佣金总金额 的百分比，直至返完</span>
+                        </div>
+                    </div>-->
+
+
+                    <!--<div class="form-group">
+                        <label class="col-lg-2 control-label">三级分销占比</label>
+
+                        <div class="col-lg-4">
+                            <div class="input-group input-group-sm">
+                                <input name="fx_rate" type="text" class="form-control"
+                                       value="{$cache.fx_rate}">
+
+                                <div class="input-group-addon">%</div>
+                            </div>
+                            <span class="text text-info">占 返现/佣金总金额 的百分比</span>
+                        </div>
+                    </div>-->
+
+                    <!--<div class="form-group">
+                        <label class="col-lg-2 control-label"></label>
+
+                        <div class="col-lg-4">
+                            <div class="input-group input-group-xs">
+                                <div class="input-group-addon">一级：</div>
+                                <input name="fx1rate" type="text" class="form-control" value="{$cache.fx1rate}">
+
+                                <div class="input-group-addon">%</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label"></label>
+
+                        <div class="col-lg-4">
+                            <div class="input-group input-group-xs">
+                                <div class="input-group-addon">二级：</div>
+                                <input name="fx2rate" type="text" class="form-control"
+                                       value="{$cache.fx2rate}">
+
+                                <div class="input-group-addon">%</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label"></label>
+
+                        <div class="col-lg-4">
+                            <div class="input-group input-group-xs">
+                                <div class="input-group-addon">三级：</div>
+                                <input name="fx3rate" type="text" class="form-control"
+                                       value="{$cache.fx3rate}">
+
+                                <div class="input-group-addon">%</div>
+                            </div>
+                            <span class="text text-danger">一级+二级+三级之和应等于100%</span>
+                        </div>
+                    </div>-->
+
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">提现手续费</label>
+
+                        <div class="col-lg-4">
+                            <div class="input-group input-group-sm">
+                                <input name="tx_fee_rate" type="text" class="form-control"
+                                       value="{$cache.tx_fee_rate}">
+
+                                <div class="input-group-addon">%</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">最低提现额</label>
+
+                        <div class="col-lg-4">
+                            <div class="input-group input-group-sm">
+                                <input name="tx_min_money" type="text" class="form-control"
+                                       value="{$cache.tx_min_money}">
+
+                                <div class="input-group-addon">元</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="form-group">-->
+                        <!--<label class="col-lg-2 control-label"></label>-->
+
+                        <!--<div class="col-lg-2">-->
+                            <!--<div class="input-group input-group-xs">-->
+                                <!--<div class="input-group-addon">最低</div>-->
+                                <!--<input id="tx_fee_min" name="tx_fee_min" type="text" class="form-control"-->
+                                       <!--value="{$cache.tx_fee_min}">-->
+
+                                <!--<div class="input-group-addon">元</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="col-lg-2">-->
+                            <!--<div class="input-group input-group-xs">-->
+                                <!--<div class="input-group-addon">最高</div>-->
+                                <!--<input id="tx_fee_max" name="tx_fee_max" type="text" class="form-control"-->
+                                       <!--value="{$cache.tx_fee_max}">-->
+
+                                <!--<div class="input-group-addon">元</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+
+                    <div class="form-group">
+                        <div class="col-lg-offset-2 col-lg-4">
+                            <button class="btn btn-primary btn-lg" type="submit">保存</button>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <button class="btn btn-palegreen btn-lg" type="reset">重填</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--面包屑导航封装-->
+<div id="tmpbread" style="display: none;">{$breadhtml}</div>
+<script type="text/javascript">
+    setBread($('#tmpbread').html());
+</script>
+<!--/面包屑导航封装-->
+<!--表单验证与提交封装-->
+<script type="text/javascript">
+    var vali = {
+        notEmpty: {
+            message: '不能为空，请输入0-100之前的数字'
+        },
+        numeric: {
+            message: '请输入0-100之前的数字'
+        }
+    };
+    $('#AppForm').bootstrapValidator({
+        submitHandler: function (validator, form, submitButton) {
+            var tourl = "{:U('Admin/Shop/bonus')}";
+            var data = $('#AppForm').serialize();
+            $.App.ajax('post', tourl, data, null);
+            return true;
+        },
+        fields: {
+            total_commision_rate: {
+                validators: vali
+            },
+            tuanzhang_rate: {
+                validators: vali
+            },
+            supplier_rate: {
+                validators: vali
+            },
+            buyer_rate: {
+                validators: vali
+            },
+            fx_rate: {
+                validators: vali
+            },
+            fx1rate: {
+                validators: vali
+            },
+            fx2rate: {
+                validators: vali
+            },
+            fx3rate: {
+                validators: vali
+            },
+            tx_fee_rate: {
+                validators: vali
+            },
+            tx_min_money: {
+                validators: {
+                    notEmpty: {
+                        message: '不能为空，请输入数字'
+                    },
+                    numeric: {
+                        message: '请输入数字'
+                    }
+                }
+            },
+            tx_fee_min: {
+                validators: {
+                    notEmpty: {
+                        message: '不能为空，请输入数字'
+                    },
+                    digits: {
+                        message: '请输入数字'
+                    },
+                    callback: {
+                        message: '不能大于最高手续费',
+                        callback: function (value, validator) {
+                            var maxFee = parseInt($.trim($('#tx_fee_max').val()));
+                            var minFee = parseInt($.trim(value));
+
+                            return maxFee >= minFee;
+                        }
+                    }
+                }
+            },
+            tx_fee_max: {
+                validators: {
+                    notEmpty: {
+                        message: '不能为空，请输入数字'
+                    },
+                    digits: {
+                        message: '请输入数字'
+                    },
+                    callback: {
+                        message: '不能小于最低手续费',
+                        callback: function (value, validator) {
+
+                            var minFee = parseInt($.trim($('#tx_fee_min').val()));
+                            var maxFee = parseInt($.trim(value));
+                            if (maxFee >= minFee) {
+                                validator.updateStatus('tx_fee_min', 'VALID');
+                            }
+                            return maxFee >= minFee;
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+</script>

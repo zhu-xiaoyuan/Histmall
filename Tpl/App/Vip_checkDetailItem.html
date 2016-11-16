@@ -1,0 +1,32 @@
+<volist name="cache" id="vt">
+    <div class="ads_orinfo ads_padding3 ovflw border-b1">
+        <div class="ads_orinfol ovflw fl">
+            <p class="fonts85">订单编号：{$vt.order_code}</p>
+
+            <p class="fonts85" style="padding-top: 5px;">消费内容：{$vt.memo}</p>
+        </div>
+        <div class="ads_orprice ovflw ">
+            <eq name="vt.is_payforother" value="0">
+                <p>
+                    <em class="fonts85" style="color: green;">
+                        ＋￥{$vt.pay_price|number_format=###,2}
+                    </em>
+                </p>
+
+                <p class="ads_ornum fonts85">
+                    线上
+                </p>
+            </eq>
+            <eq name="vt.is_payforother" value="1">
+                <p>
+                    <em class="fonts85" style="color: red;">
+                        －￥{$vt.pay_price|number_format=###,2}
+                    </em>
+                </p>
+                <p class="ads_ornum fonts85">
+                    线下
+                </p>
+            </eq>
+        </div>
+    </div>
+</volist>

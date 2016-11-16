@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <include file="./Tpl/App/Business_header.html"/>
+    <style>
+        .aa:after {
+            border-bottom: 0px;
+        }
+    </style>
+</head>
+<body>
+<form id="Form" action="{:U('App/Business/orderCreate')}" method="post">
+    <div class="weui_cells_title">商家：{$store.name}</div>
+    <div class="weui_cells weui_cells_form">
+        <div class="weui_cell aa" style="margin-top: 0px;">
+            <div class="weui_cell_hd"><label class="weui_label">消费金额</label></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <input class="weui_input" type="number" id="mn" name="mn">
+            </div>
+        </div>
+        <div class="weui_cell">
+            <div class="weui_cell_hd"><label class="weui_label">消费内容</label></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <input class="weui_input" type="text" name="mm">
+            </div>
+        </div>
+    </div>
+
+    <input type="hidden" name="id" value="{$store.id}"/>
+    <a class="weui_btn weui_btn_primary" style="width: 80%;margin-top: 20px;">下一步</a>
+</form>
+<!-- 底部导航 -->
+<div class="dtl-ft ovflw">
+    <div class=" fl dtl-icon dtl-bck ovflw">
+        <a href="{:U('App/Business/storeView')}?id={$store.id}">
+            <i class="iconfont">&#xe679</i>
+        </a>
+    </div>
+</div>
+</body>
+<script>
+    $(function () {
+        $(".weui_btn ").on("click", function () {
+            if ($.trim($("#mn").val()) == "") {
+                alert("请输入消费额");
+                return false;
+            }
+            var money = parseFloat($.trim($("#mn").val()));
+            if (money <= 0) {
+                alert("消费额必须大于0");
+                return false;
+            }
+            $("#Form").submit();
+        });
+    });
+</script>
+</html>

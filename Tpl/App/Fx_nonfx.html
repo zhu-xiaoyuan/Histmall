@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{$_SESSION['SHOP']['set']['tdname']}中心</title>
+    <meta charset="utf-8"/>
+    <!--页面优化-->
+    <meta name="MobileOptimized" content="320">
+    <!--默认宽度320-->
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <!--viewport 等比 不缩放-->
+    <meta http-equiv="cleartype" content="on">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!--删除苹果菜单-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!--默认颜色-->
+    <meta name="apple-mobile-web-app-title" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <!--加载全部后 显示-->
+    <meta content="telephone=no" name="format-detection"/>
+    <!--不识别电话-->
+    <meta content="email=no" name="format-detection"/>
+    <link rel="stylesheet" href="__PUBLIC__/App/css/style.css"/>
+    <script type="text/javascript" src="__PUBLIC__/App/js/zepto.min.js"></script>
+</head>
+<body class="back1">
+<div class="home-hd" style="background: url(__PUBLIC__/App/img/head-bg.png) no-repeat;background-size: 100% 100%;">
+    <div class="home-hdc ovflw">
+        <div class="fl home-info">
+            <p>{$data.nickname}</p>
+
+            <p>总{$_SESSION['SHOP']['set']['yjname']}：<span class="home-jf" id="levelname">{$data.total_xxyj}</span>
+            </p>
+        </div>
+        <div class="clr"></div>
+        <div class="home-panel ovflw">
+            <div class="fl home-item"><a href="javascript:void(0)" class="home-br text-c"><span id="home-jf">{$data.total_xxlink}<em
+                    style="font-size: 0.6em;">人</em></span><span class="home-add" id="add-jf"></span>
+
+                <p>点击链接</p></a></div>
+            <div class="fl home-item"><a href="javascript:void(0)" class="home-br text-c"><span id="home-jy">{$data.total_xxsub}<em
+                    style="font-size: 0.6em;">人</em></span><span class="home-add" id="add-jy"></span>
+
+                <p>成功关注</p></a></div>
+            <div class="fl home-item"><a href="javascript:void(0)" class="text-c"><span>{$data.total_xxbuy}<em
+                    style="font-size: 0.6em;">次</em></span>
+
+                <p>成功购买</p></a></div>
+        </div>
+    </div>
+</div>
+<div class="home-cc">
+    <h2>不是分销商，申请成为分销商</h2>
+</div>
+<div class="insert1"></div>
+<!-- 底部导航 -->
+<div class="dtl-ft ovflw">
+    <div class=" fl dtl-icon dtl-bck ovflw">
+        <a href="{:U('App/Vip/index')}">
+            <i class="iconfont">&#xe679</i>
+        </a>
+    </div>
+</div>
+<script type="text/javascript">
+
+</script>
+<!--通用分享-->
+<include file="./Tpl/App/Shop_share.html"/>
+</body>
+</html>

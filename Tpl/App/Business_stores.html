@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <include file="./Tpl/App/Business_header.html"/>
+    <script src="__PUBLIC__/App/js/dropload.min.js"></script>
+    <script src="__PUBLIC__/App/js/base.js"></script>
+    <style>
+        .weui_media_box {
+            padding: 10px;
+        }
+
+        .weui_media_box .weui_media_desc {
+            line-height: 1.5;
+            -webkit-line-clamp: 1;
+        }
+    </style>
+</head>
+<body>
+<div class="title-bg">
+    <a id="goback" style="color: #ffffff">
+        <i class="iconfont">&#xe679;</i>&nbsp;&nbsp;
+    </a>
+
+    <div style="float: right;color: #ffffff;">
+        <span style="margin-right: 40px;">{$cate.name}</span>
+        <a href="{:U('App/Vip/index')}"
+           style="color: #ffffff;">
+            <i class="iconfont" style="font-size: 1.5rem;padding: 0px 15px;position: absolute;top: -1px;right: 0px;">
+                &#xe685;
+            </i>
+        </a>
+    </div>
+</div>
+<input id="cid" value="{$cid}" type="hidden"/>
+
+<div id="html" style="clear: both;display: none;"></div>
+<div class="weui_panel weui_panel_access" style="margin-bottom: 65px;">
+    <div class="weui_panel_bd">
+
+    </div>
+</div>
+<include file="./Tpl/App/Business_footer.html"/>
+</body>
+<script>
+    var num = 10;
+    var counter = 0;
+    var lat = "34.75661006";
+    var lng = "113.64964385";
+    var city = "郑州市";
+    $(function () {
+        $("#goback").on("click", function () {
+            window.history.back();
+        });
+        $("#sm_home").removeAttr("style");
+        $('#sm_goods').css('color', '#19a5f3');
+
+        if (window.localStorage) {
+            city = localStorage.getItem("wemall_city");
+        }
+        if (window.navigator.geolocation) {
+            var position_option = {
+                enableHighAccuracy: true,
+                maximumAge: 30000,
+                timeout: 20000
+            };
+            window.navigator.geolocation.getCurrentPosition(getPositionSuccess, getPositionError, position_option);
+        } else {
+            getMore();
+        }
+        function getPositionSuccess(position) {
+            lat = position.coords.latitude;
+            lng = position.coords.longitude;
+            //alert("lat:" + lat + ",lng:" + lng);
+            getMore()
+        }
+
+        function getPositionError() {
+            getMore()
+        }
+    });
+    function getMore() {
+        var dropload = $("#index-plist").dropload({
+            scrollArea: window,
+            loadDownFn: function (me) {
+                $("#html").load("{:U('App/Business/storeItem')}?num=" + counter + "&page=" + num + "&lat=" + lat + "&lng=" + lng + "&cid=" + $("#cid").val() + "&city=" + city, function (html, status) {
+                    $("#html").html("");
+                    if (status == "success") {
+                        if (html == "") {
+                            dropload.noData();
+                            dropload.resetload();
+                            return;
+                        } else {
+                            $('.weui_panel_bd').append(html);
+                            $(".weui_media_appmsg_thumb").minThumb();
+                            counter++;
+                            dropload.resetload();
+                        }
+                    } else {
+                        dropload.resetload();
+                    }
+                });
+            }
+        });
+    }
+</script>
+<include file="./Tpl/App/Shop_share.html"/>
+</html>

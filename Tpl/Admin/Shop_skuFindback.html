@@ -1,0 +1,14 @@
+<tr class="App-checktr" data-id='{$cache.id}' data-label='{$cache.name}' >
+	<td class=" ">{$cache.name}</td>
+	<td class=" ">
+	<div class="checkbox" style="margin-bottom: 0px; margin-top: 0px;">
+		<volist name="items" id="vo">
+       <label>
+       <input type="checkbox" class="colored-blue App-check" checked="checked" value="{$vo.path}" data-label = "{$vo.name}">
+       <span class="text">{$vo.name}</span>
+       </label>
+       </volist>
+    </div>								
+	</td>
+	<td class="center "><button class="App-skuattr-del btn btn-xs btn-darkorange">移除此属性</button></td>
+</tr>

@@ -1,0 +1,152 @@
+<div class="row">
+    <div class="col-xs-12 col-xs-12">
+        <div class="widget radius-bordered">
+            <div class="widget-header bg-blue">
+                <i class="widget-icon fa fa-arrow-down"></i>
+                <span class="widget-caption">微信配置</span>
+                <div class="widget-buttons">
+                    <a href="#" data-toggle="maximize">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a href="#" data-toggle="collapse">
+                        <i class="fa fa-minus"></i>
+                    </a>
+                    <a href="#" data-toggle="dispose">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="widget-body">
+                <form id="AppForm" action="" method="post" class="form-horizontal" data-bv-message="" data-bv-feedbackicons-valid="glyphicon glyphicon-ok" data-bv-feedbackicons-invalid="glyphicon glyphicon-remove" data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+                    <input type="hidden" name="id" value="{$cache.id}">
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">微信名称[推送]<sup>*</sup></label>
+                        <div class="col-lg-4">
+                            <input type="text" class="form-control" name="wxname" placeholder="必填" data-bv-notempty="true" data-bv-notempty-message="不能为空" value="{$cache.wxname}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">微信首次关注描述[推送]<sup>*</sup></label>
+                        <div class="col-lg-4">
+                            <textarea rows="4" type="text" class="form-control callback" name="wxsummary" placeholder="必填" data-bv-notempty="true" data-bv-notempty-message="不能为空">{$cache.wxsummary}</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">开启首次关注图片[推送]<sup>*</sup></label>
+                        <div class="col-lg-4">
+                            <label>
+                                <input type="hidden" name="wxswitch" value="{$cache.wxswitch}" id="wxswitch">
+                                <input class="checkbox-slider slider-icon colored-darkorange" type="checkbox" id="wxswitch-button" <eq name="cache.wxswitch" value="1">checked="checked"</eq>>
+                                <span class="text darkorange">&nbsp;&nbsp;&larr;重要：开启后会将关注描述用图片替换</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group" id="wxpicture" <eq name="cache.wxswitch" value="0">style="display:none"</eq>>
+                        <label class="col-lg-3 control-label">微信首次关注图片[推送]<sup>*</sup></label>
+                        <div class="col-lg-4">
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control" name="wxpicture" value="{$cache.wxpicture}" id="App-album">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default shiny" type="button" onclick="appImgviewer('App-album')"><i class="fa fa-camera-retro"></i>预览</button><button class="btn btn-default shiny" type="button" onclick="appImguploader('App-album',true)"><i class="glyphicon glyphicon-picture"></i>上传</button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">开启微信oAuth调试模式<sup>*</sup></label>
+                        <div class="col-lg-4">
+                            <label>
+                                <input type="hidden" name="wxdebug" value="{$cache.wxdebug}" id="wxdebug">
+                                <input class="checkbox-slider slider-icon colored-darkorange" type="checkbox" id="wxbebug-button" <eq name="cache.wxdebug" value="1">checked="checked"</eq>>
+                                <span class="text darkorange">&nbsp;&nbsp;&larr;重要：开启后可以调试应用</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">微信URL前缀[推送]<sup>*</sup></label>
+                        <div class="col-lg-4">
+                            <input type="text" class="form-control callback" name="wxurl" placeholder="必填" data-bv-notempty="true" data-bv-notempty-message="不能为空" value="{$cache.wxurl}">
+							<span class="text darkorange">重要：链接需要添加 http://</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">微信TOKEN<sup>*</sup></label>
+                        <div class="col-lg-4" style="dispaly:none">
+                            <input type="text" class="form-control callback" name="wxtoken" placeholder="必填" data-bv-notempty="true" data-bv-notempty-message="不能为空" value="{$cache.wxtoken}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-offset-2 col-lg-4">
+                            <p id="callback-url" class="text-primary">{$cache.wxurl}/Home/Wx/index/token/{$cache.wxtoken}</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">微信关注链接<sup>*</sup></label>
+                        <div class="col-lg-4">
+                            <input type="text" class="form-control" name="wxsuburl" placeholder="必填" data-bv-notempty="true" data-bv-notempty-message="不能为空" value="{$cache.wxsuburl}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">微信APPID<sup>*</sup></label>
+                        <div class="col-lg-4">
+                            <input type="text" class="form-control" name="wxappid" placeholder="必填" data-bv-notempty="true" data-bv-notempty-message="不能为空" value="{$cache.wxappid}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">微信APPSECRET<sup>*</sup></label>
+                        <div class="col-lg-4">
+                            <input type="text" class="form-control" name="wxappsecret" placeholder="必填" data-bv-notempty="true" data-bv-notempty-message="不能为空" value="{$cache.wxappsecret}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">微信支付MchID<sup>*</sup></label>
+                        <div class="col-lg-4">
+                            <input type="text" class="form-control" name="wxmchid" placeholder="必填" data-bv-notempty="true" data-bv-notempty-message="不能为空" value="{$cache.wxmchid}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">微信支付MchKey<sup>*</sup></label>
+                        <div class="col-lg-4">
+                            <input type="text" class="form-control" name="wxmchkey" placeholder="必填" data-bv-notempty="true" data-bv-notempty-message="不能为空" value="{$cache.wxmchkey}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-offset-2 col-lg-4">
+                            <button class="btn btn-primary btn-lg" type="submit">保存</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <button class="btn btn-palegreen btn-lg" type="reset">重填</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--面包屑导航封装-->
+<div id="tmpbread" style="display: none;">{$breadhtml}</div>
+<script type="text/javascript">
+setBread($('#tmpbread').html());
+</script>
+<!--/面包屑导航封装-->
+<!--表单验证与提交封装-->
+<script type="text/javascript">
+$('#AppForm').bootstrapValidator({
+    submitHandler: function(validator, form, submitButton) {
+        var tourl = "{:U('Admin/Wx/set')}";
+        var data = $('#AppForm').serialize();
+        $.App.ajax('post', tourl, data, null);
+        return false;
+    },
+});
+</script>
+<!--/表单验证与提交封装-->
+<script type="text/javascript">
+$('#wxswitch-button').on('click', function() {
+    var value = $(this).prop('checked') ? 1 : 0;
+    $('#wxswitch').val(value);
+    $('#wxpicture').slideToggle();
+});
+$('#wxbebug-button').on('click', function() {
+    var value = $(this).prop('checked') ? 1 : 0;
+    $('#wxdebug').val(value);
+});
+</script>

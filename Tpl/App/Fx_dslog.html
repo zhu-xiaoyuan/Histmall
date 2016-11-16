@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>待收日志</title>
+	    <meta charset="utf-8" />
+		<!--页面优化-->
+		<meta name="MobileOptimized" content="320">
+		<!--默认宽度320-->
+		<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+		<!--viewport 等比 不缩放-->
+		<meta http-equiv="cleartype" content="on">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<!--删除苹果菜单-->
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		<!--默认颜色-->
+		<meta name="apple-mobile-web-app-title" content="yes">
+		<meta name="apple-touch-fullscreen" content="yes">
+		<!--加载全部后 显示-->
+		<meta content="telephone=no" name="format-detection" />
+		<!--不识别电话-->
+		<meta content="email=no" name="format-detection" />
+		<link rel="stylesheet" href="__PUBLIC__/App/css/style.css" />
+		<script type="text/javascript" src="__PUBLIC__/App/js/zepto.min.js"></script>
+	</head>
+	<body class="back1">
+		
+			<empty name="cache">
+				<div class="list_none text-c">
+					<p class="color6">暂无待收记录</p>
+				</div>
+				<else/>
+				<div class="ovflw back2">
+					<ul class="achos-ul ovflw">
+						<li class="ovflw border-b1"><h3>此待收日志仅做预估值，实收按订单真实完成计算！</h3><p>为缓解服务器压力，只显示最新50条记录。</p></li>
+					</ul>
+					<ul class="achos-ul ovflw">
+						<volist name="cache" id="vo">
+							<li class="ovflw border-b1"><h3 class="ads-h3">贡献会员：{$vo.fromname}</h3><p>订单号：{$vo.oid}</p><p>订单金额：{$vo.fxprice}</p><p>获得收益：{$vo.fxyj}</p><p>收益级别：<eq name="vo.ishg" value="1">超级VIP<else/>分销商</eq></p><p class="ads-p">{$vo.ctime|date="Y-m-d",###}</p></li>
+						</volist>
+					</ul>					
+				</div>
+			</empty>
+		
+		<div class="insert1"></div>
+		<div class="dtl-ft ovflw">
+			<div class=" fl dtl-icon dtl-bck ovflw">
+				<a href="{:U('App/Fx/index')}">
+					<i class="iconfont">&#xe679</i>
+				</a>
+			</div>
+		</div>
+		<!--通用分享-->
+		<include file="./Tpl/App/Shop_share.html" />
+	</body>
+</html>

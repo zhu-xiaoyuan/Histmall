@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>修改地址</title>
+	    <meta charset="utf-8" />
+		<!--页面优化-->
+		<meta name="MobileOptimized" content="320">
+		<!--默认宽度320-->
+		<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+		<!--viewport 等比 不缩放-->
+		<meta http-equiv="cleartype" content="on">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<!--删除苹果菜单-->
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		<!--默认颜色-->
+		<meta name="apple-mobile-web-app-title" content="yes">
+		<meta name="apple-touch-fullscreen" content="yes">
+		<!--加载全部后 显示-->
+		<meta content="telephone=no" name="format-detection" />
+		<!--不识别电话-->
+		<meta content="email=no" name="format-detection" />
+		<link rel="stylesheet" href="__PUBLIC__/App/css/style.css" />
+		<script type="text/javascript" src="__PUBLIC__/App/js/zepto.min.js"></script>
+		<script type="text/javascript" src="__PUBLIC__/App/gmu/gmu.min.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/App/gmu/app-basegmu.js"></script>
+	</head>
+	<body class="back1">
+		<div class="add-ads back2">
+			<ul class="add-ul">
+				<li class="border-b1 ovflw">
+					<!--<if condition="$data.school_id eq 0">
+						<p class="add-tips color3 fonts2">您未绑定学校，请先选择学校</p>
+						<span class="fl">所在学校</span>
+						<select name="school_id" id="school_id" style='font-size:1.2rem;'>
+							<option value="0">请选择学校</option>
+							<foreach name="data['schoolList']" item="vo" >
+								<if condition="$vo.id eq $data['school_id']">
+									<option value="{$vo['id']}" selected="selected">{$vo.school_name}</option>
+								<else />
+									 <option value="{$vo.id}">{$vo.school_name}</option>
+								</if>
+								
+							</foreach>
+							<if condition="-1 eq $data['school_id']">
+								<option value="-1" selected="selected">其他</option>
+							<else />
+								<option value="-1">其他</option>
+							</if>
+						</select>
+					</if>-->
+				</li>
+				<li class='border-b1' id='school_name' hidden><span class="fl">学校名称</span><input type='text' placeholder='请输入学校名称' name='school_name'/></li>
+				<li class="border-b1 ovflw"><span class="fl">地址详情</span><input type="text" placeholder="例：河南省郑州市中原区科学大道100号x号宿舍楼xxx室" value="{$address}" id="address"/></li>
+				<li class="border-b1 ovflw"><span class="fl">收货人</span><input type="text" value="{$data.name}" id="name"/></li>
+				<li class="ovflw"><span class="fl">手机号码</span><input type="text" value="{$data.mobile}" id="mobile"/></li>
+			</ul>			
+			<p>
+				<?php 
+					$data['school_id']
+				 ?>
+			</p>
+		</div>
+		<p class="add-tips color3 fonts2">注：请仔细填写联系电话与收货地址。</p>
+		<input type="hidden" value="{$data.id}" id="id"/>
+		<div class="insert1"></div>
+		<div class="dtl-ft ovflw">
+				<div class=" fl dtl-icon dtl-bck ovflw">
+					<a href="{:U('App/Vip/address')}">
+						<i class="iconfont">&#xe679</i>
+					</a>
+				</div>
+				<a href="#" class="fr ads-btn fonts9 back3" onclick="addrese(this)">保存地址</a>
+				<if condition="$data.id neq ''"><a href="#" class="fr ads-del fonts9 back4">删除地址</a></if>
+		</div>
+	</body>
+</html>
+<script>
+	$('#school_id').change(function(){
+		var $school_id = $(this).val();
+
+		if($school_id == -1){
+			$('#school_name').show();
+		}else{
+			$('#school_name').hide();
+		}
+		//var p1=$(this).children('option:selected').val();//这就是selected的值 
+	});
+
+     function addrese(obj){
+         console.log(obj);
+        var id=$('#id').val();
+        var xqid=1;//取消小区ID
+        var address=$('#address').val();
+        var name=$('#name').val();
+        var mobile=$('#mobile').val();
+        var school_id = $('#school_id').val();
+        var school_name = $('input[name=school_name]').val();
+        var re = /^1\d{10}$/;
+
+        if(school_id == 0){
+            zbb_msg("请选择学校");
+            return;
+        }else if(school_id == -1 && school_name == ''){
+            zbb_msg("请填写学校名称");
+            return;
+        }else if(address==''){
+            zbb_msg("请填写地址详情!！");
+            return;
+        }else if(name==''){
+            zbb_msg("请填写收货人！");
+            return;
+        }else if(mobile==''){
+            zbb_msg("请填写手机号码！");
+            return;
+        }else if (re.test(mobile)==false) {
+            zbb_msg("手机号码格式不正确！");
+            return;
+        }
+        $.ajax({
+            async:false,
+            type:'post',
+            data:{'id':id,'xqid':xqid,'address':address,'name':name,'mobile':mobile,'school_id':school_id,'school_name':school_name},
+            url:"{:U('Vip/addressSet')}",
+            dataType:'json',
+            success:function(e){
+                if (e.status==1){
+                    zbb_alert(e.msg,function(){location.href="{:U('App/Vip/address')}";});
+                }else{
+                    zbb_alert(e.msg);
+                }
+                return false;
+            },
+            error:function(){
+                zbb_alert('通讯失败！');
+                return false;
+            }
+        });
+        return false;
+    }
+	
+	$('.ads-del').click(function(){
+		var id=$('#id').val();
+		$.ajax({
+			type:'post',
+			data:{'id':id},
+			url:"{:U('Vip/addressDel')}",
+			dataType:'json',
+			success:function(e){
+				if (e.status==1) {
+					zbb_alert(e.msg,function(){location.href="{:U('App/Vip/address')}";});
+				} else {
+					zbb_msg(e.msg);
+				}
+				return false;
+			},
+			error:function(){
+			    zbb_alert('通讯失败！');
+				return false;
+			}
+		});	
+		return false;
+	});
+</script>
+<!--通用分享-->
+<include file="./Tpl/App/Shop_share.html" />

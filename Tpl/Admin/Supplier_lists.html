@@ -1,0 +1,161 @@
+<style>
+    .panel-body td{padding:5px;}
+</style>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="widget">
+            <div class="widget-header bg-blue">
+                <i class="widget-icon fa fa-arrow-down"></i>
+                <span class="widget-caption">商家管理</span>
+                <div class="widget-buttons">
+                    <a href="#" data-toggle="maximize">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a href="#" data-toggle="collapse">
+                        <i class="fa fa-minus"></i>
+                    </a>
+                    <a href="#" data-toggle="dispose">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="widget-body">
+                <!--数据列表-->
+                <div class="table-toolbar">
+                    <div class="table-toolbar">
+                        <a data-loadername="添加商家" data-loader="App-loader" class="btn btn-primary" href="{:U('Admin/Supplier/add')}">
+                            <i class="fa fa-plus"></i>添加商家
+                        </a>
+                        <div class="pull-right">
+                            <form id="App-search">
+                                <label style="margin-bottom: 0px;">
+                                    <input class="form-control input-sm" type="search" name="name" placeholder="搜索商家ID/商家名称">
+                                </label>
+                                <a class="btn btn-success" data-search="App-search" data-loadername="商城订单" data-loader="App-loader" href="{:U('Admin/Supplier/lists')}">
+                                    <i class="fa fa-search"></i>
+                                    搜索
+                                </a>
+                            </form>
+                        </div>
+                    </div>
+                    <table id="App-table" class="table table-bordered table-hover">
+                        <thead class="bordered-darkorange">
+                            <tr role="row">
+                                <th title="是否在商盟首页显示? 对勾:为显示；空白:为不显示">商盟首页</th>
+                                <th>商家ID</th>
+                                <th>商家名称</th>
+                                <th>VIA ID</th>
+                                <th>VIA昵称</th>
+                                <th>手机号码</th>
+                                <th>入驻时间</th>
+                                <th>积分</th>
+                                <th>账户余额</th>
+                                <th>成交订单</th>
+                                <th>成交金额</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <volist name="lists_info" id="vo">
+                                <tr data-id="{$vo.s_id}">
+                                    <if condition="$vo.order_index neq 0">
+                                        <td class="text-center" title="在商盟首页显示；排序权重：{$vo.order_index}" style="vertical-align: middle;">
+                                            <i class="fa fa-check" style="font-size:18px;"></i>
+                                        </td>
+                                    <else />
+                                        <td title="不在商盟首页显示"></td>
+                                    </if>
+                                    <td> <!--id为空，则未绑定-->
+                                        <php>
+                                            if($vo['vip_id']){
+                                                echo $vo['vip_id'];
+                                            }else{
+                                                echo '(未绑定)';
+                                            }
+                                        </php>
+                                    </td>
+                                    <td>{$vo.name}</td>
+                                    <td>{$vo.inviter_id}</td>
+                                    <td>{$vo.inviter_name}</td>
+                                    <td>{$vo.contact_phone}</td>
+                                    <td>{$vo.create_time|date='Y/m/d H:i:s ',###}</td>
+                                    <td>{$vo.score}</td>
+                                    <td style="text-align:right;">{$vo.money|number_format=###,2}</td>
+                                    <td style="text-align:right;">{$vo.total_offline_order|default='0'}</td>
+                                    <td style="text-align:right;">{$vo.total_offline_money|number_format=###,2}</td>
+                                    <td style="padding:5px;">
+                                        <a class="btn btn-primary btn-xs" href="{:U('Admin/Supplier/view',array('supplier_id'=>$vo['s_id']))}" data-loader="App-loader" data-loadername="商家详情/编辑">
+                                            <i class="fa fa-eye"></i> 详情
+                                        </a>
+                                        <a class="btn btn-blue btn-xs" href="{:U('Admin/Supplier/order',array('supplier_id'=>$vo['s_id'],'vip_id'=>$vo['vip_id']))}" data-loader="App-loader" data-loadername="订单详情">
+                                            <i class="fa fa-list"></i> 订单
+                                        </a>
+                                        <br/>
+                                        <notempty name="vo.vip_id">
+                                            <a class="btn btn-success btn-xs" href="{:U('Admin/Vip/charge',array('id'=>$vo['vip_id'],'redirect'=>think_encrypt('__SELF__')))}" data-loadername="会员充值" data-loader="App-loader">
+                                                <i class="fa fa-money"></i> 充值
+                                            </a>
+                                        </notempty>
+                                        <a class="btn btn-danger btn-xs" href="javascript:void(0);" data-type="del" data-ajax="{:U('Admin/Supplier/delete',array('supplier_id'=>$vo['s_id'],'via_id'=>$vo['inviter_id'],'vip_id'=>$vo['vip_id']))}">
+                                            <i class="fa fa-trash-o"></i> 删除
+                                        </a>
+                                        <!--<div class="btn-group">
+                                            <a class="btn btn-azure dropdown-toggle" data-toggle="dropdown">
+                                                操作
+                                                <i class="fa fa-angle-down"></i>
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-azure">
+                                                <li>
+                                                    <a href="{:U('Admin/Supplier/view',array('supplier_id'=>$vo['s_id']))}" data-loader="App-loader" data-loadername="商家详情/编辑">
+                                                    <i class="fa fa-edit"></i> 商家详情</a>
+                                                </li>
+                                                <li>
+                                                    <a href="{:U('Admin/Supplier/order',array('supplier_id'=>$vo['s_id'],'vip_id'=>$vo['vip_id']))}" data-loader="App-loader" data-loadername="订单详情">
+                                                    <i class="fa fa-list"></i> 订单详情</a>
+                                                </li>
+                                                <li>
+                                                    <notempty name="vo.vip_id">
+                                                        &lt;!&ndash;如果没有绑定，则此项不能操作&ndash;&gt;
+                                                        <a href="{:U('Admin/Vip/charge',array('id'=>$vo['vip_id'],'redirect'=>think_encrypt('__SELF__')))}" data-loadername="会员充值" data-loader="App-loader">
+                                                        <i class="fa fa-money"></i> 充值余额</a>
+                                                    </notempty>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" data-type="del" data-ajax="/Admin/Supplier/delete/supplier_id/{$vo.s_id}/vip_id/{$vo.vip_id}/via_id/{$vo.inviter_id}">
+                                                    <i class="fa fa-trash-o"></i> 删除商家</a>
+                                                </li>
+                                            </ul>
+                                        </div>-->
+                                    </td>
+                                </tr>
+                            </volist>
+                        </tbody>
+                    </table>
+                    <div class="row DTTTFooter">
+                        {$page}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="tmpbread" style="display: none;">{$breadhtml}</div>
+<script type="text/javascript">
+    setBread($('#tmpbread').html());
+</script>
+<script src="__PUBLIC__/Admin/js/datetime/moment.js"></script>
+<script src="__PUBLIC__/Admin/js/datetime/daterangepicker.js"></script>
+<script>
+    $('#date-picker').daterangepicker({
+        showShorcuts    : true,
+        shortcuts       : {
+            'prev'  : ['week'],
+            'next'  : ['week']
+        },
+        showWeekNumbers : true,
+        startOfWeek : 'monday',
+        separator   : '--',
+    })
+</script>

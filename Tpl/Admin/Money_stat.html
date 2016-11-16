@@ -1,0 +1,189 @@
+<div class="row">
+    <div class="col-xs-12 col-md-12">
+        <div class="widget">
+            <div class="widget-header bg-blue">
+                <i class="widget-icon fa fa-arrow-down"></i>
+                <span class="widget-caption">返现统计</span>
+
+                <div class="widget-buttons">
+                    <a href="#" data-toggle="maximize">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a href="#" data-toggle="collapse">
+                        <i class="fa fa-minus"></i>
+                    </a>
+                    <a href="#" data-toggle="dispose">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="widget-body">
+                <div class="table-toolbar">
+                    <div class="pull-left" style="margin-left:50px;">
+                        <form id="App-search" class="margin-bottom-10 form-inline">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <a href="javascript:;" class="btn btn-warning btn-large" id="one_week">近一周</a>
+                                    <a href="javascript:;" class="btn btn-warning btn-large" id="two_week">两周</a>
+                                    <a href="javascript:;" class="btn btn-warning btn-large" id="one_month">一月</a>
+                                    <a href="javascript:;" class="btn btn-warning btn-large" id="three_month">三月</a>
+
+                                    <div class="form-group">
+
+                                        <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-calendar"></i> 日期段
+                                    </span>
+                                            <input type="text" name="s_date" class="form-control input-md"
+                                                   style="width:200px;"
+                                                   id="stat_date" value=""/>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div style="padding-top:50px;clear:both;">
+                    <div id="chart_stat" style="width:100%;height:500px;">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!--面包屑导航封装-->
+<div id="tmpbread" style="display: none;">{$breadhtml}</div>
+<script type="text/javascript">
+    setBread($('#tmpbread').html());
+</script>
+<!--/面包屑导航封装-->
+
+<script>
+    var chart = echarts.init(document.getElementById('chart_stat'));
+
+
+    function stat(begin, end) {
+        var tourl = "{:U('Admin/Money/query')}";
+
+        $.ajax({
+            type: "post",
+            url: tourl,
+            data: {
+                begin: begin,
+                end: end
+            },
+            success: function (data) {
+                var option = {
+                    title: {
+                        text: ''
+                    },
+                    tooltip: {},
+                    legend: {
+                        data: ['营业金额', '返现金额']
+                    },
+                    xAxis: {
+                        data: data.date_list
+                    },
+                    yAxis: [
+                        {
+                            type: 'value',
+                            name: '营业金额',
+//                            min: 0,
+//                            max: 10000,
+                            //interval: 1000,
+                            axisLabel: {
+                                formatter: '{value}元'
+                            }
+                        },
+                        {
+                            type: 'value',
+                            name: '返现金额',
+//                            min: 0,
+//                            max: 10000,
+                            //interval: 10,
+                            axisLabel: {
+                                formatter: '{value}元'
+                            }
+                        }
+                    ],
+                    series: [
+                        {
+                            name: '营业金额',
+                            type: 'line',
+                            data: data.sales_list
+                        },
+                        {
+                            yAxisIndex: 1,
+                            name: '返现金额',
+                            type: 'line',
+                            data: data.money_list
+                        }
+                    ]
+                };
+                chart.setOption(option);
+
+            },
+            beforeSend: function () {
+                $("#popover-loader").show();
+            },
+            complete: function () {
+                $("#popover-loader").hide();
+            }
+        });
+
+    }
+    stat(0, 0);
+
+    $(function () {
+        $('#one_week').click(function () {
+            var begin = moment().subtract(7, 'days').format('X');
+            var end = moment().format('X');
+            stat(begin, end);
+        });
+        $('#two_week').click(function () {
+            var begin = moment().subtract(14, 'days').format('X');
+            var end = moment().format('X');
+            stat(begin, end);
+        });
+        $('#one_month').click(function () {
+            var begin = moment().subtract(1, 'months').format('X');
+            var end = moment().format('X');
+            stat(begin, end);
+        });
+        $('#three_month').click(function () {
+            var begin = moment().subtract(3, 'months').format('X');
+            var end = moment().format('X');
+            stat(begin, end);
+        });
+
+
+        $('#stat_date').dateRangePicker({
+            //batchMode:'week',
+            showShortcuts: true,
+            shortcuts: {
+                'prev': ['week'],
+                'next': ['week']
+            },
+            showWeekNumbers: true,
+            startOfWeek: 'monday',
+            separator: ' ~ '
+        })
+                .bind('datepicker-apply', function (event, obj) {
+                    /* This event will be triggered when second date is selected */
+
+                    var start = Date.parse(obj.date1) / 1000;
+                    var end = Date.parse(obj.date2) / 1000;
+                    //console.log(end);
+                    //$('#currentQuery').val(start+","+end);
+                    //查询数据
+                    stat(start, end);
+                });
+    });
+</script>
+<!--/全选特效封装-->

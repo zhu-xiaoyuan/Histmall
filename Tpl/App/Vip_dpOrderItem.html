@@ -1,0 +1,52 @@
+<volist name="cache" id="vo">
+    <div class="ads-lst border-b1 ovflw mr-b back2 color6">
+        <p class="ads-tt border-b1">{$vo.order_code}<span class="fr color3">
+				<switch name="vo.status">
+                    <case value="0">
+                        <eq name="vo.is_pay" value="1"> 待对账</eq>
+                        <eq name="vo.is_pay" value="0"> 未支付</eq>
+                    </case>
+                    <case value="1">核对中</case>
+                    <case value="2">已完成</case>
+                    <case value="10">待打款</case>
+                </switch></span></p>
+        <volist name="vo.items" id="vt">
+            <div class="ads_orinfo ads_padding3 ovflw border-b1">
+                <div class="ads_orinfol ovflw fl">
+                    <div class="ads_or_img fl">
+                        <!-- 图片大小为147*101 -->
+                        <img class="minPic" data-src="{$vt.pic}"/>
+                    </div>
+                    <h4>{$vt.name}</h4>
+
+                    <p class="color3 fonts2">{$vt.skuattr}</p>
+
+                    <p class="fonts2" style="clear: both;">买家：{$vt.buyer}</p>
+                </div>
+                <div class="ads_orprice ovflw ">
+                    <p><em class="fonts85">￥</em><em class="fonts18">{$vt.price|number_format=###,2}</em></p>
+
+                    <p class="ads_ornum fonts85">X{$vt.num}</p>
+                </div>
+            </div>
+        </volist>
+        <p class="ads_ortt3 fonts85 ovflw border-b1">
+            <!-- <span class="fl">
+                 <a href="{:U('App/Vip/orderDetail')}?id={$vo.id}" class="home-cz">查看订单 </a>
+             </span>-->
+                <span class="fr">
+                <eq name="vo.status" value="0">
+                    <eq name="vo.is_pay" value="0">
+                        <a data-id="{$vo.id}" href="#" class="home-rz">代支付</a>
+                    </eq>
+                    <eq name="vo.is_pay" value="1">
+                        代付：￥{$vo.pay_price}
+                    </eq>
+                </eq>
+                <gt name="vo.status" value="0">
+                    实付：￥{$vo.pay_price}
+                </gt>
+                </span>
+        </p>
+    </div>
+</volist>

@@ -1,0 +1,16 @@
+<volist name="cache" id="vo">
+    <li style="width: 100%;">
+        <a href="#" style="padding: 5px;">
+            <h1 class="plist-tt fonts4 ovflw" style="height:30px;">订单号：{$vo.order_code}
+
+                <span style="float: right;">{$vo.create_time|date="Y-m-d H:m",###}</span>
+            </h1>
+
+            <p>
+                <span class="plist-yp color3">
+                    <em class="fonts1" style="color: green;">分红：￥{$vo.money|number_format=###,2}</em>
+                </span>
+            </p>
+        </a>
+    </li>
+</volist>

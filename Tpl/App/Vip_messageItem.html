@@ -1,0 +1,7 @@
+<volist name="data" id="vo">
+    <li onclick="readMsg({$vo.id})" id="list{$vo.id}">
+        <h3 class="info-tt <eq name='vo.read' value='0'>color3</eq>">{$vo.title}</h3>
+
+        <p class="info-time">{$vo.ctime|date='Y/m/d',###}</p>
+    </li>
+</volist>

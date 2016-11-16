@@ -1,0 +1,131 @@
+<div class="row">
+    <div class="col-xs-12 col-md-12">
+        <div class="widget">
+            <div class="widget-header bg-blue">
+                <i class="widget-icon fa fa-arrow-down"></i>
+                <span class="widget-caption">对账历史</span>
+
+                <div class="widget-buttons">
+                    <a href="#" data-toggle="maximize">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a href="#" data-toggle="collapse">
+                        <i class="fa fa-minus"></i>
+                    </a>
+                    <a href="#" data-toggle="dispose">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="widget-body">
+                <div class="table-toolbar">
+                    <!--<a href="{:U('Admin/Employee/employeeSet/')}" class="btn btn-primary" data-loader="App-loader" data-loadername="设置分组">-->
+                    <!--<i class="fa fa-plus"></i>新增-->
+                    <!--</a>-->
+                    <div class="pull-right">
+
+                        <form id="App-search" class="margin-bottom-10 form-inline">
+                            <!--<div class="input-group">-->
+                            <!--<span class="input-group-addon">-->
+                            <!--<i class="fa fa-calendar"> 结算日期</i>-->
+                            <!--</span>-->
+                            <!--<input type="text" name="s_date" class="form-control" style="width:300px;"-->
+                            <!--id="complete_date"-->
+                            <!--value="{$s_date}"/>-->
+                            <!--</div>-->
+
+
+                            <input name="s_name" type="search" class="form-control input-ld"
+                                   value="{$s_name}" placeholder="会员ID/商家名称/电话">
+
+                            <a href="{:U('Admin/Bill/history/')}" class="btn btn-success" id="keywrod-search-btn"
+                               data-loader="App-loader" data-loadername="对账历史" data-search="App-search">
+                                <i class="fa fa-search"></i>搜索
+                            </a>
+
+                        </form>
+                    </div>
+                </div>
+                <table id="App-table" class="table table-bordered table-hover">
+                    <thead class="bordered-darkorange">
+                    <tr role="row">
+                        <th>会员ID</th>
+                        <th>会员姓名</th>
+                        <th>会员手机号</th>
+                        <th>商家名称</th>
+                        <th>联系电话</th>
+                        <th>收款银行</th>
+                        <th>收款支行</th>
+                        <th>户主</th>
+                        <th>收款卡号</th>
+                        <th>结算类型</th>
+                        <th>金额</th>
+                        <th>申请时间</th>
+                        <th>结算/取消时间</th>
+                        <th>银行交易流水号</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <volist name="cache" id="vo">
+                        <tr id="item{$vo.id}">
+                            <td class=" sorting_1">{$vo.vip_id}</td>
+                            <td class=" ">{$vo.vip_name}</td>
+                            <td class=" ">{$vo.vip_mobile}</td>
+                            <td class=" ">{$vo.supplier_name}</td>
+                            <td class=" ">{$vo.supplier_phone}</td>
+                            <td class=" ">{$vo.bank_name}</td>
+                            <td class=" ">{$vo.sub_bank_name}</td>
+                            <td class=" ">{$vo.cardholder}</td>
+                            <td class=" ">{$vo.bank_code}</td>
+
+                            <td>
+                                <eq name="vo.is_pay" value="1">
+                                    应付
+                                    <else/>
+                                    应收
+                                </eq>
+                            </td>
+                            <td
+                            <eq name="vo.is_pay" value="0">style="color:red"</eq>
+                            >
+                            {$vo.money|number_format=###,2}
+                            </td>
+                            <td class=" ">{$vo.apply_time|date='Y-m-d H:i:s',###}</td>
+                            <td class=" ">{$vo.complete_time|date='Y-m-d H:i:s',###}</td>
+                            <td class=" ">{$vo.tn}</td>
+                            <td class=" ">
+                                <switch name="vo.status">
+                                    <case value="0" break="1">待对账</case>
+                                    <case value="1" break="1">已结算</case>
+                                    <case value="2" break="1">申请取消</case>
+                                    <default/>
+                                    未知
+                                </switch>
+                            </td>
+
+                            <td class="center ">
+                                <a href="{:U('Admin/Bill/detail/',array('id'=>$vo['id'],'type'=>1))}"
+                                   class="btn btn-info btn-xs" data-loader="App-loader" data-loadername="对账明细"><i
+                                        class="fa fa-eye"></i> 明细</a>
+                            </td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </table>
+                <div class="row DTTTFooter">
+                    {$page}
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!--面包屑导航封装-->
+<div id="tmpbread" style="display: none;">{$breadhtml}</div>
+<script type="text/javascript">
+    setBread($('#tmpbread').html());
+</script>
+<!--/面包屑导航封装-->

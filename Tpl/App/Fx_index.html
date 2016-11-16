@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{$_SESSION['SHOP']['set']['tdname']}中心</title>
+    <meta charset="utf-8"/>
+    <!--页面优化-->
+    <meta name="MobileOptimized" content="320">
+    <!--默认宽度320-->
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <!--viewport 等比 不缩放-->
+    <meta http-equiv="cleartype" content="on">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!--删除苹果菜单-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!--默认颜色-->
+    <meta name="apple-mobile-web-app-title" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <!--加载全部后 显示-->
+    <meta content="telephone=no" name="format-detection"/>
+    <!--不识别电话-->
+    <meta content="email=no" name="format-detection"/>
+    <link rel="stylesheet" href="__PUBLIC__/App/css/style.css"/>
+    <script type="text/javascript" src="__PUBLIC__/App/js/zepto.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/App/js/countUp.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/App/gmu/gmu.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/App/gmu/app-basegmu.js"></script>
+</head>
+<body class="back1">
+<div class="home-hd" style="background: url(__PUBLIC__/App/img/head-bg.png) no-repeat;background-size: 100% 100%;">
+    <div class="home-hdc ovflw">
+        <div style="margin: 16px;">
+            <img src="{$data.headimgurl}"
+                 style="width: 62px;height: 62px;border-radius: 50%;box-shadow: 0 0 0 1px #ffffff;float: left">
+        </div>
+        <div class="fl home-info">
+            <p>
+                <notempty name="data.name">
+                    {$data.name}
+                    <else/>
+                    {$data.nickname}
+                </notempty>
+            </p>
+            <p style="font-size:0.8em;">ID：<span>{$data.id}</span></p>
+
+            <p style="font-size:0.8em;">
+                {$data.roleName}
+            </p>
+        </div>
+        <div class="clr"></div>
+    </div>
+</div>
+<div class="home-cc">
+    <a href="{:U('App/Fx/fxlog')}" class="home-lst border-b1 border-t1 ovflw back2">
+        <span class="iconfont fl icon text-c icon-bc1">&#xe6e0</span>
+        <span class="home-tt color6">我的{$_SESSION['SHOP']['set']['yjname']}</span>
+        <span class="iconfont fr icon-r">{$data.total_yj} 元 &#xe6a3</span>
+    </a>
+
+    <div class="home-lst2 border-b1 border-t1 back2 ovflw" id="mygroupbtn">
+        <a href="#" class="ovflw home-li">
+            <span class="iconfont fl icon text-c icon-bc7">&#xe67c;</span>
+            <span class="home-tt fl color6">
+                我的{$_SESSION['SHOP']['set']['tdname']}
+            </span>
+            <span class="iconfont fr icon-r">{$data.total_count} 人 <span class="arrow">&#xe6a3;</span></span>
+        </a>
+    </div>
+    <div class="home-lst2 border-b1 border-t1 back2 ovflw" id="mygroup" style="display:none;">
+        <volist name="data.sub" id="vo">
+            <a href="{:U('App/fx/myuser',array('type'=>$vo['role']))}" class="border-b1 ovflw home-li">
+                <span class="iconfont fl icon text-c icon-bc3">&#xe6cc;</span>
+                <span class="home-tt color6">{$vo.name}</span>
+                <span class="iconfont fr icon-r">{$vo.num} 人 &#xe6a3;</span>
+            </a>
+        </volist>
+    </div>
+    <if condition="$_SESSION['WAP']['vip']['role'] EQ 2 ">
+        <div class="home-lst2 border-b1 border-t1 back2 ovflw">
+            <a href="{:U('App/Fx/promotion')}" class="border-b1 ovflw home-li">
+                <span class="iconfont fl icon text-c icon-bc2">&#xe6cc;</span>
+                <span class="home-tt color6">招募推广人员</span>
+                <span class="iconfont fr icon-r">&#xe6a3;</span>
+            </a>
+            <a href="{:U('App/Fx/promotionLog')}" class="border-b1 ovflw home-li">
+                <span class="iconfont fl icon text-c icon-bc3">&#xe699;</span>
+                <span class="home-tt color6">推广人员申请记录</span>
+                <span class="iconfont fr icon-r">&#xe6a3;</span>
+            </a>
+        </div>
+    </if>
+</div>
+<div class="insert1"></div>
+<!-- 底部导航 -->
+<div class="dtl-ft ovflw">
+    <div class=" fl dtl-icon dtl-bck ovflw">
+        <a href="{:U('App/Vip/index')}">
+            <i class="iconfont">&#xe679;</i>
+        </a>
+    </div>
+</div>
+<script type="text/javascript">
+var mygroupbtn = $('#mygroupbtn');
+    var mygroup = $('#mygroup');
+    $(mygroupbtn).on('click', function () {
+        $(mygroup).toggle();
+        if(mygroup.css('display')=='block'){
+            mygroupbtn.find('.arrow').html('&#xe661;');
+        }else{
+            mygroupbtn.find('.arrow').html('&#xe6a3;');
+        }
+        return false;
+    });
+
+</script>
+<!--通用分享-->
+<include file="./Tpl/App/Shop_share.html"/>
+</body>
+</html>

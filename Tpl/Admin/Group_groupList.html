@@ -1,0 +1,110 @@
+<div class="row">
+	<div class="col-xs-12 col-md-12">
+		<div class="widget">
+			<div class="widget-header bg-blue">
+				<i class="widget-icon fa fa-arrow-down"></i>
+				<span class="widget-caption">团购订单</span>
+				<div class="widget-buttons">
+					<a href="#" data-toggle="maximize">
+						<i class="fa fa-expand"></i>
+					</a>
+					<a href="#" data-toggle="collapse">
+						<i class="fa fa-minus"></i>
+					</a>
+					<a href="#" data-toggle="dispose">
+						<i class="fa fa-times"></i>
+					</a>
+				</div>
+			</div>
+			<div class="widget-body">
+				<div class="table-toolbar">
+					<button href="javascript:void(0)" class="btn btn-primary" id="exportGroup"><i class="fa fa-save"></i>导出订单</button>
+
+					<div class="pull-right">
+						<form id="App-search">
+							<label style="margin-bottom: 0px;">
+								<input name="name" type="search" class="form-control input-sm" value="{$name}" placeholder="团长ID/团购商品">
+							</label>
+							<a href="{:U('Admin/Group/groupList/',array('status'=>$_GET['status']))}" class="btn btn-success" data-loader="App-loader" data-loadername="团购订单" data-search="App-search">
+								<i class="fa fa-search"></i>搜索
+							</a>
+						</form>
+					</div>
+				</div>
+
+				<table id="App-table" class="table table-bordered table-hover">
+					<thead class="bordered-darkorange">
+						<tr role="row">
+							<th>团长ID</th>
+							<th>团购商品</th>
+							<th>团购价格</th>
+							<th>组团最低人数</th>
+							<!--<th>开始团购时间</th>-->
+							<th>开团时间</th>
+							<th>团购结束时间</th>
+							<th>参团人数</th>
+							<eq name="status" value="1">
+								<th>团购状态</th>
+							</eq>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<volist name="cache" id="vo">
+							<tr id="item{$vo.id}">
+								<td class=" ">{$vo.creator_id}</td>
+								<td class=" ">
+									{$vo.name}
+								</td>
+								<td class=" ">{$vo.group_buy_money|number_format=###,2}</td>
+								<td class=" ">{$vo.group_buy_num}</td>
+								<!--<td class=" ">{$vo.group_time_start|date='Y/m/d H:i',###}</td>-->
+								<td class=" ">{$vo.create_time|date='Y/m/d H:i',###}</td>
+								<td class=" "><notempty name="vo.group_time_end">{$vo.group_time_end|date='Y/m/d H:i',###}</notempty></td>
+								<td class=" ">
+									{$vo.people_num}
+								</td>
+								<eq name="status" value="1">
+									<td class=" ">
+										<switch name="vo.status">
+											<case value="0">正在开团</case>
+											<case value="1">开团失败</case>
+											<case value="2">开团成功</case>
+											<case value="3">已发货</case>
+											<case value="4">交易完成</case>
+										</switch>
+									</td>
+								</eq>
+								<td class="center ">
+									<a href="{:U('Admin/Group/groupDetail/',array('id'=>$vo['id'],'status'=>$status))}" class="btn btn-primary btn-xs" data-loader="App-loader" data-loadername="订单详情"><i class="fa fa-eye"></i>详情</a>
+									<switch name="vo.status">
+										<case value="0">
+											<a class="btn btn-darkorange btn-xs" data-content="确定更改此团状态为“已成团”？" data-ajax="{:U('Admin/Group/groupOk/',array('id'=>$vo['id']))}" data-type="del"><i class="fa fa-info"></i>标记为已成团</a>
+										</case>
+									</switch>
+								</td>
+							</tr>
+						</volist>
+					</tbody>
+				</table>
+				<div class="row DTTTFooter">
+					{$page}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!--面包屑导航封装-->
+<div id="tmpbread" style="display: none;">{$breadhtml}</div>
+<script type="text/javascript">
+	setBread($('#tmpbread').html());
+</script>
+<!--/面包屑导航封装-->
+<!--全选特效封装/全部删除-->
+<script type="text/javascript">
+	//导出订单
+	$('#exportGroup').on('click',function(){
+		window.open("{:U('Admin/Group/exportGroup')}/status/{$status}");
+	})
+</script>
+<!--/全选特效封装-->

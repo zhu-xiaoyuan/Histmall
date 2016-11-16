@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{$_SESSION['SHOP']['set']['name']}-现场摇奖</title>
+    <meta charset="utf-8"/>
+    <!--页面优化-->
+    <meta name="MobileOptimized" content="320">
+    <!--默认宽度320-->
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <!--viewport 等比 不缩放-->
+    <meta http-equiv="cleartype" content="on">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!--删除苹果菜单-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!--默认颜色-->
+    <meta name="apple-mobile-web-app-title" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <!--加载全部后 显示-->
+    <meta content="telephone=no" name="format-detection"/>
+    <!--不识别电话-->
+    <meta content="email=no" name="format-detection"/>
+    <!--<script type="text/javascript" src="__PUBLIC__/App/js/zepto.min.js"></script>-->
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/App/js/jquery.html5Loader.min.js"></script>
+    <link rel="stylesheet" href="http://apps.bdimg.com/libs/animate.css/3.1.0/animate.min.css">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .page {
+            position: relative;
+        }
+
+        .bg {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            /*background: url("__PUBLIC__/App/lottery/bg1.png") center center;*/
+            background-size: 100% auto;
+            background-repeat: no-repeat;
+            z-index: 0;
+        }
+
+        .lottery-btn-wrapper {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            text-align: center;
+            z-index: 9999;
+        }
+
+        #lottery-btn {
+            width: 100px;
+            padding: 10px 25px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-family: Microsoft YaHei, 宋体;
+            color: #fff;
+            border-radius: 6px;
+            background: #fb6e52;
+        }
+
+        .disable {
+            background: #999999 !important;
+        }
+
+        .lottery-btn-wrapper .tips {
+            font-size: 0.8rem;
+            color: #fbe601;
+            line-height: 1.2rem;
+        }
+
+        .load-mask {
+            display: block;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+            right: 0;
+            left: 0;
+            z-index: 999999;
+            background: #2d2d49;
+        }
+
+        .loading-wrapper {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            margin-left: -100px;
+            margin-top: -100px;
+            width: 200px;
+            height: 200px;
+            text-align: center;
+        }
+
+        .loading-wrapper .circle {
+            margin: auto;
+            width: 100px;
+            height: 100px;
+            line-height: 100px;
+            border-radius: 50%;
+            font-size: 2rem;
+            color: #fff;
+            text-align: center;
+            border: solid 5px #960b0e;
+        }
+
+        .loading-wrapper .label {
+            color: #fff;
+            font-family: Microsoft YaHei, 宋体;
+            margin-top: 5px;
+        }
+
+        #lottery-result-wrapper {
+            display: none;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+            right: 0;
+            left: 0;
+            z-index: 99999;
+            background: rgba(0, 0, 0, 0.8);
+            text-align: center;
+        }
+
+        #lottery-result-wrapper .content {
+            position: fixed;
+            bottom: 5%;
+            left: 0;
+            width: 100%;
+            right: 0;
+        }
+
+        #lottery-result-wrapper .qian {
+            width: 80%;
+        }
+
+        #lottery-result-wrapper .zituo {
+            position: relative;
+        }
+
+        #lottery-result-wrapper .zituo label {
+            position: absolute;
+            left: 50%;
+            bottom: 15%;
+            width: 200px;
+            margin-left: -100px;
+            text-align: center;
+            color: #fccc05;
+            font-size: 1.5rem;
+            font-family: Microsoft YaHei, 宋体;
+        }
+
+        #lottery-result-wrapper .zituo img {
+            width: 100%;
+        }
+
+        #lottery-result-wrapper .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            width: 38px;
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+    <div class="bg"></div>
+</div>
+<div class="lottery-btn-wrapper">
+    <label id="lottery-btn">抽奖</label>
+
+    <p class="tips">您的手机不支持摇一摇抽奖，请点击“抽奖”按钮进行抽奖</p>
+    <!--<a href="{:U('App/Lottery/myprize')}">我的奖品</a>-->
+</div>
+<div class="load-mask">
+    <div class="loading-wrapper">
+        <div class="circle" id="loading-percent">0%</div>
+        <div class="label">loading...</div>
+    </div>
+</div>
+<div id="lottery-result-wrapper">
+    <img class="close" src="{$_SESSION['SET']['qiniu_domain']}/close.png"/>
+
+    <div class="content">
+        <img class="qian" data-url-yes="{$_SESSION['SET']['qiniu_domain']}/lottery_yes.png"
+             data-url-no="{$_SESSION['SET']['qiniu_domain']}/lottery_no.png"/>
+
+        <div class="zituo">
+            <img src="{$_SESSION['SET']['qiniu_domain']}/lottery_label_bg.png"/>
+            <label class="prize"></label>
+        </div>
+    </div>
+</div>
+<audio src="{$_SESSION['SET']['qiniu_domain']}/shake_sound_male.mp3" style="display: none;height:0;" preload="auto"
+       id="shake_sound"></audio>
+<script>
+    //window.DeviceMotionEvent = null;
+    var canShake = true;
+    var Media = {
+        shake: document.querySelector('#shake_sound'),
+        lotteryYes: null,
+        lotteryNo: null
+    };
+    var Player = {
+        mediaDom: null,
+        play: function () {
+            if (this.mediaDom != null) {
+//                this.mediaDom.load();
+                this.mediaDom.play();
+            }
+        },
+        stop: function () {
+            if (this.mediaDom != null && !this.mediaDom.paused) {
+                this.mediaDom.pause();
+            }
+        },
+        source: function (media) {
+            if (this.mediaDom != null && this.mediaDom != media) {
+                this.stop();
+            }
+            this.mediaDom = media;
+            return this;
+        }
+    };
+
+    function lottery() {
+        $.ajax({
+            type: "post",
+            url: "{:U('App/Lottery/lottery')}",
+            dataType: 'json',
+            beforeSend: function () {
+                canShake = false;
+                $('#lottery-btn').addClass('disable');
+            },
+            success: function (info) {
+
+//                info['code'] = 0;
+//                info['prize_level'] = 1;
+                var lrw = $('#lottery-result-wrapper');
+                var qianDom = lrw.find('.qian:first');
+                var prizeDom = lrw.find('.prize:first');
+                if (info['code'] == 0) {
+                    var prize = '';
+                    if (info['prize_level'] == 1) {
+                        prize = '一等奖';
+                    } else if (info['prize_level'] == 2) {
+                        prize = '二等奖';
+                    } else if (info['prize_level'] == 3) {
+                        prize = '三等奖';
+                    } else {
+                        prize = '未知奖项';
+                    }
+                    qianDom.attr('src', qianDom.attr('data-url-yes'));
+                    prizeDom.html(prize);
+                    prizeDom.click(function () {
+
+                    });
+//                    setTimeout(function () {
+//                        Player.source(Media.lotteryYes).play();
+//                    }, 1000);
+                } else {
+                    qianDom.attr('src', qianDom.attr('data-url-no'));
+                    prizeDom.html('再来一次');
+                    prizeDom.click(function () {
+                        lrw.find('.close').trigger('click');
+                    });
+
+//                    setTimeout(function () {
+//                        Player.source(Media.lotteryNo).play();
+//                    }, 1000);
+                }
+                lrw.find('.close').click(function () {
+                    lrw.hide();
+                    canShake = true;
+                });
+                lrw.show();
+                qianDom.animateCss("bounceIn");
+                prizeDom.animateCss("wobble");
+                //lrw.find('.content').animateCss("bounceIn");
+            },
+            error: function () {
+                canShake = true;
+            },
+            complete: function () {
+                $('#lottery-btn').removeClass('disable');
+            }
+        });
+    }
+
+    function shake() {
+        if (canShake == false) return false;
+        //摇一摇
+        canShake = false;
+
+        //TODO 播放音乐
+        setTimeout(function () {
+            Player.source(Media.shake).play();
+        }, 10);
+        lottery();
+
+        //手机震动1秒
+//        if (navigator.vibrate) {
+//            navigator.vibrate(1000);//震动1000毫秒
+//        } else if (navigator.webkitVibrate) {
+//            navigator.webkitVibrate(1000);
+//        }
+    }
+
+    $(document).ready(function () {
+
+        if (window.DeviceMotionEvent) {
+            $('.lottery-btn-wrapper').hide();
+            var speed = 25;
+
+            var x = t = z = lastX = lastY = lastZ = 0;
+            window.addEventListener('devicemotion',
+                    function () {
+                        var acceleration = event.accelerationIncludingGravity;
+                        x = acceleration.x;
+                        y = acceleration.y;
+                        if (Math.abs(x - lastX) > speed || Math.abs(y - lastY) > speed) {
+                            // 判断要不要执行
+                            shake();
+                        }
+                        lastX = x;
+                        lastY = y;
+                    }, false);
+        } else {
+            $('.lottery-btn-wrapper').show();
+        }
+
+        $('#lottery-btn').click(function () {
+            shake();
+        });
+
+        $.html5Loader({
+            debugMode: false,
+            filesToLoad: {
+                files: [{
+                    id: 'app-bg',
+                    type: "IMAGE",
+                    source: "{$_SESSION['SET']['qiniu_domain']}/bg1.png",
+                    size: 505000
+                }, {
+                    type: "IMAGE",
+                    source: "{$_SESSION['SET']['qiniu_domain']}/close.png",
+                    size: 9000
+                }, {
+                    type: "IMAGE",
+                    source: "{$_SESSION['SET']['qiniu_domain']}/lottery_label_bg.png",
+                    size: 125000
+                }, {
+                    type: "IMAGE",
+                    source: "{$_SESSION['SET']['qiniu_domain']}/lottery_no.png",
+                    size: 223000
+                }, {
+                    type: "IMAGE",
+                    source: "{$_SESSION['SET']['qiniu_domain']}/lottery_yes.png",
+                    size: 223000
+                }/*, {
+                 type: "AUDIO",
+                 sources: {
+                 mp3: {
+                 id: 'lottery_shake',
+                 source: "{$_SESSION['SET']['qiniu_domain']}/shake_sound_male.mp3",
+                 size: 41800
+                 }
+                 }
+                 }, {
+                 type: "AUDIO",
+                 sources: {
+                 mp3: {
+                 id: 'lottery_yes',
+                 source: "{$_SESSION['SET']['qiniu_domain']}/shake_match.mp3",
+                 size: 41800
+                 }
+                 }
+                 }, {
+                 type: "AUDIO",
+                 sources: {
+                 mp3: {
+                 id: 'lottery_no',
+                 source: "{$_SESSION['SET']['qiniu_domain']}/shake_nomatch.mp3",
+                 size: 41800
+                 }
+                 }
+                 }*/
+                ]
+            },
+            onUpdate: function (percentage) {
+                $('#loading-percent').text(percentage + '%');
+            },
+            onElementLoaded: function (obj, elm) {
+                if (obj.type == 'AUDIO') {
+                    if (obj.id == 'lottery_shake') {
+                        Media.shake = elm;
+                    } else if (obj.id == 'lottery_yes') {
+                        Media.lotteryYes = elm;
+                    } else if (obj.id == 'lottery_no') {
+                        Media.lotteryNo = elm;
+                    }
+                } else if (obj.type == "IMAGE") {
+                    if (obj.id == 'app-bg') {
+                        $('.bg').css({
+                            background: 'url("' + elm.src + '") center center',
+                            backgroundSize: "cover",
+                            backgroundRepeat: "no-repeat"
+                        });
+                    }
+                }
+            },
+            onComplete: function () {
+                $('.load-mask').fadeOut();
+            }
+        });
+    });
+</script>
+<script>
+    $(function () {
+        $.fn.extend({
+            animateCss: function (animationName) {
+                var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+                $(this).addClass('animated ' + animationName).one(animationEnd, function () {
+                    $(this).removeClass('animated ' + animationName);
+                });
+            }
+        });
+    })
+</script>
+</body>
+</html>

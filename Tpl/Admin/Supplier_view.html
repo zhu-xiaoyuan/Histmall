@@ -1,0 +1,814 @@
+<!--百度编辑器-->
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/Admin/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/Admin/ueditor/ueditor.all.min.js"></script>
+<div class="row">
+    <div class="col-xs-12 col-md-12">
+        <div class="widget">
+            <div class="widget-header bg-blue">
+                <i class="widget-icon fa fa-arrow-down"></i>
+                <span class="widget-caption">商家入驻</span>
+                <div class="widget-buttons">
+                    <a href="#" data-toggle="maximize">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a href="#" data-toggle="collapse">
+                        <i class="fa fa-minus"></i>
+                    </a>
+                    <a href="#" data-toggle="dispose">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="widget-body">
+                <div class="form-title">
+                    <empty name="Think.get.redirect">
+                        <a id="back" data-loadername="会员列表" data-loader="App-loader" class="btn btn-primary" href="{:U('Admin/Supplier/lists')}"><i class="fa fa-mail-reply"></i>返回</a>
+                    <else />
+                        <a id="back" data-loadername="会员列表" data-loader="App-loader" class="btn btn-primary" href="{$Think.get.redirect|think_decrypt}"><i class="fa fa-mail-reply"></i>返回</a>
+                    </empty>
+                </div>
+                <div class="h4">
+                    商家信息
+                </div>
+                <form class="form-horizontal" id="add_supplier">
+                    <!--商家ID-->
+                    <input type="hidden" name="su_id" id="su_id" value="{$supplier['id']}"/>
+                    <!--商店ID-->
+                    <input type="hidden" name="st_id" id="st_id" value="{$supplier_store['id']}"/>
+                    <!--会员ID-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">会员ID</label>
+                                <div class="col-sm-3">
+                                    <div class="input-group input-group-sm">
+                                        <input value="{$vip_id}" disabled readonly type="text" class="form-control" name="vip_id" id="vip_id"
+                                               data-bv-numeric="true" data-bv-numeric-message="会员ID为数字" data-bv-field="vip_id"/>
+                                        <span class="input-group-btn">
+                                            <span class="btn btn-warning shiny" type="button" id="bootbox-regular" data-toggle="modal" data-target="#changeVipId">
+                                                更改会员ID
+                                            </span>
+                                        </span>
+                                    <!--<span class="btn btn-warning" id="bootbox-regular" data-toggle="modal" data-target="#changeVipId">
+                                        更改会员ID
+                                    </span>-->
+                                    </div>
+                                </div>
+                                <div class="col-sm-4" id="vip_id_tips"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--商家名称-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="su_name" class="control-label col-sm-2">商家名称<i style="color:#f00;">*</i></label>
+                                <div class="col-sm-4">
+                                    <input value="{$supplier['name']}" type="text" class="form-control" name="su_name" id="su_name" data-bv-notempty-message="不能为空" data-bv-notempty="true" data-bv-field="su_name">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--联系地址-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">联系地址<i style="color:#f00;">*</i></label>
+                                <div class="col-sm-2">
+                                    <select onchange="getCity('su_province','su_city','su_area')" type="text" class="form-control" name="su_province" id="su_province" data-bv-notempty-message="请选择省份" data-bv-notempty="true" data-bv-field="su_province">
+                                        <option value="{$supplier['province']}" style="display:none" selected>{$supplier['province']}</option>
+                                        <volist name="provinces" id="vo">
+                                            <option data-id="{$vo.id}" value="{$vo.name}">{$vo.name}</option>
+                                        </volist>
+                                    </select>
+                                </div>
+                                <div class="col-sm-2">
+                                    <select onchange="getArea('su_city','su_area')" type="text" class="form-control" name="su_city" id="su_city" data-bv-notempty-message="请选择城市" data-bv-notempty="true" data-bv-field="su_city">
+                                        <option value="{$supplier['city']}" selected>{$supplier['city']}</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-2">
+                                    <select type="text" class="form-control" name="su_area" id="su_area" data-bv-notempty-message="请选择区/镇" data-bv-notempty="true" data-bv-field="su_area">
+                                        <option value="{$supplier['area']}" selected>{$supplier['area']}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 sr-only"></label>
+                                <div class="col-sm-8">
+                                    <input value="{$supplier['address']}" type="text" class="form-control" name="su_address" id="su_address" data-bv-notempty-message="请输入详细地址信息" data-bv-notempty="true" data-bv-field="su_address"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--纸质合同编号-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="su_contract_code" class="control-label col-sm-2">纸质合同编号</label>
+                                <div class="col-sm-4">
+                                    <input value="{$supplier['contract_code']}" type="text" class="form-control" name="su_contract_code" id="su_contract_code">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--推荐人/VIAID-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">推荐人/VIA ID<i style="color:#f00;">*</i></label>
+                                <div class="col-sm-3">
+                                    <div class="input-group input-group-sm">
+                                        <input readonly disabled value="{$supplier['inviter_id']}" type="text" class="form-control" name="su_inviter_id" id="su_inviter_id" placeholder="请输入推荐人/VIAID" data-bv-notempty-message="请输入推荐人/VIAID" data-bv-notempty="true" data-bv-numeric="true" data-bv-numeric-message="推荐人/VIAID应为数字" data-bv-field="su_inviter_id"/>
+                                        <span class="input-group-btn">
+                                            <span id="change_via_id" class="btn btn-warning shiny" type="button"> 更改VIA ID </span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--联系人姓名-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="su_contact_name" class="control-label col-sm-2">联系人姓名<i style="color:#f00;">*</i></label>
+                                <div class="col-sm-4">
+                                    <input value="{$supplier['contact_name']}" type="text" class="form-control" name="su_contact_name" id="su_contact_name" data-bv-notempty-message="请输入联系人姓名" data-bv-notempty="true" data-bv-field="su_contact_name">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--联系人电话-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="su_contact_phone" class="control-label col-sm-2">联系人电话<i style="color:#f00;">*</i></label>
+                                <div class="col-sm-4">
+                                    <input value="{$supplier['contact_phone']}" type="text" class="form-control" name="su_contact_phone" id="su_contact_phone" data-bv-notempty-message="请输入联系人电话" data-bv-notempty="true" data-bv-field="su_contact_phone">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--联系人性别-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">联系人性别</label>
+                                <div class="col-sm-8">
+                                    <div class="radio col-sm-2">
+                                        <label>
+                                            <if condition="$supplier.contact_sex eq 1">
+                                                <input value="1" class="colored-success" type="radio" checked name="su_sex">
+                                                <else />
+                                                <input value="1" class="colored-success" type="radio" name="su_sex">
+                                            </if>
+                                            <span class="text"> 男</span>
+                                        </label>
+                                    </div>
+                                    <div class="radio col-sm-2">
+                                        <label>
+                                            <if condition="$supplier.contact_sex eq 2">
+                                                <input value="2" class="colored-success" type="radio" checked name="su_sex">
+                                                <else />
+                                                <input value="2" class="colored-success" type="radio" name="su_sex">
+                                            </if>
+                                            <span class="text"> 女</span>
+                                        </label>
+                                    </div>
+                                    <div class="radio col-sm-2">
+                                        <label>
+                                            <if condition="$supplier.contact_sex eq 0">
+                                                <input value="0" class="colored-success" type="radio" checked name="su_sex">
+                                                <else />
+                                                <input value="0" class="colored-success" type="radio" name="su_sex">
+                                            </if>
+                                            <span class="text"> 未知</span>
+                                        </label>
+                                    </div>
+                                    <div style="display:none;" class="radio col-sm-2">
+                                        <!--经常最后一个radio会显示不出来，所以多添加一个-->
+                                        <label>
+                                            <input type="radio" class="colored-success" name="su_sex" data-bv-field="su_sex"><i style="display: none;" class="form-control-feedback" data-bv-field="su_sex"></i>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--身份证号-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="su_contact_idcard" class="control-label col-sm-2">身份证号</label>
+                                <div class="col-sm-4">
+                                    <input value="{$supplier['contact_idcard']}" type="text" class="form-control" name="su_contact_idcard" id="su_contact_idcard"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--生日-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="su_contact_birthday" class="control-label col-sm-2">出生日期</label>
+                                <div class="col-sm-4">
+                                    <input value="{$supplier['contact_birthday']}" type="text" class="form-control" name="su_contact_birthday" id="su_contact_birthday">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--支付宝alipay_code-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="su_alipay_code" class="control-label col-sm-2">支付宝账号</label>
+                                <div class="col-sm-4">
+                                    <input value="{$supplier['alipay_code']}" type="text" class="form-control" name="su_alipay_code" id="su_alipay_code"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--收款银行bank_name-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="su_bank_name" class="control-label col-sm-2">银行名称<i style="color:#f00;">*</i></label>
+                                <div class="col-sm-4">
+                                    <input value="{$supplier['bank_name']}" type="text" class="form-control" name="su_bank_name" id="su_bank_name" data-bv-notempty-message="请输入银行名称" data-bv-notempty="true" data-bv-field="su_bank_name">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--银行分行/支行sub_bank_name-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="sub_bank_name" class="control-label col-sm-2">银行支行</label>
+                                <div class="col-sm-4">
+                                    <input value="{$supplier['sub_bank_name']}" type="text" class="form-control" name="su_sub_bank_name" id="sub_bank_name" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--户主姓名cardholder-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="su_cardholder" class="control-label col-sm-2">户主姓名<i style="color:#f00;">*</i></label>
+                                <div class="col-sm-4">
+                                    <input value="{$supplier['cardholder']}" type="text" class="form-control" name="su_cardholder" id="su_cardholder" data-bv-notempty-message="请输入户主姓名" data-bv-notempty="true" data-bv-field="su_cardholder">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--银行账号bank_code-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="su_bank_code" class="control-label col-sm-2">银行账号<i style="color:#f00;">*</i></label>
+                                <div class="col-sm-4">
+                                    <input value="{$supplier['bank_code']}" type="text" class="form-control" name="su_bank_code" id="su_bank_code" data-bv-notempty-message="请输入银行账号" data-bv-notempty="true" data-bv-field="su_bank_code">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--第二个表单-->
+                    <div class="h4" style="padding:10px">
+                        店铺信息
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">店铺状态</label>
+                                <div class="col-sm-8">
+                                    <label class="control-label st_status">
+                                        <if condition="$supplier_store['status'] eq 2">
+                                            <span class="red">未绑定会员ID，暂时不可用  (可以先填写信息)</span>
+                                            <else />
+                                            <span class="blue">已绑定会员ID，可用</span>
+                                        </if>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--店铺名称-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="st_name" class="control-label col-sm-2">店铺名称<i style="color:#f00;">*</i></label>
+                                <div class="col-sm-4">
+                                    <input value="{$supplier_store['name']}" type="text" class="form-control" name="st_name" id="st_name" placeholder="请输入店铺名称"
+                                           data-bv-notempty-message="不能为空" data-bv-notempty="true" data-bv-field="st_name">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--店铺简介-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">店铺简介</label>
+                                <div class="col-sm-4">
+                                    <textarea type="text" class="form-control" name="st_caption" id="st_caption">{$supplier_store['caption']}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--联系电话-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">联系电话<i style="color:#f00;">*</i></label>
+                                <div class="col-sm-4">
+                                    <input value="{$supplier_store['phone']}" type="text" class="form-control" name="st_phone" id="st_phone" value="{$supplier_info['contact_phone']}" placeholder="请输入联系电话" data-bv-notempty-message="请输入联系电话" data-bv-notempty="true" data-bv-field="st_phone">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--店铺地址-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label  class="control-label col-sm-2">联系地址<i style="color:#f00;">*</i></label>
+                                <div class="col-sm-2">
+                                    <select type="text" onchange="getCity('st_province','st_city','st_area')" class="form-control" name="st_province" id="st_province" data-bv-notempty-message="请选择省份" data-bv-notempty="true" data-bv-field="st_province">
+                                        <option value="{$supplier_store['province']}" style="display:none;" selected>{$supplier_store['province']}</option>
+                                        <volist name="provinces" id="vo">
+                                            <option value="{$vo.name}" data-id="{$vo.id}">{$vo.name}</option>
+                                        </volist>
+                                    </select>
+                                </div>
+                                <div class="col-sm-2">
+                                    <select type="text" onchange="getArea('st_city','st_area')" class="form-control" name="st_city" id="st_city" data-bv-notempty-message="请选择城市" data-bv-notempty="true" data-bv-field="st_city">
+                                        <option value="{$supplier_store['city']}" selected>{$supplier_store['city']}</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-2">
+                                    <select type="text" class="form-control" name="st_area" id="st_area" data-bv-notempty-message="请选择区/镇" data-bv-notempty="true" data-bv-field="st_area">
+                                        <option value="{$supplier_store['area']}" selected>{$supplier_store['area']}</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-4">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 sr-only"></label>
+                                <div class="col-sm-8">
+                                    <input value="{$supplier_store['address']}" type="text" class="form-control" name="st_address" id="st_address" value="{$supplier_info['address']}" data-bv-notempty-message="请输入详细地址信息" data-bv-notempty="true" data-bv-field="st_address"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--地图定位-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label  class="control-label col-sm-2">地图定位</label>
+                                <div class="col-sm-4">
+                                    <div class="input-group input-group-sm">
+                                        <input type="text" class="form-control" id="App-address" value="{$supplier_store['province']}{$supplier_store['city']}{$supplier_store['area']}{$supplier_store['address']}"/>
+                                        <span class="input-group-btn">
+                                            <button onclick="baiduDitu('App-address','App-lng','App-lat')" type="button" class="btn btn-default shiny"><i class="glyphicon glyphicon-picture"></i>地图</button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <span class='help-block'>请点击“地图”按钮 确认地址坐标</span>
+                            </div>
+                            <div class="form-group has-feedback">
+                                <label class="col-sm-2 control-label"></label>
+                                <div class="col-sm-2">
+                                    <div class="input-group input-group-xs">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-palegreen">坐标：Lng</button>
+                                        </span>
+                                        <input value="{$supplier_store['lng']!=0?$supplier_store['lng']:''}" type="text" class="form-control" name="st_lng" id="App-lng" data-bv-field="lng"/>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="input-group input-group-xs">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-palegreen">坐标：Lat</button>
+                                        </span>
+                                        <input value="{$supplier_store['lat']!=0?$supplier_store['lat']:''}" type="text" class="form-control" name="st_lat" id="App-lat" data-bv-field="lat"/>
+                                    </div>
+                                </div>
+                                <span class='help-block'>请在(上栏)'地图定位'中确认坐标</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--经营范围-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">经营分类<i style="color:#f00;">*</i></label>
+                                <div class="col-sm-4">
+                                    <select type="text" class="form-control" name="st_category_id" id="st_category_id" placeholder="请选择经营分类" data-bv-notempty-message="请选择经营分类" data-bv-notempty="true" data-bv-field="category_id">
+                                        <volist name="shopCate" id="vo">
+                                            <if condition="$supplier_store['category_id'] eq $vo['id']">
+                                                <option value="{$vo.id}" selected>{$vo.name}</option>
+                                                <else />
+                                                <option value="{$vo.id}">{$vo.name}</option>
+                                            </if>
+                                        </volist>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--商盟首页显示-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">是否在商盟首页显示<i style="color:#f00">*</i></label>
+                                <div class="col-sm-4">
+                                    <input value="{$supplier_store['order_index']?$supplier_store['order_index']:0}" type="text" class="form-control" name="st_order_index" id="st_order_index" placeholder="0" data-bv-notempty-message="请输入数值" data-bv-notempty="true" data-bv-field="st_order_index"
+                                           data-bv-numeric="true" data-bv-numeric-message="请输入数值"/>
+                                </div>
+                                <span class='help-block'>请填写数值：数值越大，排名越靠前; 0表示不显示</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--店铺照片-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">店铺照片</label>
+                                <div class="col-sm-4">
+                                    <div class="input-group input-group-sm">
+                                        <input value="{$supplier_store['pics']}" type="text" id="st_pics" name="st_pics" class="form-control" data-bv-field="st_pics"
+                                               placeholder="推荐尺寸：1000*600px"/>
+                                        <span class="input-group-btn">
+                                            <button onclick="appImgviewer('st_pics')" type="button" class="btn btn-default shiny"><i class="fa fa-camera-retro"></i>预览</button>
+                                            <button onclick="appImguploader('st_pics',true)" type="button" class="btn btn-default shiny"><i class="glyphicon glyphicon-picture"></i>上传</button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class=" col-sm-3 help_block">
+                                    点击“预览”可看大图
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">首页列表图片<i style="color:#f00">*</i></label>
+                                <div class="col-sm-4">
+                                    <div class="input-group input-group-sm">
+                                        <input value="{$supplier_store['thumb']}" type="text" id="thumb" name="thumb" class="form-control" data-bv-field="thumb"
+                                               data-bv-notempty="true" data-bv-notempty-message="请指定店铺主图" placeholder="推荐尺寸: 120*120px">
+                                        <span class="input-group-btn">
+                                            <button onclick="appImgviewer('thumb')" type="button" class="btn btn-default shiny"><i class="fa fa-camera-retro"></i>预览</button>
+                                            <button onclick="appImguploader('thumb',true)" type="button" class="btn btn-default shiny"><i class="glyphicon glyphicon-picture"></i>上传</button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <span class="col-sm-4 help-block orange">
+                                    微信 店铺列表展示 时使用
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--运营时间-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">运营时间</label>
+                                <div class="col-sm-4">
+                                    <input value="{$supplier_store['business_hours']}" type="text" class="form-control" name="st_business_hours" placeholder="8:00--20:00"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--详细描述-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">详细描述</label>
+                                <div class="col-sm-8">
+                                    <input type="hidden">
+                                    <script type="text/plain" id="J-ueditor" style="width: 600px;height:380px;position:relative">
+                                        {$supplier_store['desc']|htmlspecialchars_decode}
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container text-center" style="max-width:1000px;margin-top:20px;">
+                        <button type='submit' class="btn btn-lg btn-blue next_step">
+                            提交编辑
+                        </button>
+                    </div>
+                </form>
+                <a href="{:U('Admin/Supplier/lists')}" style="display:none" id="next_step" data-loadername="商家管理" data-loader="App-loader"></a>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!--更改vip_id时的modal-->
+    <div class="modal fade" id="changeVipId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">更改/添加 会员ID</h4>
+                </div>
+                <div class="modal-body form-horizontal">
+                    <div class="row">
+                        <div class="form-group ">
+                            <label for="new_vip_id" class="control-label col-sm-4">输入新的会员ID</label>
+                            <div class="col-sm-5">
+                                <div class='input-group input-group-sm'>
+                                    <input type="text" class="form-control" name="new_vip_id" id="new_vip_id" placeholder="输入新的会员ID"/>
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-primary shiny" id="change_vip_id_search">搜索</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4 sr-only">会员信息</label>
+                            <div class="col-sm-5" id="new_vip_info">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" data-bb-handler="confirm" id="submitVipId">提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--change VIA ID-->
+<div id="changeViaId" style="display:none;">
+    <div class="row">
+        <div class="form-group form-horizontal">
+            <label for="new_vip_id" class="control-label col-sm-4">输入新的VIA ID</label>
+            <div class="col-sm-5">
+                <div class='input-group input-group-sm'>
+                    <input type="text" class="form-control new_via_id" name="new_vip_id" placeholder="输入新的会员ID"/>
+                    <input type="hidden" id="old_via_id" name="old_via_id" value="{$supplier['inviter_id']}"/>
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary shiny change_via_id_search">搜索</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin-top:10px;">
+        <div class="form-group">
+            <div class="col-sm-5 col-sm-offset-4 new_via_info">
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+    <script>
+        $('#submitVipId').click(function(){
+            supplier_id = $('#su_id').val();
+
+            new_vip_id = $.trim($('#new_vip_id').val());
+            if(new_vip_id!='' && !isNaN(new_vip_id)) {   //vip_id不为空 且为数字
+                $.ajax({
+                    url     : '{:U("Admin/Supplier/changeVipId")}',
+                    data    : {supplier_id:supplier_id,new_vip_id:new_vip_id},
+                    dataType: 'json',
+                    success : function(data){
+                        if(data.status == 1){
+                            $('#changeVipId').fadeOut();
+                            $('.modal-backdrop').fadeOut();
+                            $.App.alert('success',data.msg);
+                            $('#vip_id').val(new_vip_id);   //跳转到列表页
+                        }else{
+                            $.App.alert('dange',data.msg);
+                        }
+                    }
+                })
+            }else{
+                $.App.alert('danger','请填写正确的ID格式');
+                return false;
+            }
+        })
+        //更改会员ID的搜索功能
+        $('#new_vip_id').on('input',function(){
+            $('#new_vip_info').html('');
+        })
+        $('#change_vip_id_search').click(function(){
+            var new_vip_id = $('#new_vip_id').val();
+            if(new_vip_id!='' && !isNaN(new_vip_id)){   //输入需要符合格式
+                $.get('{:U("Admin/Supplier/isSupplier")}',{vip_id:new_vip_id},function(data){
+                    if(data.status == 1){
+                        var imgHtml = '<img src="'+data.vip_info.headimgurl+'" width="40"/>';
+                        var mobile = data.vip_info.mobile?data.vip_info.mobile:'(未填写)';
+                        var html = '<table>'+
+                            '<tr><td rowspan="2">'+imgHtml+'</td><td>昵称：</td><td>'+data.vip_info.nickname+'</td></tr>'+
+                            '<tr><td>电话：</td><td>'+mobile+'</td></tr></table>';
+                        $('#new_vip_info').html(html);
+                    }else{
+                        var html = '<span class="red">'+data.msg+'</span>';
+                        $('#new_vip_info').html(html);
+                    }
+                })
+            }else{
+                //给出格式不正确的提示
+                $.App.alert('danger','请填写正确的ID格式');
+                return false;
+            }
+        })
+
+        //更换via ID 按钮
+        $('#change_via_id').click(function(){
+            bootbox.dialog({
+                message : $('#changeViaId').html(), //和changeVIPID共用一个html
+                title   : '输入新的VIA ID',
+                buttons : {
+                    success : {
+                        label : '确认更改',
+                        className: 'btn-blue',
+                        callback: function(){
+                            var new_via_id = $('.bootbox-body').find('.new_via_id').val();
+                            var old_via_id = $('#old_via_id').val();
+                            var su_id = $('#su_id').val();
+                            if(!new_via_id || !old_via_id || !su_id){
+                                $.App.alert('danger','参数不完整，无法提交');
+                                return;
+                            }
+                            if(new_via_id == old_via_id){
+                                $.App.alert('danger','更改ID与原ID相同');
+                                return;
+                            }
+                            $.post('{:U("Admin/Supplier/changeInviterId")}',{new_via_id:new_via_id,old_via_id:old_via_id,su_id:su_id},function(data){
+                                if(data.status == 1){   //更改成功
+                                    $('#su_inviter_id').val(new_via_id);
+                                    $.App.alert('success',data.msg);
+                                }else{
+                                    $.App.alert('danger',data.msg);
+                                }
+                            })
+                        },
+                    '取消' : {
+                        className : 'btn-default',
+                        callback : function(){}
+                    }
+                    }
+                }
+            })
+            //给框内的搜索按钮添加事件功能
+            $('.bootbox-body').find('.change_via_id_search').click(function(){
+                var new_via_id = $('.bootbox-body').find('.new_via_id').val();
+                if(new_via_id!='' && !isNaN(new_via_id)){
+                    $.get('{:U("Admin/Supplier/isTuanZhang")}',{inviter_id:new_via_id},function(data){
+                        if(data.status == 1){
+                            var imgHtml = '<img src="'+data.vip_info.headimgurl+'" width="40"/>';
+                            var mobile = data.vip_info.mobile?data.vip_info.mobile:'(未填写)';
+                            var html = '<table>'+
+                                    '<tr><td rowspan="2">'+imgHtml+'</td><td>昵称：</td><td>'+data.vip_info.nickname+'</td></tr>'+
+                                    '<tr><td>电话：</td><td>'+mobile+'</td></tr></table>';
+                            $('.bootbox-body .new_via_info').html(html);
+                        }else{
+                            var html = '<span class="red">'+data.msg+'</span>';
+                            $('.bootbox-body .new_via_info').html(html);
+                        }
+                    })
+                }else{
+                    //给出格式不正确的提示
+                    $.App.alert('danger','请填写正确的ID格式');
+                    return false;
+                }
+            })
+            //输入框的输入事件
+            $('.bootbox-body .new_via_id').on('input',function(){
+                $('.bootbox-body .new_via_info').html('');
+            })
+        })
+    </script>
+<!--面包屑导航封装-->
+<div id="tmpbread" style="display: none;">{$breadhtml}</div>
+<script type="text/javascript">
+    setBread($('#tmpbread').html());<!--/面包屑导航封装-->
+    $(function(){
+        //富文本编辑器
+        UE.getEditor('J-ueditor', {
+            textarea: 'st_desc' //提交字段名，必须填写，数据库必须有此字段
+        });
+
+        // 点击下一步、数据验证，成功后跳转
+        $('#add_supplier').bootstrapValidator({
+            submitHandler   : function(validator,form,submitButton){
+                var toUrl = '{:U("Admin/Supplier/save")}';
+                var data = $('#add_supplier').serialize();
+
+                $.ajax({
+                    url     : toUrl,
+                    dataType: 'json',
+                    method  : 'post',
+                    data    : data,
+                    success : function(data){
+                        if(data.status){
+                            $.App.alert('success',data.msg);
+                            $('#back').trigger('click');
+                        }else{
+                            $.App.alert('danger',data.msg);
+                        }
+                    },
+                    error   : function(){
+                        alert('something wrong');
+                    }
+                })
+            }
+        });
+    })
+    //省 变化后，联动 市
+    function getCity(pIdName,sIdName,ssIdName) {
+        //$('#province').change(function(){
+        var pid = $('#'+pIdName).find('option:selected').attr('data-id');
+        $.ajax({
+            url: '{:U("Admin/Supplier/AjaxGetCities")}',
+            type: 'get',
+            dataType: 'json',
+            data: {pid: pid},
+            success: function (data) {
+                var str = '';
+                for (var i in data) {
+                    str += '<optioin>请选择...</option>';
+                    str += '<option value=' + data[i].name + ' data-id=' + data[i].id + '>' + data[i].name + '</option>';
+                }
+                $('#'+sIdName).empty().html(str);
+                $('#'+sIdName+' option:first-child').attr('selected', 'selected');
+                getArea(sIdName,ssIdName);      //如果长度只有1，则没有change事件，下一级无法选择，所以为1时，自动执行
+                //getArea('st_city','st_area');      //如果长度只有1，则没有change事件，下一级无法选择，所以为1时，自动执行
+            },
+            error: function () {
+                alert('something wrong');
+            }
+        })
+    }
+
+    //市变化后 联动 区/镇
+    function getArea(pIdName,sIdName){
+        var pid = $('#'+pIdName).find('option:selected').attr('data-id');
+        $.ajax({
+            url     : '{:U("Admin/Supplier/AjaxGetAreas")}',
+            dataType: 'json',
+            type    : 'get',
+            data    : {pid:pid},
+            success : function(data){
+                var str = '';
+                for(var i in data){
+                    str += '<optioin name="" value="">请选择...</option>';
+                    str += '<option value='+data[i].name+' data-id='+data[i].id+'>'+data[i].name+'</option>';
+                }
+                $('#'+sIdName).empty().html(str);
+                //$('#'+sIdName+' option:first-child').attr('selected','selected');
+            },
+            error   : function(){
+                alert('something wrong');
+            }
+        })
+    }
+    //若商店地址做了更改，则地图定位跟着做出改变
+    $('#st_address').blur(function(){
+        $('#App-address').val(getDetailAddress())
+    })
+
+
+    //主要获取商店的具体地址，以供地图定位时使用
+    function getDetailAddress(){
+        var province = $('#st_province').val();
+        var city = $('#st_city').val();
+        var area = $('#st_area').val();
+        var address = $('#st_address').val();
+        return province+city+area+address;
+    }
+    </script>

@@ -1,0 +1,435 @@
+<style>
+    .autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; }
+    .autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
+    .autocomplete-selected { background: #F0F0F0; }
+    .autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
+    .autocomplete-group { padding: 2px 5px; }
+    .autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
+</style>
+<!--百度编辑器-->
+<link rel="stylesheet" href="__PUBLIC__/Admin/css/jedate.css">
+<script src="__PUBLIC__/Admin/ueditor/ueditor.config.js"></script>
+<script src="__PUBLIC__/Admin/ueditor/ueditor.all.min.js"></script>
+<script src="__PUBLIC__/Admin/js/datetime/jedate.js"></script>
+<div class="row">
+    <div class="col-xs-12 col-xs-12">
+        <div class="widget radius-bordered">
+            <div class="widget-header bg-blue">
+                <i class="widget-icon fa fa-arrow-down"></i>
+                <span class="widget-caption">商品设置</span>
+                <div class="widget-buttons">
+                    <a href="#" data-toggle="maximize">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a href="#" data-toggle="collapse">
+                        <i class="fa fa-minus"></i>
+                    </a>
+                    <a href="#" data-toggle="dispose">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="widget-body">
+                <form id="AppForm" action="" method="post" class="form-horizontal" data-bv-message="" data-bv-feedbackicons-valid="glyphicon glyphicon-ok" data-bv-feedbackicons-invalid="glyphicon glyphicon-remove" data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+                    <input type="hidden" name="id" value="{$cache.id}">
+                    <div class="form-title">
+                        <a href="{:U('Admin/Shop/goods/',array('type'=>$_GET['type']))}" class="btn btn-primary" data-loader="App-loader" data-loadername="商品分组" id="re">
+                            <i class="fa fa-mail-reply"></i>返回
+                        </a>
+                    </div>
+                    <!--新增部分-->
+                   <!-- <div class="form-group">
+                        <label class="col-lg-2 control-label">所属商家</label>
+                        <div class="col-lg-4">
+                            <input value="{$cache.su_name}" type="text" class="form-control" id="vip_id"/>
+                            <span class="text orange">不填 代表平台自营</span>
+                            <div class="display:none" id="selected_item">
+                               &lt;!&ndash;存放隐藏的商家ID&ndash;&gt;
+                                <input type="hidden" name="su_id" value="{$cache.su_id}" placeholder="输入商家ID 或 商家名称"/>
+                            </div>
+                        </div>
+                        <div class="col-ls-4">
+                            <span class="help-block">输入商家ID 或 商家名称</span>
+                        </div>
+                    </div>-->
+                    <!--新增结束-->
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">选择分类</label>
+                        <div class="col-lg-4">
+                            <select class="form-control" name="cid">
+                                <option value="0">顶级分类</option>
+                                <volist name="cate" id="vo">
+                                    <option value="{$vo.id}" <eq name="vo.id" value="$cache.cid">selected</eq>>{$vo.name}</option>
+                                    <volist name="vo['_child']" id="vo2">
+                                        <option value="{$vo2.id}" <eq name="vo2.id" value="$cache.cid">selected</eq>>&nbsp;&nbsp;└{$vo2.name}</option>
+                                        <foreach name="vo2['_child']" item="vo3">
+                                            <option value="{$vo3.id}" <eq name="vo3.id" value="$cache.cid">selected</eq>>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└{$vo3.name}</option>
+                                            <foreach name="vo3['_child']" item="vo4">
+                                                <option value="{$vo4.id}" <eq name="vo4.id" value="$cache.cid">selected</eq>>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└{$vo4.name}</option>
+                                                <foreach name="vo4['_child']" item="vo5">
+                                                    <option value="{$vo5.id}" <eq name="vo5.id" value="$cache.cid">selected</eq>>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└{$vo5.name}</option>
+                                                </foreach>
+                                            </foreach>
+                                        </foreach>
+                                    </volist>
+                                </volist>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">商品名称<sup>*</sup></label>
+                        <div class="col-lg-4">
+                            <input type="text" class="form-control" name="name" placeholder="必填" data-bv-notempty="true" data-bv-notempty-message="不能为空" value="{$cache.name}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">首页大图片</label>
+                        <div class="col-lg-4">
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control" name="indexpic" value="{$cache.indexpic}" id="App-indexpic" placeholder="推荐尺寸：1000*600px">
+                                <span class="input-group-btn">
+                                <button class="btn btn-default shiny" type="button" onclick="appImgviewer('App-indexpic')"><i class="fa fa-camera-retro"></i>预览</button><button class="btn btn-default shiny" type="button" onclick="appImguploader('App-indexpic',false)"><i class="glyphicon glyphicon-picture"></i>上传</button>
+                            </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">首页列表图片</label>
+                        <div class="col-lg-4">
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control" name="listpic" value="{$cache.listpic}" id="App-listpic" placeholder="推荐尺寸：400*400px">
+                                <span class="input-group-btn">
+                                <button class="btn btn-default shiny" type="button" onclick="appImgviewer('App-listpic')"><i class="fa fa-camera-retro"></i>预览</button><button class="btn btn-default shiny" type="button" onclick="appImguploader('App-listpic',false)"><i class="glyphicon glyphicon-picture"></i>上传</button>
+                            </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">商品图片</label>
+                        <div class="col-lg-4">
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control" name="pic" value="{$cache.pic}" id="App-pic" placeholder="推荐尺寸：1000*600px">
+                                <span class="input-group-btn">
+                                <button class="btn btn-default shiny" type="button" onclick="appImgviewer('App-pic')"><i class="fa fa-camera-retro"></i>预览</button><button class="btn btn-default shiny" type="button" onclick="appImguploader('App-pic',false)"><i class="glyphicon glyphicon-picture"></i>上传</button>
+                            </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">商品图集</label>
+                        <div class="col-lg-4">
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control" name="album" value="{$cache.album}" id="App-album" placeholder="推荐尺寸：1000*600px">
+                                <span class="input-group-btn">
+                                <button class="btn btn-default shiny" type="button" onclick="appImgviewer('App-album')"><i class="fa fa-camera-retro"></i>预览</button><button class="btn btn-default shiny" type="button" onclick="appImguploader('App-album',true)"><i class="glyphicon glyphicon-picture"></i>上传</button>
+                            </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">商品排序</label>
+                        <div class="col-lg-4">
+                            <input type="text" class="form-control" name="sorts" value="{$cache.sorts}" placeholder="数字越大越靠前,默认为 0 "/>
+                        </div>
+                        <div class="col-ls-4">
+                            <span class="help-block">数字越大越靠前,默认为 0 </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">商品单位<sup>*</sup></label>
+                        <div class="col-lg-4">
+                            <input type="text" class="form-control" name="unit" placeholder="" value="{$cache.unit}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">商品价格<sup>*</sup></label>
+                        <div class="col-lg-4">
+                            <input type="text" class="form-control" name="price" placeholder="必填" data-bv-numeric="true" data-bv-numeric-message="商品价格为数字" data-bv-notempty="true" data-bv-greaterthan="true" data-bv-greaterthan-message="商家品格需大于0" data-bv-greaterthan-value="0.00" data-bv-greaterthan-inclusive="true" data-bv-notempty-message="不能为空" value="{$cache.price}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">商品原价<sup>*</sup></label>
+                        <div class="col-lg-4">
+                            <input type="text" class="form-control" name="oprice" placeholder="必填" data-bv-numeric="true" data-bv-numeric-message="商品原价为数字" data-bv-notempty="true" data-bv-greaterthan="true" data-bv-greaterthan-message="商家品格需大于0" data-bv-greaterthan-value="0.00" data-bv-greaterthan-inclusive="true" data-bv-notempty-message="不能为空" value="{$cache.oprice}">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">商品库存<sup>*</sup></label>
+                        <div class="col-lg-4">
+
+                            <input type="text" class="form-control" name="num" placeholder="必填" data-bv-numeric="true" data-bv-numeric-message="商品库存为数字" data-bv-notempty="true" data-bv-greaterthan="true" data-bv-greaterthan-message="商家品格需大于0" data-bv-greaterthan-value="0.000" data-bv-greaterthan-inclusive="true" data-bv-notempty-message="不能为空" value="{$cache.num}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">启用SKU</label>
+                        <div class="col-lg-4">
+                            <label>
+                                <input type="hidden" name="issku" value="{$cache.issku}" id="issku">
+                                <input class="checkbox-slider slider-icon colored-darkorange isdialog" type="checkbox" id="isskubtn" <eq name="cache.issku" value="1">checked="checked"</eq>>
+                                <span class="text darkorange">&nbsp;&nbsp;&larr;重要：启用后将采用商品SKU模式管理库存，价格与销量。</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">是否免邮费</label>
+                        <div class="col-lg-4">
+                            <label>
+                                <input type="hidden" name="ismy" value="{$cache.ismy}" id="ismy">
+                                <input class="checkbox-slider slider-icon colored-darkorange" type="checkbox" id="ismybtn" <eq name="cache.ismy" value="1">checked="checked"</eq>>
+                                <span class="text darkorange">&nbsp;&nbsp;&larr;重要：启用后纯免邮商品免邮费。</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">开启自定义销量</label>
+                        <div class="col-lg-4">
+                            <label>
+                                <input type="hidden" name="issells" value="{$cache.issells}" id="issells">
+                                <input class="checkbox-slider slider-icon colored-darkorange" type="checkbox" id="issellsbtn" <eq name="cache.issells" value="1">checked="checked"</eq>>
+                                <span class="text darkorange">&nbsp;&nbsp;&larr;重要：开启后前端显示自定义销量。</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group" id="dissells">
+                        <label class="col-lg-2 control-label">自定义销量</label>
+                        <div class="col-lg-4">
+                            <input type="text" class="form-control" name="dissells" placeholder="填写自定义销量，此销量也会自动增长" value="{$cache.dissells}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">开启拼团</label>
+                        <div class="col-lg-4">
+                            <label>
+                                <input type="hidden" name="is_group_buy" value="{$cache.is_group_buy}" id="is_group_buy">
+                                <input class="checkbox-slider slider-icon colored-darkorange isdialog" type="checkbox" id="is_group" <eq name="cache.is_group_buy" value="1">checked="checked"</eq>>
+                                <span class="text darkorange">&nbsp;&nbsp;&larr;重要：开启后前端显示此商品为拼团商品。</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div id="group_con"  <eq name="cache.is_group_buy" value="1">style="display:block;"<else/>style="display:none;"</eq>>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">团购价格<sup>*</sup></label>
+                            <div class="col-lg-4">
+                                <input type="text" class="form-control" id="group_money_input" name="group_buy_money" placeholder="请输入团购价格" data-bv-numeric-message="团购价格为数字" data-bv-greaterthan="true" data-bv-greaterthan-message="团购价格需大于0" data-bv-greaterthan-value="0.000" data-bv-greaterthan-inclusive="true" data-bv-notempty-message="不能为空" value="{$cache.group_buy_money}">
+                            </div>
+                            <div class="col-ls-4">
+                                <span class="text darkorange" id="group_buy_tips">
+                                    &nbsp;&nbsp;&larr;开启sku后，具体 团购价格需在 SKU 中设置!
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">组团最低人数<sup>*</sup></label>
+                            <div class="col-lg-4">
+                                <input id="group_buy_num" type="text" class="form-control" name="group_buy_num" placeholder="必填"  data-bv-numeric-message="最低组团数应为数字" data-bv-regexp="true" data-bv-regexp-regexp="^[1-9]\d*(\.\d+)?$" data-bv-regexp-message="最低组团人数大于零" data-bv-notempty-message="不能为空" value="{$cache.group_buy_num}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">自定义组团数</label>
+                            <div class="col-lg-4">
+                                <input type="text" class="form-control" name="group_disnum" data-bv-numeric-message="组团数为数字" data-bv-regexp="true"  data-bv-regexp-regexp="^[0-9]\d*(\.\d+)?$" data-bv-regexp-message="组团数大于零" data-bv-notempty-message="不能为空" value="{$cache.group_disnum}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="control-group">
+                                <label class="col-lg-2 control-label">团购开始时间</label>
+                                <div class="col-lg-4">
+                                    <input class="datainp form-control" id="datestate" type="text" name="group_time_start" placeholder="留空，则从现在开始" <notempty name="cache.group_time_start">value="{$cache.group_time_start|date='Y-m-d H:i:s',###}"</notempty> readonly>
+                                </div>
+                                <!--<input type="hidden" id="dtp_input1" name="group_time_start" value="" /><br/>-->
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="control-group">
+                                <label class="col-lg-2 control-label">团购结束时间</label>
+                                <div class="col-lg-4">
+                                    <input class="datainp form-control" id="dateend" type="text" name="group_time_end" placeholder="留空，则不限制结束时间" <notempty name="cache.group_time_end">value="{$cache.group_time_end|date='Y-m-d H:i:s',###}"</notempty> readonly>
+                                </div>
+                                <!--<input type="hidden" id="dtp_input2" name="group_time_start" value="" /><br/>-->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">选择标签</label>
+                        <div class="col-lg-4">
+                            <volist name="label" id="vo_l">
+                                <label>
+                                    <input type="checkbox" class="colored-blue label-check" <in name="vo_l.id" value="$cache.lid">checked="checked"</in> value="{$vo_l.id}" data-label="{$vo_l.name}">
+                                    <span class="text">{$vo_l.name}&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                </label>
+                            </volist>
+                        </div>
+                        <input type="hidden" name="lid" id="lid" value="{$cache.lid}" />
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">商品备注</label>
+                        <div class="col-lg-4">
+                            <textarea class="form-control" name="summary" rows="5">{$cache.summary}</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">商品详情</label>
+                        <div class="col-lg-4">
+                            <!--必须插入空input避免验证冲突-->
+                            <input type="hidden">
+                            <script type="text/plain" id="J-ueditor">
+                                {$cache.content|htmlspecialchars_decode}
+                            </script>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-offset-2 col-lg-4">
+                            <button class="btn btn-primary btn-lg" type="submit">保存</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <button class="btn btn-palegreen btn-lg" type="reset">重填</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--面包屑导航封装-->
+<div id="tmpbread" style="display: none;">{$breadhtml}</div>
+<script type="text/javascript">
+setBread($('#tmpbread').html());
+</script>
+<!--/面包屑导航封装-->
+
+<script src="__PUBLIC__/Admin/js/autocomplete/jquery.autocomplete.js"></script>
+
+<!--编辑器封装-->
+<script type="text/javascript">
+var ue = UE.getEditor('J-ueditor', {
+    textarea: 'content' //提交字段名，必须填写，数据库必须有此字段
+});
+</script>
+<!--/编辑器封装-->
+<!--表单验证与提交封装-->
+<script type="text/javascript">
+if($('#issellsbtn').prop('checked')) {
+    $('#dissells').slideDown();
+}else{
+    $('#dissells').slideUp();
+}
+
+if($('#is_group').prop('checked') && $('#isskubtn').prop('checked')){
+    $("#group_money_input").attr("disabled",true);
+}
+
+var callok = function(){
+    $('#re').trigger('click');
+    return false;
+};
+
+$('#AppForm').bootstrapValidator({
+    submitHandler: function(validator, form, submitButton){
+        //开启团购 则团购价格必须填写
+        if($('#is_group_buy').val()){
+            if(!$('#group_money_input').val()){
+                $.App.alert('danger','请输入团购价格');
+                return;
+            }
+            if(!$('#group_buy_num').val()){
+                $.App.alert('danger','请输入团购最低限制人数');
+                return;
+            }
+        }
+        var lid = '';
+        var checks = $('.label-check');
+        $(checks).each(function() {
+            if ($(this).is(":checked")) {
+                lid += $(this).val() + ',';
+            }
+        });
+        $('#lid').val(lid);
+        var tourl = "{:U('Admin/Shop/goodsSet')}";
+        var data = $('#AppForm').serialize();
+        $.App.ajax('post', tourl, data, callok);
+        return false;
+    },
+});
+$('#isskubtn').on('click', function(){
+    var value = $(this).prop('checked') ? 1 : 0;
+    $('#issku').val(value);
+});
+$('#ismybtn').on('click', function(){
+    var value = $(this).prop('checked') ? 1 : 0;
+    $('#ismy').val(value);
+});
+$('#is_group').on('click', function(){
+    var value = $(this).prop('checked') ? 1 : 0;
+    if ($(this).prop('checked')){
+        value = 1;
+        $('#group_con').slideDown();
+    } else {
+        value = 0;
+        $('#group_con').slideUp();
+    }
+    $('#is_group_buy').val(value);
+});
+$('#issellsbtn').on('click', function(){
+    var value;
+    if ($(this).prop('checked')) {
+        value = 1;
+        $('#dissells').slideDown();
+    } else {
+        value = 0;
+        $('#dissells').slideUp();
+    }
+    $('#issells').val(value);
+});
+$('.isdialog').on('click',function(){
+    if($('#isskubtn').prop('checked') && $('#is_group').prop('checked')){
+        $("#group_money_input").attr("disabled",true);
+        $("#group_buy_tips").html('&nbsp;&nbsp;&larr;开启sku后，具体 团购价格需在 SKU 中设置!');
+    }
+});
+</script>
+<!--/表单验证与提交封装-->
+<script>
+$(function(){
+    //选择所属商家的提示
+    $('#vip_id').autocomplete({
+        //lookup  : [{value:'aa',data:'1'},{value:'bb',data:'2'}],
+        serviceUrl  : '/Admin/Shop/getSupplierName',
+        onSelect    : function(suggestion){
+            $('#selected_item').empty().html('<input type=hidden name=vip_id value="'+suggestion.vip_id+'" /><input type="hidden" name="su_id" value="'+suggestion.su_id+'"/>');
+        }
+    })
+    //如果#vip_id被手动清空，则清空hidden input
+    $('#vip_id').on('input',function(e){
+        var vip__id = $.trim($(this).val());
+        if(vip_id.value == ''){
+            $('#selected_item').empty();
+        }
+    })
+
+    jeDate({
+        dateCell:"#datestate",
+        format:"YYYY-MM-DD hh:mm:ss",
+
+        //isinitVal:true,
+        isTime:true,
+        isClear:true,
+        minDate:"2014-09-19 00:00:00",
+        okfun:function(val){
+
+        }
+    })
+
+    jeDate({
+        dateCell:"#dateend",
+        format:"YYYY-MM-DD hh:mm:ss",
+        //isinitVal:true,
+        isTime:true,
+        isClear:true,
+        minDate:"2014-09-19 00:00:00",
+        okfun:function(val){
+
+        }
+    })
+})
+</script>

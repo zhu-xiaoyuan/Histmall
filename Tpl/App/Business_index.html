@@ -1,0 +1,166 @@
+<!doctype html>
+<html>
+<head>
+    <include file="./Tpl/App/Business_header.html"/>
+    <link rel="stylesheet" href="__PUBLIC__/App/css/dropload.css"/>
+    <script type="text/javascript" src="__PUBLIC__/App/gmu/gmu.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/App/gmu/navigator.js"></script>
+    <script src="__PUBLIC__/App/js/tool.js"></script>
+    <script src="__PUBLIC__/App/js/swipe.js"></script>
+    <script src="__PUBLIC__/App/js/dropload.min.js"></script>
+    <script src="__PUBLIC__/App/js/base.js"></script>
+    <style>
+        .ui-navigator-list li {
+            width: 25%;
+            float: left;
+        }
+
+        .ui-navigator-list li > a > img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50px;
+        }
+
+        .ui-navigator-list li > p {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding: 0 2px;
+            font-size: 13px;
+            color: #888;
+        }
+
+        .weui_search_inner {
+            padding-left: 2px;
+            padding-right: 2px;
+        }
+
+        .weui_media_desc {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        #wrap {
+            width: 100%;
+            float: left;
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body style="background-color: #eee;">
+<div class="weui_search_bar" id="search_bar">
+    <a id="city_box" style="padding: 0px 5px 0px 0px;font-size: 14px;color: #000000;"
+       href="{:U('App/Business/selectCity')}"><span id="city">郑州市</span><i class="iconfont">&#xe661;</i></a>
+
+    <form class="weui_search_outer" style="margin-right:40px;">
+        <div class="weui_search_inner">
+            <i class="weui_icon_search"></i>
+            <input type="search" class="weui_search_input" id="search_input" placeholder="搜索" readonly/>
+            <a href="javascript:" class="weui_icon_clear" id="search_clear"></a>
+        </div>
+        <label for="search_input" class="weui_search_text" id="search_text">
+            <i class="weui_icon_search"></i>
+            <span>搜索</span>
+        </label>
+    </form>
+    <a href="{:U('App/Vip/index')}" style="color: #000000;"><i class="iconfont"
+                                                               style="font-size: 1.5rem;padding: 0px 15px;position: absolute;top: 2px;right: 0px;">
+        &#xe685;</i></a>
+</div>
+<header class="ui-banner">
+    <div id="slider" class="swipe">
+        <ul class="swipe-wrap">
+            <foreach name="indexalbum_sm" item="vo">
+                <li>
+                    <a href="{$vo.url}"><img class="ads" data-src="{$vo.imgurl}"></a>
+                </li>
+            </foreach>
+        </ul>
+        <div id="slider_on">
+            <ul>
+                <foreach name="indexalbum_sm" item="vo">
+                    <li></li>
+                </foreach>
+            </ul>
+        </div>
+    </div>
+</header>
+<div id="wrap">
+    <div id="nav">
+        <ul>
+            <volist name="menu_sm" id="vo">
+                <li>
+                    <a href="{:U('App/Business/stores')}?id={$vo.id}">
+                        <img src="{$vo.imgurl}"/>
+                    </a>
+
+                    <p>{$vo.name}</p>
+                </li>
+            </volist>
+        </ul>
+    </div>
+</div>
+<div style="clear: both;"></div>
+<div class="weui_panel weui_panel_access" style="margin-bottom: 65px;">
+    <div class="weui_panel_hd" style="color: #555">猜你喜欢</div>
+    <div class="weui_panel_bd" style="border-bottom: 1px solid #e5e5e5">
+
+    </div>
+</div>
+<div id="html" style="display: none"></div>
+<input type="hidden" id="ip" value="{$ip}"/>
+<include file="./Tpl/App/Business_footer.html"/>
+</body>
+<script>
+    $(function () {
+        $(".ads").swiperThumb();
+
+        $("#search_input").on("click", function () {
+            window.location.href = "{:U('App/Business/search')}";
+        });
+        $('#slider').mBanner('slider');
+        $('#nav').navigator();
+        localStorage.setItem("wemall_url", location.href);
+        if (window.localStorage) {
+            if (localStorage.getItem("wemall_city") == null) {
+                localStorage.setItem("wemall_city", "郑州市");
+                $("#city").html("郑州市");
+            } else {
+                $("#city").html(localStorage.getItem("wemall_city"));
+            }
+
+        } else {
+            localStorage.setItem("wemall_city", "郑州市");
+            $("#city").html("郑州市");
+        }
+
+        var num = 10;
+        var counter = 0;
+        var dropload = $(".weui_panel_access").dropload({
+            scrollArea: window,
+            loadDownFn: function (me) {
+                $("#html").load("{:U('App/Business/indexItem')}?pg=" + counter + "&pc=" + num + "&city=" + localStorage.getItem("wemall_city"), function (html, status) {
+                    $("#html").html("");
+                    if (status == "success") {
+                        if (html == "") {
+                            dropload.noData();
+                            dropload.resetload();
+                            return;
+                        } else {
+                            $('.weui_panel_bd').append(html);
+                            $(".weui_media_appmsg_thumb").minThumb();
+                            counter++;
+                            dropload.resetload();
+                        }
+                    } else {
+                        dropload.resetload();
+                    }
+                });
+            }
+        });
+
+    });
+</script>
+<include file="./Tpl/App/Shop_share.html"/>
+</html>

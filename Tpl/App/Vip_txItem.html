@@ -1,0 +1,22 @@
+<volist name="cache" id="vo">
+    <li style="width: 100%;">
+        <a href="#" style="padding: 5px;">
+            <h1 class="plist-tt fonts4 ovflw" style="height:30px;">{$vo.txname}
+
+                <span style="float: right;">{$vo.txtime|date="Y-m-d H:i",###}</span>
+            </h1>
+
+            <p>
+                <span class="plist-yp color3">
+                    <em class="fonts1">提现：￥{$vo.txprice|number_format=###,2}</em>
+                </span>&nbsp;
+                <span class="fonts3">手续费：￥{$vo.tx_fee}</span>
+                <span style="display: block;margin-top: 5px;font-weight: bold;">
+                    <elt name="vo.status" value="1">审核中</elt>
+                    <eq name="vo.status" value="2">提现成功</eq>
+                    <eq name="vo.status" value="3">审核未通过</eq>
+                </span>
+            </p>
+        </a>
+    </li>
+</volist>

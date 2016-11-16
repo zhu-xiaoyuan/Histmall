@@ -1,0 +1,90 @@
+<div class="row">
+    <div class="col-xs-12">
+        <div class="widget radius-bordered">
+            <div class="widget-body">
+                <div class="form-title">
+                    <a data-loadername="管理商家" data-loader="App-loader" class="btn btn-primary" href="{:U('Admin/Supplier/lists')}">
+                        <i class="fa fa-mail-reply"></i>返回
+                    </a>
+                </div>
+                <!--tab标签-->
+                <div class="heading tabs" style2="background:transparent;">
+                    <ul id="tabs" class="nav nav-tabs pull-left" data-tabs="tabs">
+                        <li class="active">
+                            <a href="{:U('Admin/Suuplier/order',array('supplier_id'=>$ids['supplier_id'],'vip_id'=>$ids['vip_id']))}" data-loadername="订单详情" data-loader="App-loader">
+                                商盟订单
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{:U('Admin/Supplier/consumerOrder',array('supplier_id'=>$ids['supplier_id'],'vip_id'=>$ids['vip_id']))}" data-loadername="订单详情" data-loader="App-loader">
+                                消费订单
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!--tab页面-->
+                <div id="my-tab-content" class="tab-content padded">
+                    <div id="tab-supplier-order" class="tab-pane active">
+                        <div class="form-title"></div>
+                        <div class="table-toolbar">
+                            <!--div class="pull-right">
+                                <form id="App-search">
+                                    <label style="margin-bottom: 0px;">
+                                        <input type="search" class="form-control input-sm" name="name">
+                                    </label>
+                                    <a data-search="App-search" data-loadername="商城订单" data-loader="App-loader" class="btn btn-success" href="#">
+                                        <i class="fa fa-search"></i>搜索
+                                    </a>
+                                </form>
+                            </div-->
+                            <table id="App-table" class="table table-bordered table-hover">
+                                <thead class="bordered-darkorange">
+                                    <tr rolw="row">
+                                        <th>ID</th>
+                                        <th>订单编号</th>
+                                        <th>买家ID</th>
+                                        <th>消费金额</th>
+                                        <th>订单状态</th>
+                                        <th>支付方式</th>
+                                        <th>支付时间</th>
+                                        <th>下单时间</th>
+                                        <th>对账时间</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <volist name="supplier_order" id="vo">
+                                        <tr>
+                                            <td>{$vo.id}</td>
+                                            <td>{$vo.order_code}</td>
+                                            <td>{$vo.vip_buyer_id}</td>
+                                            <td>{$vo.total_price}</td>
+                                            <td>{$vo.status}</td>
+                                            <td>{$vo.pay_type}</td>
+                                            <td>{$vo.pay_time}</td>
+                                            <td>{$vo.order_time|date='Y-m-d H:i:s',###}</td>
+                                            <td>{$vo.check_account_time}</td>
+                                        </tr>
+                                    </volist>
+                                    <empty name="supplier_order">
+                                        <tr>
+                                            <td colspan="9" class="text-center h4">
+                                                未查到相关数据
+                                            </td>
+                                        </tr>
+                                    </empty>
+                                </tbody>
+                            </table>
+                            <div class="row DTTTFooter">
+                                {$page}
+                            </div>
+                        </div>
+                    </div>
+                    <!--div id="tab-vip-order" class="tab-pane">
+                        <div class="form-title"></div>
+                        22222222
+                    </div-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

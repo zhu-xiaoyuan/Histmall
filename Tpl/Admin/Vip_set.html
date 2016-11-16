@@ -1,0 +1,249 @@
+<style>
+.left15 {
+    float: left !important;
+    padding-left: 15px!important;
+}
+</style>
+<div class="row">
+    <div class="col-xs-12 col-xs-12">
+        <div class="widget radius-bordered">
+            <div class="widget-header bg-blue">
+                <i class="widget-icon fa fa-arrow-down"></i>
+                <span class="widget-caption">会员机制设置</span>
+                <div class="widget-buttons">
+                    <a href="#" data-toggle="maximize">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a href="#" data-toggle="collapse">
+                        <i class="fa fa-minus"></i>
+                    </a>
+                    <a href="#" data-toggle="dispose">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="widget-body">
+                <form id="AppForm" action="" method="post" class="form-horizontal" data-bv-message="" data-bv-feedbackicons-valid="glyphicon glyphicon-ok" data-bv-feedbackicons-invalid="glyphicon glyphicon-remove" data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+                    <div class="form-group" style="display:none">
+                        <label class="col-lg-2 control-label">注册短信验证:</label>
+                        <div class="col-lg-1">
+                            <div class="input-group input-group-sm col-lg-1">
+                                <input class="checkbox-slider slider-icon colored-darkorange" type="checkbox" id="verifyCheck">
+                                <span class="text"></span>
+                                <input type="hidden" name="isverify" id="isverify" value="{$data.isverify}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group isverify" style="display: none;">
+                        <label class="col-lg-2 control-label">验证设置:</label>
+                        <div class="input-group input-group-sm col-lg-1 left15">
+                            <span class="input-group-addon">时效（分）</span>
+                            <input type="text" class="form-control" name="ver_interval" value="{$data.ver_interval}">
+                        </div>
+                        <div class="input-group input-group-sm col-lg-1 left15">
+                            <span class="input-group-addon">最大验证数</span>
+                            <input type="text" class="form-control" name="ver_times" value="{$data.ver_times}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">注册赠送:</label>
+                        <div class="col-lg-1">
+                            <div class="input-group input-group-sm col-lg-1">
+                                <input class="checkbox-slider slider-icon colored-darkorange" type="checkbox" id="giftCheck">
+                                <span class="text"></span>
+                                <input type="hidden" name="isgift" id="isgift" value="{$data.isgift}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group isgift" style="display: none;">
+                        <label class="col-lg-2 control-label">注册赠送设置:</label>
+                        <div class="input-group input-group-sm col-lg-1 left15">
+                            <select class="form-control" name="gift_type">
+                                <option value="2" <eq name="data.gift_type" value="2">selected</eq>>代金券</option>
+                                <!--<option value="1" <eq name="data.gift_type" value="1">selected</eq>>充值卡</option>-->
+                            </select>
+                        </div>
+                        <div class="input-group input-group-sm col-lg-2 left15">
+                            <span class="input-group-addon">金额</span>
+                            <input type="text" class="form-control" name="gift_money" value="{$data.gift_money}">
+                        </div>
+                        <div class="input-group input-group-sm col-lg-2 left15">
+                            <span class="input-group-addon">有效</span>
+                            <input type="text" class="form-control" name="gift_days" value="{$data.gift_days}">
+                            <span class="input-group-addon">天</span>
+                        </div>
+                        <div class="input-group input-group-sm col-lg-2 left15">
+                            <span class="input-group-addon">满</span>
+                            <input type="text" class="form-control" name="gift_usemoney" value="{$data.gift_usemoney}">
+                            <span class="input-group-addon">使用</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">注册获得:</label>
+                        <div class="input-group input-group-sm col-lg-2 left15">
+                            <span class="input-group-addon">积分</span>
+                            <input type="text" class="form-control" name="reg_score" value="{$data.reg_score}">
+                        </div>
+                        <div class="input-group input-group-sm col-lg-2 left15">
+                            <span class="input-group-addon">经验</span>
+                            <input type="text" class="form-control" name="reg_exp" value="{$data.reg_exp}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">推广下线获得:</label>
+                        <div class="input-group input-group-sm col-lg-2 left15">
+                            <span class="input-group-addon">积分</span>
+                            <input type="text" class="form-control" name="tj_score" value="{$data.tj_score}">
+                        </div>
+                        <div class="input-group input-group-sm col-lg-2 left15">
+                            <span class="input-group-addon">经验</span>
+                            <input type="text" class="form-control" name="tj_exp" value="{$data.tj_exp}">
+                        </div>
+                        <div class="input-group input-group-sm col-lg-2 left15">
+                            <span class="input-group-addon">金钱</span>
+                            <input type="text" class="form-control" name="tj_money" value="{$data.tj_money}">
+                        </div>
+                        <label class="col-lg-0 control-label">&nbsp;&nbsp;不需要发放的奖励，请填写0。</label>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">签到获得:</label>
+                        <div class="input-group input-group-sm col-lg-2 left15">
+                            <span class="input-group-addon">积分规则</span>
+                            <input type="text" class="form-control" name="sign_score" value="{$data.sign_score}" placeholder="连续签到设置请用' , '分隔">
+                        </div>
+                        <div class="input-group input-group-sm col-lg-2 left15">
+                            <span class="input-group-addon">经验规则</span>
+                            <input type="text" class="form-control" name="sign_exp" value="{$data.sign_exp}" placeholder="连续签到设置请用' , '分隔">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label"></label>
+                        <div class="input-group input-group-sm col-lg-8 left15">
+                            <span class="text darkorange">连续签到例子：第一天获得1积分，第二天获得2积分，第三天获得3积分，则在积分规则设置为"1,2,3"</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">充值获得:</label>
+                        <div class="input-group input-group-sm col-lg-2 left15">
+                            <span class="input-group-addon">积分</span>
+                            <input type="text" class="form-control" name="cz_score" value="{$data.cz_score}" placeholder="0-100">
+                        </div>
+                        <div class="input-group input-group-sm col-lg-2 left15">
+                            <span class="input-group-addon">经验</span>
+                            <input type="text" class="form-control" name="cz_exp" value="{$data.cz_exp}" placeholder="0-100">
+                        </div>
+                        <label class="col-lg-0 control-label">&nbsp;&nbsp;输入整数：0表示不获得；100表示获得充值金额的100%</label>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">充值赠送:</label>
+                        <div class="input-group input-group-sm col-lg-4 left15">
+                            <span class="input-group-addon">规则</span>
+                            <input type="text" class="form-control" name="cz_rule" value="{$data.cz_rule}" placeholder="格式：充值金额:赠送金额,充值金额:赠送金额,...（例：100:10,200:25,...）不赠送请留空">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">消费获得:</label>
+                        <div class="input-group input-group-sm col-lg-2 left15">
+                            <span class="input-group-addon">积分</span>
+                            <input type="text" class="form-control" name="xf_score" value="{$data.xf_score}" placeholder="0-100">
+                        </div>
+                        <div class="input-group input-group-sm col-lg-2 left15">
+                            <span class="input-group-addon">经验</span>
+                            <input type="text" class="form-control" name="xf_exp" value="{$data.xf_exp}" placeholder="0-100">
+                        </div>
+                        <label class="col-lg-0 control-label">&nbsp;&nbsp;输入整数：0表示不获得；100表示获得订单金额的100%</label>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">会员等级评定:</label>
+                        <div class="input-group input-group-sm col-lg-2 left15">
+                            <span class="input-group-addon">周期</span>
+                            <input type="text" class="form-control" name="level_period" value="{$data.level_period}" placeholder="">
+                            <span class="input-group-addon">月</span>
+                        </div>
+                        <!--<div class="input-group input-group-sm col-lg-4 left15">
+		                    <span class="input-group-addon">规则</span>
+		                    <input type="text" class="form-control" name="level_rule" value="{$data.level_rule}" placeholder="格式：等级名称:等级经验,等级名称:等级经验,...（例：普通会员:0,银牌会员:100,...）">
+		                </div>-->
+                        <label class="col-lg-0 control-label">&nbsp;&nbsp;周期：0表示经验永久累加，不会降级，2表示两个月经验清0一次</label>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">最低提现额度<sup>*</sup></label>
+                        <div class="input-group input-group-sm col-lg-2 left15">
+                            <input type="text" class="form-control" name="tx_money" placeholder="必填" data-bv-notempty="true" data-bv-notempty-message="不能为空" value="{$data.tx_money}">
+                            <span class="input-group-addon">元</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">开启签到</label>
+                        <div class="col-lg-4">
+                            <label>
+                                <input type="hidden" name="isqiandao" value="{$data.isqiandao}" id="isqiandao">
+                                <input class="checkbox-slider slider-icon colored-darkorange" type="checkbox" id="isqiandaobtn" <eq name="data.isqiandao" value="1">checked="checked"</eq>>
+                                <span class="text darkorange">&nbsp;&nbsp;&larr;重要：开启/隐藏前端签到功能。</span>
+                            </label>
+                        </div>
+                    </div>
+                    <!-- <div class="form-group">
+                        <label class="col-lg-2 control-label">开启分销排行</label>
+                        <div class="col-lg-4">
+                            <label>
+                                <input type="hidden" name="ispaihang" value="{$data.ispaihang}" id="ispaihang">
+                                <input class="checkbox-slider slider-icon colored-darkorange" type="checkbox" id="ispaihangbtn" <eq name="data.ispaihang" value="1">checked="checked"</eq>>
+                                <span class="text darkorange">&nbsp;&nbsp;&larr;重要：开启/隐藏前端分销排行功能。</span>
+                            </label>
+                        </div>
+                    </div> -->
+                    <div class="form-group">
+                        <div class="col-lg-offset-2 col-lg-4">
+                            <button class="btn btn-primary btn-lg submit" type="submit" disabled="disabled">保存</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <button class="btn btn-palegreen btn-lg" type="reset">重填</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--面包屑导航封装-->
+<div id="tmpbread" style="display: none;">{$breadhtml}</div>
+<script type="text/javascript">
+setBread($('#tmpbread').html());
+
+if ($('#isverify').val() == 1) {
+    $('#verifyCheck').attr("checked", "checked");
+    $('.isverify').show();
+}
+$('#verifyCheck').on('click', function() {
+    var isverify = $('#isverify').val();
+    $('#isverify').val(1 - isverify * 1);
+    $('.isverify').toggle();
+    $('.submit').removeAttr("disabled");
+});
+if ($('#isgift').val() == 1) {
+    $('#giftCheck').attr("checked", "checked");
+    $('.isgift').show();
+}
+$('#giftCheck').on('click', function() {
+    var isgift = $('#isgift').val();
+    $('#isgift').val(1 - isgift * 1);
+    $('.isgift').toggle();
+    $('.submit').removeAttr("disabled");
+});
+$('#AppForm').bootstrapValidator({
+    submitHandler: function(validator, form, submitButton) {
+        var tourl = "{:U('Admin/Vip/set')}";
+        var data = $('#AppForm').serialize();
+        $.App.ajax('post', tourl, data, null);
+        return false;
+    },
+});
+
+$('#isqiandaobtn').on('click', function() {
+    var value = $(this).prop('checked') ? 1 : 0;
+    $('#isqiandao').val(value);
+});
+$('#ispaihangbtn').on('click', function() {
+    var value = $(this).prop('checked') ? 1 : 0;
+    $('#ispaihang').val(value);
+});
+</script>

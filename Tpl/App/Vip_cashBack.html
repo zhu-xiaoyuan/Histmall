@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>消费分红</title>
+    <meta charset="utf-8"/>
+    <!--页面优化-->
+    <meta name="MobileOptimized" content="320">
+    <!--默认宽度320-->
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <!--viewport 等比 不缩放-->
+    <meta http-equiv="cleartype" content="on">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!--删除苹果菜单-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!--默认颜色-->
+    <meta name="apple-mobile-web-app-title" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <!--加载全部后 显示-->
+    <meta content="telephone=no" name="format-detection"/>
+    <!--不识别电话-->
+    <meta content="email=no" name="format-detection"/>
+    <link rel="stylesheet" href="__PUBLIC__/App/css/style.css"/>
+    <link rel="stylesheet" href="__PUBLIC__/App/css/dropload.css"/>
+    <link href="//cdn.bootcss.com/weui/0.4.2/style/weui.min.css" rel="stylesheet">
+    <script type="text/javascript" src="__PUBLIC__/App/js/zepto.min.js"></script>
+    <style>
+        .home-item {
+            width: 50%;
+        }
+
+        .plist-ul li > a {
+            background-color: white;
+        }
+    </style>
+</head>
+<body class="back1">
+<div class="home-hd" style="background: url(__PUBLIC__/App/img/head-bg.png) no-repeat;background-size: 100% 100%;">
+    <div class="home-hdc ovflw">
+        <div style="margin: 16px;">
+            <img src="{$vip.headimgurl}"
+                 style="width: 62px;height: 62px;box-shadow: 0 0 0 1px #ffffff;float: left;border-radius: 50%;">
+        </div>
+        <div class="fl home-info">
+            <notempty name="data.name">
+                {$vip.name}
+                <else/>
+                {$vip.nickname}
+            </notempty>
+
+            <p style="font-size:0.8em;">总消费金额：<span>{$vip.total_buy|number_format=###,2}</span></p>
+        </div>
+    </div>
+    <div class="clr"></div>
+    <div class="home-panel ovflw">
+        <div class="fl home-item"><a class="home-br text-c"><span
+                id="home-jf">{$vip.total_bonus_amount|number_format=###,2}</span><span class="home-add"
+                                                                                       id="add-jf"></span>
+
+            <p>应分红</p></a></div>
+        <div class="fl home-item"><a class="text-c"><span
+                id="home-jy">{$vip.total_got_bonus|number_format=###,2}</span><span
+                class="home-add" id="add-jy"></span>
+
+            <p>已分红</p></a></div>
+    </div>
+</div>
+<div class="index-plist ovflw" id="index-plist" style="margin-bottom: 60px;">
+    <ul class="plist-ul ovflw back1">
+
+    </ul>
+</div>
+<div id="html" style="display: none"></div>
+<!-- 底部导航 -->
+<div class="dtl-ft ovflw">
+    <div class=" fl dtl-icon dtl-bck ovflw">
+        <a href="{:U('App/Vip/index')}">
+            <i class="iconfont">&#xe679</i>
+        </a>
+    </div>
+</div>
+</body>
+<script src="__PUBLIC__/App/js/dropload.min.js"></script>
+<script>
+    $(function () {
+        var num = 10;
+        var counter = 0;
+        var dropload = $("#index-plist").dropload({
+            scrollArea: window,
+            loadDownFn: function (me) {
+                $("#html").load("{:U('App/Vip/cashBackItem')}?pg=" + counter + "&pc=" + num, function (html, status) {
+                    $("#html").html("");
+                    if (status == "success") {
+                        if (html == "") {
+                            dropload.noData();
+                            dropload.resetload();
+                            return;
+                        } else {
+                            $('#index-plist>ul').append(html);
+                            counter++;
+                            dropload.resetload();
+                        }
+                    } else {
+                        dropload.resetload();
+                    }
+                });
+            }
+        });
+    });
+</script>
+</html>

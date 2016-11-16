@@ -1,0 +1,193 @@
+<div class="row">
+    <div class="col-xs-12 col-md-12">
+        <div class="widget">
+            <div class="widget-header bg-blue">
+                <i class="widget-icon fa fa-arrow-down"></i>
+                <span class="widget-caption">商城分类</span>
+                <div class="widget-buttons">
+                    <a href="#" data-toggle="maximize">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a href="#" data-toggle="collapse">
+                        <i class="fa fa-minus"></i>
+                    </a>
+                    <a href="#" data-toggle="dispose">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="widget-body">
+                <div class="table-toolbar">
+                    <a href="{:U('Admin/Shop/cateSet/')}" class="btn btn-primary" data-loader="App-loader" data-loadername="设置分组">
+                        <i class="fa fa-plus"></i>新增分类
+                    </a>
+                    <div class="pull-right">
+                        <form id="App-search">
+                            <label style="margin-bottom: 0px;">
+                                <input name="name" type="search" class="form-control input-sm">
+                            </label>
+                            <a href="{:U('Admin/Shop/cate/')}" class="btn btn-success" data-loader="App-loader" data-loadername="门店分组" data-search="App-search">
+                                <i class="fa fa-search"></i>搜索
+                            </a>
+                        </form>
+                    </div>
+                </div>
+                <table id="App-table" class="table table-bordered table-hover">
+                    <thead class="bordered-darkorange">
+                        <tr role="row">
+                            <th>ID</th>
+                            <!-- <th>PID</th>
+							<th>Path</th> -->
+                            <th>层级</th>
+                            <th>分类名称</th>
+                            <th>分类备注</th>
+                            <th>子分类</th>
+                            <th>排序</th><!--新增-->
+                            <th>是否显示</th><!--新增-->
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <volist name="cache" id="vo">
+                            <tr id="item{$vo.id}">
+                                <td class=" sorting_1">{$vo.id}</td>
+                                <!-- <td class=" ">{$vo.pid}</td>
+<td class=" ">{$vo.bpath}</td>
+ -->
+                                <td class=" ">{$vo.lv}</td>
+                                <td class=" ">{$vo.name}</td>
+                                <td class=" ">{$vo.summary}</td>
+                                <td class=" ">{$vo.soncate}</td>
+                                <td class=" ">{$vo.sorts}</td><!--新增-->
+                                <td class=" ">
+                                    <switch name="vo.is_enable">
+                                        <case value="1">是</case>
+                                        <case value="0">否</case>
+                                    </switch>
+                                </td><!--新增-->
+                                <td class="center "><a href="{:U('Admin/Shop/cateSet/',array('id'=>$vo['id']))}" class="btn btn-success btn-xs" data-loader="App-loader" data-loadername="设置分组"><i class="fa fa-edit"></i> 编辑</a>&nbsp;&nbsp;<a href="{:U('Admin/Shop/cate/')}" class="btn btn-danger btn-xs" data-type="del" data-content="确定删除该分类及其子分类？" data-ajax="{:U('Admin/Shop/cateDel/',array('id'=>$vo['id']))}"><i class="fa fa-trash-o"></i> 删除</a>
+                                    <!-- <empty name="vo.soncate">&nbsp;&nbsp;<a href="{:U('Admin/Shop/cate/')}" class="btn btn-danger btn-xs" data-type="del" data-ajax="{:U('Admin/Shop/cateDel/',array('id'=>$vo['id']))}"><i class="fa fa-trash-o"></i> 删除</a></empty> -->
+                                </td>
+                            </tr>
+                            <volist name="vo['_child']" id="vo2">
+                                <tr id="item{$vo2.id}">
+                                    <td class=" sorting_1">{$vo2.id}</td>
+<!--                                     <td class=" ">{$vo2.pid}</td>
+                                    <td class=" ">{$vo2.bpath}</td> -->
+                                    <td class=" ">{$vo2.lv}</td>
+                                    <td class=" ">&nbsp;&nbsp;└{$vo2.name}</td>
+                                    <td class=" ">{$vo2.summary}</td>
+                                    <td class=" ">{$vo2.soncate}</td>
+                                    <td class=" ">{$vo2.sorts}</td><!--新增-->
+                                    <td class=" ">
+                                        <switch name="vo.is_enable">
+                                            <case value="1">是</case>
+                                            <case value="0">否</case>
+                                        </switch>
+                                    </td><!--新增-->
+                                    <td class="center "><a href="{:U('Admin/Shop/cateSet/',array('id'=>$vo2['id']))}" class="btn btn-success btn-xs" data-loader="App-loader" data-loadername="设置分组"><i class="fa fa-edit"></i> 编辑</a>
+                                        <empty name="vo2.soncate">&nbsp;&nbsp;<a href="{:U('Admin/Shop/cate/')}" class="btn btn-danger btn-xs" data-type="del" data-ajax="{:U('Admin/Shop/cateDel/',array('id'=>$vo2['id']))}"><i class="fa fa-trash-o"></i> 删除</a></empty>
+                                    </td>
+                                </tr>
+                                <foreach name="vo2['_child']" item="vo3">
+                                    <tr id="item{$vo3.id}">
+                                        <td class=" sorting_1">{$vo3.id}</td>
+                                        <td class=" ">{$vo3.pid}</td>
+                                        <td class=" ">{$vo3.bpath}</td>
+                                        <td class=" ">{$vo3.lv}</td>
+                                        <td class=" ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└{$vo3.name}</td>
+                                        <td class=" ">{$vo3.summary}</td>
+                                        <td class=" ">{$vo3.soncate}</td>
+                                        <td class=" ">{$vo3.sorts}</td><!--新增-->
+                                        <td class=" ">
+                                            <switch name="vo.is_enable">
+                                                <case value="1">是</case>
+                                                <case value="0">否</case>
+                                            </switch>
+                                        </td><!--新增-->
+                                        <td class="center "><a href="{:U('Admin/Shop/cateSet/',array('id'=>$vo3['id']))}" class="btn btn-success btn-xs" data-loader="App-loader" data-loadername="设置分组"><i class="fa fa-edit"></i> 编辑</a>
+                                            <empty name="vo3.soncate">&nbsp;&nbsp;<a href="{:U('Admin/Shop/cate/')}" class="btn btn-danger btn-xs" data-type="del" data-ajax="{:U('Admin/Shop/cateDel/',array('id'=>$vo3['id']))}"><i class="fa fa-trash-o"></i> 删除</a></empty>
+                                        </td>
+                                    </tr>
+                                    <foreach name="vo3['_child']" item="vo4">
+                                        <tr id="item{$vo4.id}">
+                                            <td>
+                                                <empyt name="vo4.soncate">
+                                                    <div class="checkbox" style="margin-bottom: 0px; margin-top: 0px;">
+                                                        <label style="padding-left: 4px;">
+                                                            <input name="checkvalue" type="checkbox" class="colored-blue App-check" value="{$vo4.id}">
+                                                            <span class="text"></span>
+                                                        </label>
+                                                    </div>
+                                                    </empty>
+                                            </td>
+                                            <td class=" sorting_1">{$vo4.id}</td>
+                                            <td class=" ">{$vo4.pid}</td>
+                                            <td class=" ">{$vo4.bpath}</td>
+                                            <td class=" ">{$vo4.lv}</td>
+                                            <td class=" ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└{$vo4.name}</td>
+                                            <td class=" ">{$vo4.summary}</td>
+                                            <td class=" ">{$vo4.soncate}</td>
+                                            <td class=" ">{$vo4.sorts}</td><!--新增-->
+                                            <td class=" ">
+                                                <switch name="vo.is_enable">
+                                                    <case value="1">是</case>
+                                                    <case value="0">否</case>
+                                                </switch>
+                                            </td><!--新增-->
+                                            <td class="center "><a href="{:U('Admin/Shop/cateSet/',array('id'=>$vo4['id']))}" class="btn btn-success btn-xs" data-loader="App-loader" data-loadername="设置分组"><i class="fa fa-edit"></i> 编辑</a>
+                                                <empty name="vo4.soncate">&nbsp;&nbsp;<a href="{:U('Admin/Shop/cate/')}" class="btn btn-danger btn-xs" data-type="del" data-ajax="{:U('Admin/Shop/cateDel/',array('id'=>$vo4['id']))}"><i class="fa fa-trash-o"></i> 删除</a></empty>
+                                            </td>
+                                        </tr>
+                                        <foreach name="vo4['_child']" item="vo5">
+                                            <tr id="item{$vo5.id}">
+                                                <td>
+                                                    <empty name="vo4.soncate">
+                                                        <div class="checkbox" style="margin-bottom: 0px; margin-top: 0px;">
+                                                            <label style="padding-left: 4px;">
+                                                                <input name="checkvalue" type="checkbox" class="colored-blue App-check" value="{$vo5.id}">
+                                                                <span class="text"></span>
+                                                            </label>
+                                                        </div>
+                                                    </empty>
+                                                </td>
+                                                <td class=" sorting_1">{$vo5.id}</td>
+                                                <td class=" ">{$vo5.pid}</td>
+                                                <td class=" ">{$vo5.bpath}</td>
+                                                <td class=" ">{$vo5.lv}</td>
+                                                <td class=" ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└{$vo5.name}</td>
+                                                <td class=" ">{$vo5.summary}</td>
+                                                <td class=" ">{$vo5.soncate}</td>
+                                                <td class=" ">{$vo5.sorts}</td><!--新增-->
+                                                <td class=" ">
+                                                    <switch name="vo.is_enable">
+                                                        <case value="1">是</case>
+                                                        <case value="0">否</case>
+                                                    </switch>
+                                                </td><!--新增-->
+                                                <td class="center ">
+                                                    <a href="{:U('Admin/Shop/cateSet/',array('id'=>$vo5['id']))}" class="btn btn-success btn-xs" data-loader="App-loader" data-loadername="设置分组"><i class="fa fa-edit"></i> 编辑</a>
+                                                    <empty name="vo5.soncate">&nbsp;&nbsp;<a href="{:U('Admin/Shop/cate/')}" class="btn btn-danger btn-xs" data-type="del" data-ajax="{:U('Admin/Shop/cateDel/',array('id'=>$vo5['id']))}"><i class="fa fa-trash-o"></i> 删除</a>
+                                                    </empty>
+                                                </td>
+                                            </tr>
+                                        </foreach>
+                                    </foreach>
+                                </foreach>
+                            </volist>
+                        </volist>
+                    </tbody>
+                </table>
+                <div class="row DTTTFooter">
+                    {$page}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--面包屑导航封装-->
+<div id="tmpbread" style="display: none;">{$breadhtml}</div>
+<script type="text/javascript">
+setBread($('#tmpbread').html());
+</script>
+<!--/面包屑导航封装-->

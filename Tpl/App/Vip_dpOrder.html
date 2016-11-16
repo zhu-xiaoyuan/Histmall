@@ -1,0 +1,141 @@
+<!doctype html>
+<html>
+<head>
+    <title>订单列表</title>
+    <meta charset="utf-8"/>
+    <!--页面优化-->
+    <meta name="MobileOptimized" content="320">
+    <!--默认宽度320-->
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <!--viewport 等比 不缩放-->
+    <meta http-equiv="cleartype" content="on">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!--删除苹果菜单-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!--默认颜色-->
+    <meta name="apple-mobile-web-app-title" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <!--加载全部后 显示-->
+    <meta content="telephone=no" name="format-detection"/>
+    <!--不识别电话-->
+    <meta content="email=no" name="format-detection"/>
+    <link rel="stylesheet" href="__PUBLIC__/App/css/style.css"/>
+    <link rel="stylesheet" href="__PUBLIC__/App/css/dropload.css"/>
+    <link href="//cdn.bootcss.com/weui/0.4.2/style/weui.min.css" rel="stylesheet">
+    <!--组件依赖js begin-->
+    <script src="__PUBLIC__/App/js/zepto.min.js"></script>
+    <script src="__PUBLIC__/App/js/base.js"></script>
+    <!--组件依赖js end-->
+    <script type="text/javascript" src="__PUBLIC__/App/gmu/gmu.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/App/gmu/app-basegmu.js"></script>
+    <style>
+        #mybox {
+            z-index: 1000;
+            position: fixed;
+            top: 0px;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, .5);
+            display: none;
+        }
+    </style>
+</head>
+<body class="back1">
+<div class="ads-tabs ovflw">
+    <a href="{:U('App/Vip/dpOrder')}?type=0" class="fl text-c" style="width: 50%;">
+        <span
+        <eq name='type' value='0'>class='active'</eq>
+        >未完成订单</span></a>
+    <a href="{:U('App/Vip/dpOrder')}?type=1" class="fl text-c" style="width: 50%;">
+        <span
+        <eq name='type' value='1'>class='active'</eq>
+        >已完成订单
+        </span>
+    </a>
+</div>
+<div id="main" style="margin-bottom: 60px;">
+    <div class="ads-cc">
+
+    </div>
+</div>
+<div id="html" style="display:none;"></div>
+<div id="mybox">
+    <div style="width: 70%;margin: 20% auto;background-color: white;padding: 10px;">
+        <div class="weui_cells_title">开关</div>
+        <div class="weui_cells weui_cells_form">
+            <div class="weui_cell weui_cell_switch">
+                <div class="weui_cell_hd weui_cell_primary">是否抵扣</div>
+                <div class="weui_cell_ft">
+                    <input class="weui_switch" type="checkbox">
+                </div>
+            </div>
+        </div>
+        <a class="weui_btn weui_btn_primary" style="margin-top: 20px;font-size: 13px;">确认支付</a>
+    </div>
+</div>
+<!-- 底部导航 -->
+<div class="dtl-ft ovflw">
+    <div class=" fl dtl-icon dtl-bck ovflw">
+        <a href="{:U('App/Vip/store')}" class="btnBack">
+            <i class="iconfont">&#xe679</i>
+        </a>
+    </div>
+</div>
+<input type="hidden" id="id"/>
+</body>
+<script src="__PUBLIC__/App/js/dropload.min.js"></script>
+<script>
+    $(function () {
+        var num = 10;
+        var counter = 0;
+        var dropload = $("#main").dropload({
+            scrollArea: window,
+            loadDownFn: function (me) {
+                $("#html").load("{:U('App/Vip/dpOrderItem')}?pg=" + counter + "&pc=" + num + "&type={$type}", function (html, status) {
+                    $("#html").html("");
+                    if (status == "success") {
+                        if (html == "") {
+                            dropload.noData();
+                            dropload.resetload();
+                            return;
+                        } else {
+                            $('.ads-cc').append(html);
+                            $(".minPic").minThumb();
+                            bindHtml();
+                            counter++;
+                            dropload.resetload();
+                        }
+                    } else {
+                        dropload.resetload();
+                    }
+                });
+            }
+        });
+    });
+    function bindHtml() {
+        $(".weui_btn_primary").on("click", function () {
+            $.post("{:U('App/Vip/orderDo')}", {
+                id: $("#id").val(),
+                r: $(".weui_switch").attr("checked")
+            }, function (d) {
+                if (d.code == 0) {
+                    alert("操作成功")
+                    //location.reload()
+                } else {
+                    alert("操作失败")
+                }
+            }, "json");
+        });
+        $(".home-rz").on("click", function () {
+            $("#id").val($(this).data("id"));
+            $("#mybox").show();
+        });
+        $("#mybox").on("click", function () {
+            $("#mybox").hide();
+        })
+    }
+</script>
+</html>

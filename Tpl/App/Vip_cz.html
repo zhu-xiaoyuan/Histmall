@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>充值</title>
+    <meta charset="utf-8"/>
+    <!--页面优化-->
+    <meta name="MobileOptimized" content="320">
+    <!--默认宽度320-->
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <!--viewport 等比 不缩放-->
+    <meta http-equiv="cleartype" content="on">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!--删除苹果菜单-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!--默认颜色-->
+    <meta name="apple-mobile-web-app-title" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <!--加载全部后 显示-->
+    <meta content="telephone=no" name="format-detection"/>
+    <!--不识别电话-->
+    <meta content="email=no" name="format-detection"/>
+    <link rel="stylesheet" href="__PUBLIC__/App/css/style.css"/>
+    <script type="text/javascript" src="__PUBLIC__/App/js/zepto.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/App/gmu/gmu.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/App/gmu/app-basegmu.js"></script>
+</head>
+<body class="back1">
+<div class="back2 border-b1 border-t1 cz-cc">
+    <ul class="cz-ul">
+        <li class="border-b1 ovflw">
+            <span class="fl cz-tt">充值方式</span>
+            <span class="fl cz-rdo mar15" id="zx"><em class="cz-raio fl cz-on"></em>在线充值</span>
+            <span class="fl cz-rdo" id="czk"><em class="cz-raio fl cz-off"></em>充值卡充值</span>
+        </li>
+        <li class="border-b1 ovflw zx"><span class="fl cz-tt">充值金额</span><input type="text" placeholder="充值金额"
+                                                                                class="cz-ipt" id="money"/></li>
+        <li class="ovflw zx"><span class="fl cz-tt">付款方式</span><select class="cz-sel" id="zxtype">
+            <option value="">请选择付款方式</option>
+            <option value="2">微信支付</option>
+            <option value="1">支付宝</option>
+            <!--<option value="2">银联</option>--></select></li>
+        <li class="border-b1 ovflw czk"><span class="fl cz-tt">充值卡卡号</span><input type="text" placeholder="充值卡号"
+                                                                                  class="cz-ipt" id="cardno"/></li>
+        <li class="border-b1 ovflw czk"><span class="fl cz-tt">充值卡密码</span><input type="text" placeholder="充值密码"
+                                                                                  class="cz-ipt" id="cardpwd"/></li>
+    </ul>
+</div>
+<p class="add-tips color3 fonts2 zx" id="cz_rule" style="display:none"></p>
+
+<div class="insert1"></div>
+<div class="dtl-ft ovflw">
+    <div class=" fl dtl-icon dtl-bck ovflw">
+        <a href="{:U('App/Vip/index')}">
+            <i class="iconfont">&#xe679</i>
+        </a>
+    </div>
+    <a href="#" class="fr ads-btn fonts9 back3">确定</a>
+</div>
+<script type="text/javascript">
+    //读取充值赠送内容
+    var cz_rule = "{$_SESSION['WAP']['vipset']['cz_rule']}";
+    if (cz_rule != '') {
+        cz_rule = cz_rule.replace(/:/g, "送");
+        cz_rule = cz_rule.replace(/,/g, "，");
+        $("#cz_rule").text("充值赠送：" + cz_rule + "。");
+    }
+    //选择的按钮,更换背景图片
+    $('.cz-rdo').click(function () {
+        $('.cz-rdo').find('.cz-raio').removeClass("cz-on").addClass("cz-off");
+        $(this).find('.cz-raio').removeClass("cz-off").addClass("cz-on");
+    });
+    //充值卡充值
+    $('#czk').click(function () {
+        $('.czk').show();
+        $('.zx').hide();
+    });
+    //在线充值
+    $('#zx').click(function () {
+        $('.czk').hide();
+        $('.zx').show();
+    });
+    //提交
+    $('.ads-btn').click(function () {
+        var type = $('.cz-on').parent().attr("id");
+        if (type == "zx") {
+            //在线充值
+            var zxtype = $('#zxtype').val();
+            var money = $('#money').val();
+            if (money == '') {
+                zbb_msg("请输入充值金额！");
+                return;
+            }
+            if (zxtype == '') {
+                zbb_msg("请选择在线付款方式！");
+                return;
+            } else {
+                var tourl = "{:U('App/Vip/zxczSet')}/type/" + zxtype + "/money/" + money;
+                location.href = tourl;
+            }
+
+        } else if (type == "czk") {
+            //充值卡充值
+            var cardno = $('#cardno').val();
+            var cardpwd = $('#cardpwd').val();
+            if (cardno == '' || cardpwd == '') {
+                zbb_msg("请输入卡号及密码！");
+                return;
+            }
+            $.ajax({
+                type: 'post',
+                data: {'cardno': cardno, 'cardpwd': cardpwd},
+                url: "{:U('Vip/addCard')}",
+                dataType: 'json',
+                success: function (e) {
+                    if (e.status == 1) {
+                        zbb_confirm(e.msg, function () {
+                            location.href = "{:U('App/Vip/index')}";
+                        });
+                    } else {
+                        zbb_msg(e.msg);
+                        return;
+                    }
+                },
+                error: function () {
+                    zbb_alert('通讯失败！');
+                    return false;
+                }
+            });
+            return false;
+        }
+    })
+</script>
+<!--通用分享-->
+<include file="./Tpl/App/Shop_share.html"/>
+</body>
+
+</html>

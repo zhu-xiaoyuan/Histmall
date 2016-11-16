@@ -1,0 +1,6 @@
+# Created by .ignore support plugin (hsz.mobi)
+*.log
+*.txt
+_fields
+jsapi_ticket.json
+!.gitignore

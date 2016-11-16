@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <title>创建订单</title>
+    <meta charset="utf-8"/>
+    <!--页面优化-->
+    <meta name="MobileOptimized" content="320">
+    <!--默认宽度320-->
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <!--viewport 等比 不缩放-->
+    <meta http-equiv="cleartype" content="on">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!--删除苹果菜单-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!--默认颜色-->
+    <meta name="apple-mobile-web-app-title" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <!--加载全部后 显示-->
+    <meta content="telephone=no" name="format-detection"/>
+    <!--不识别电话-->
+    <meta content="email=no" name="format-detection"/>
+    <link rel="stylesheet" href="__PUBLIC__/App/css/style.css"/>
+    <link href="http://cdn.bootcss.com/weui/0.4.2/style/weui.min.css" rel="stylesheet">
+    <script type="text/javascript" src="__PUBLIC__/App/js/zepto.min.js"></script>
+    <style>
+        .weui_label {
+            width: 90px;
+        }
+    </style>
+</head>
+<body>
+<div class="weui_cells_title">创建订单</div>
+<div class="weui_cells weui_cells_form">
+    <div class="weui_cell">
+        <div class="weui_cell_hd"><label class="weui_label">Vip会员ID</label></div>
+        <div class="weui_cell_bd weui_cell_primary">
+            <input id="vip" class="weui_input" type="number">
+        </div>
+    </div>
+    <div class="weui_cell">
+        <div class="weui_cell_hd"><label class="weui_label">消费金额</label></div>
+        <div class="weui_cell_bd weui_cell_primary">
+            <input id="num" class="weui_input" type="number">
+        </div>
+    </div>
+    <div class="weui_cell">
+        <div class="weui_cell_hd"><label class="weui_label">消费内容</label></div>
+        <div class="weui_cell_bd weui_cell_primary">
+            <input id="memo" class="weui_input" type="text">
+        </div>
+    </div>
+    <!--<div class="weui_cells" style="margin-top: 0px;">
+        <div class="weui_cell weui_cell_switch">
+            <div class="weui_cell_hd weui_cell_primary">消费抵扣</div>
+            <div class="weui_cell_ft">
+                <input id="dk" class="weui_switch" type="checkbox">
+            </div>
+        </div>
+    </div>-->
+</div>
+<div class="weui_cells_tips">Vip会员ID可以在会员中心找到</div>
+<div class="weui_btn_area">
+    <a class="weui_btn weui_btn_primary" href="javascript:" id="btnOk">提交</a>
+</div>
+<div class="weui_toptips weui_warn js_tooltips" style="display: none;">格式不对</div>
+<!-- 底部导航 -->
+<div class="dtl-ft ovflw">
+    <div class=" fl dtl-icon dtl-bck ovflw">
+        <a class="btnBack" href="{:U('App/Vip/store')}">
+            <i class="iconfont">&#xe679</i>
+        </a>
+    </div>
+</div>
+</body>
+<script>
+    $(function () {
+        $("#btnOk").on("click", function () {
+            if ($.trim($("#num").val()) == "") {
+                alert("请输入消费额");
+                return false;
+            }
+            var money = parseInt($.trim($("#num").val()));
+            if (money <= 0) {
+                alert("消费额必须大于0");
+                return false;
+            }
+            if (confirm("提交之后不可更改，你确定要提交吗？")) {
+                $.post("{:U('App/Vip/createOrderDo')}", {
+                    v: $("#vip").val(),
+                    n: $("#num").val(),
+                    m: $("#memo").val(),
+                    //r: $("#dk").attr("checked")
+                }, function (d) {
+                    if (d.code == 0) {
+                        alert("立即对账后，可知道应收或应付多少钱");
+                    } else {
+                        alert(d.message);
+                    }
+                    location.reload();
+                }, "json");
+            }
+        });
+    });
+</script>
+</html>

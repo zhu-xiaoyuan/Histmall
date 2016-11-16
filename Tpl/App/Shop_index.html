@@ -1,0 +1,241 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>{$_SESSION['WAP']['shopset']['name']}</title>
+    <meta charset="utf-8"/>
+    <!--页面优化-->
+    <meta name="MobileOptimized" content="320">
+    <!--默认宽度320-->
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <!--viewport 等比 不缩放-->
+    <meta http-equiv="cleartype" content="on">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!--删除苹果菜单-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!--默认颜色-->
+    <meta name="apple-mobile-web-app-title" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <!--加载全部后 显示-->
+    <meta content="telephone=no" name="format-detection"/>
+    <!--不识别电话-->
+    <meta content="email=no" name="format-detection"/>
+    <link rel="stylesheet" href="__PUBLIC__/App/css/style.css?v=10"/>
+    <link href="http://cdn.bootcss.com/weui/0.4.2/style/weui.min.css" rel="stylesheet">
+    <script src="__PUBLIC__/App/js/zepto.min.js"></script>
+    <style>
+        .group_buy_btn{
+            background-color:#e00;
+            border-radius:3px;
+            color:#fff;
+            width:100px;
+            height:35px;
+            line-height:35px;
+            text-align:center;
+            font-weight:normal;
+        }
+    </style>
+</head>
+
+<body class="index">
+<div class="weui_search_bar" id="search_bar">
+    <form class="weui_search_outer">
+        <div class="weui_search_inner">
+            <i class="weui_icon_search"></i>
+            <input type="search" class="weui_search_input" id="search_input" placeholder="搜索"/>
+            <a href="javascript:" class="weui_icon_clear" id="search_clear"></a>
+        </div>
+        <label for="search_input" class="weui_search_text" id="search_text">
+            <i class="weui_icon_search"></i>
+            <span>搜索</span>
+        </label>
+    </form>
+    <a href="javascript:" class="weui_search_cancel" id="search_cancel">取消</a>
+</div>
+<div id="tmpshare" style="display: none;">
+    <img src="{$_SESSION['WAP']['shopset']['sharepic']}">
+</div>
+<div class="zbb_index">
+    <header class="ui-banner">
+        <div id="slider" class="swipe">
+            <ul class="swipe-wrap">
+                <foreach name="indexalbum" item="vo">
+                    <li>
+                        <a href="{$vo.url}"><img class="ads" data-src="{$vo.imgurl}"></a>
+                    </li>
+                </foreach>
+            </ul>
+            <div id="slider_on">
+                <ul>
+                    <foreach name="indexalbum" item="vo">
+                        <li></li>
+                    </foreach>
+                </ul>
+            </div>
+        </div>
+    </header>
+    <eq name="showsub" value="0">
+        <include file="./Tpl/App/Shop_subbar.html"/>
+    </eq>
+
+    <div id="nav" class="ui-scroller">
+        <!--<ul class="main-ui-navigator-list">
+            <foreach name="classify_list" item="vo" key="k">
+                <li>
+                    <a href="{:U('Shop/goodsList')}?cid={$vo.id}">
+                        <img src="{$vo.savepath}/{$vo.img_name}" class="ui-navigator-item-img"/>
+                        <p class="ui-navigator-item-title">{$vo.name}</p>
+                    </a>
+                </li>
+                <if condition="(($k+1)%5) eq 0 and !empty($classify_list[$k+1]['id'])">
+                    </ul>
+                    <ul class="main-ui-navigator-list">
+                </if>
+            </foreach>
+        </ul>-->
+    </div>
+
+    <!--推荐位-->
+    <volist name="mrtj" id="vo">
+        <div class="index-lst">
+            <div class="lst-tt">
+                <span class="color11 lst-mr">{$vo.info.name}</span>&nbsp;
+                <span class="color2 fonts2">{$vo.info.summary}</span>
+            </div>
+            <ul class="lst-rl">
+                <volist name="vo.goods" id="vv">
+                    <notempty name="vv.can_group_buy">
+                        <li style="box-shadow:0px 0px 2px rgba(11, 2, 5, 0.33);margin-bottom:10px;">
+                            <a style="box-shadow:0px 0px 0px;" href="{:U('App/Shop/goods',array('sid'=>9,'id'=>$vv['id'],'ppid'=>$_SESSION['WAP']['vipid']))}">
+                                <img data-src="{$vv.imgurl}" class="datu"/>
+                                <p>
+                                    <span style="color:#222;font-size:16px;font-weight:500;padding-left:10px">{$vv.name}</span>
+                                </p>
+                            </a>
+                            <div>
+                                <div class="fl" style="display:inline-block;width:60%;">
+                                    <span>
+                                        <img src="__PUBLIC__/App/img/group_buy.png" style="width:20px; vertical-align: middle;"/>
+                                        <em class="fonts3 color7">{$vv.group_buy_num}人团</em>
+                                    </span>
+                                    <em class="fonts3 red">￥</em>
+                                    <em class="fonts1 red">{$vv.price}</em>&nbsp;
+                                    <span class="plist-xp fonts3">单买价￥{$vv.oprice}</span>
+                                </div>
+                                <a style="color: #fff; margin:0 10px 5px 0;" class="fr group_buy_btn" href="{:U('App/Shop/goods',array('sid'=>0,'id'=>$vv['id'],'ppid'=>$_SESSION['WAP']['vipid']))}">
+                                    去开团 <i class="iconfont">&#xe6a3;</i>
+                                </a>
+                                <div style="clear:both;margin:10px 0;"></div>
+                            </div>
+                        </li>
+                    <else/>
+                        <li>
+                            <a href="{:U('App/Shop/goods',array('sid'=>0,'id'=>$vv['id'],'ppid'=>$_SESSION['WAP']['vipid']))}">
+                                <img data-src="{$vv.imgurl}" class="datu"/>
+                                <p>
+                                    <span style="color:black;max-width: 60%;display: inline-block;">{$vv.name}</span>
+                                    <span class="fr color3">
+                                        <em class="fonts2">￥</em>
+                                        <em class="fonts1">{$vv.price}</em>&nbsp;
+                                        <span class="plist-xp fonts3">￥{$vv.oprice}</span>
+                                    </span>
+                                </p>
+                            </a>
+                        </li>
+                    </notempty>
+                </volist>
+            </ul>
+        </div>
+    </volist>
+
+    <!-- 全部列表页 -->
+    <div class="index-alst">
+        <!-- 产品列表 -->
+        <div>
+            <volist name="indexicons" id="vv">
+                <div class="title-bg">|&nbsp;{$vv["name"]}
+                    <a href="{:U('App/Shop/goodsList')}?cid={$vv.id}" style="float: right;color: #ffffff;">更多
+                        <!--<i class="iconfont">&#xe65b;</i>--></a>
+                </div>
+                <div class="index-plist ovflw" id="index-plist">
+                    <ul class="plist-ul ovflw">
+                        <volist name="vv['cache']" id="vo">
+                            <li>
+                                <a href="{:U('App/Shop/goods',array('sid'=>0,'id'=>$vo['id'],'ppid'=>$_SESSION['WAP']['vipid']))}">
+                                    <img class="showImg" data-src="{$vo.imgurl}"/>
+                                    <!--图片尺寸：336*259-->
+                                    <h1 class="plist-tt fonts4 ovflw" style="height:30px;">{$vo.name}</h1>
+
+                                    <p><span class="plist-yp color3"><i class="fonts3">￥</i><em
+                                            class="fonts1">{$vo.price}</em></span>&nbsp;<span
+                                            class="plist-xp fonts3">￥{$vo.oprice}</span></p>
+                                </a>
+                            </li>
+                        </volist>
+                    </ul>
+                </div>
+            </volist>
+        </div>
+    </div>
+    <!-- 底部导航 -->
+    <include file="./Tpl/App/Shop_footer.html"/>
+</div>
+<!--组件依赖js begin-->
+
+<script src="__PUBLIC__/App/js/fx.js"></script>
+<script src="__PUBLIC__/App/js/fx_methods.js"></script>
+
+<script type="text/javascript" src="__PUBLIC__/App/gmu/iscroll.js"></script>
+<script type="text/javascript" src="__PUBLIC__/App/gmu/gmu.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/App/gmu/widget.js"></script>
+<!--<script type="text/javascript" src="__PUBLIC__/App/gmu/navigator.js"></script>-->
+<script type="text/javascript" src="__PUBLIC__/App/gmu/scrollable.js"></script>
+<!--组件依赖js end-->
+<!--轮播js begin-->
+<script src="__PUBLIC__/App/js/tool.js"></script>
+<script src="__PUBLIC__/App/js/swipe.js"></script>
+<script src="__PUBLIC__/App/js/base.js"></script>
+<script src="__PUBLIC__/App/gmu/app-basegmu.js"></script>
+<!-- 导航栏滚动时锁定在屏幕上方-->
+<!--<script type="text/javascript" src="__PUBLIC__/App/js/menuFixed.js"></script>-->
+
+<script type="text/javascript">
+    $('.ui-navul').children().eq(0).find('a').css('color', '#19a5f3');
+    //轮播
+    $(function () {
+        $(".ads").swiperThumb();
+        $(".datu").goodsDatu();
+        $(".showImg").goodsIndex();
+        $('#slider').mBanner('slider');
+
+    });
+    //导航栏滚动
+    //    $('#nav').navigator();
+    //导航栏滚动时锁定在屏幕上方
+    /*window.onload = function () {
+     menuFixed('wrap');
+     }*/
+    $("#search_bar").on("click", function () {
+        window.location.href = "{:U('App/Shop/search')}";
+    });
+
+</script>
+<script type="text/javascript">
+    /*$("#nav ul li").tap(function () {
+     var t = $(this).index();
+     for (var i = 0; i < $("#nav ul li").length; ++i) {
+     if (i == t) {
+     $(".secondNav").eq(i).fadeToggle(900);
+     }
+     else {
+     $(".secondNav").eq(i).hide();
+     }
+     }
+     })*/
+</script>
+</body>
+<include file="./Tpl/App/Shop_share.html"/>
+<eq name="_SESSION['WAP']['vip']['school_id']" value="0">
+    <include file="./Tpl/App/Shop_selectSchool.html"/>
+</eq>
+</html>

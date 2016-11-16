@@ -1,0 +1,108 @@
+<div class="row">
+    <div class="widget-header bg-blue">
+        <i class="widget-icon fa fa-arrow-down"></i>
+        <span class="widget-caption">中奖名单</span>
+        <div class="widget-buttons">
+            <a href="#" data-toggle="maximize">
+                <i class="fa fa-expand"></i>
+            </a>
+            <a href="#" data-toggle="collapse">
+                <i class="fa fa-minus"></i>
+            </a>
+            <a href="#" data-toggle="dispose">
+                <i class="fa fa-times"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="widget-body">
+        <div class="table-toolbar">
+            <div class="pull-right">
+                <form id="App-search" class="margin-bottom-10 form-inline">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <select id="s_type" class="form-control" name="s_type">
+                                <if condition="$s_type eq 0">
+                                        <option value="0" selected>中奖名单</option>
+                                        <option value="1">全部名单</option>
+                                    <else />
+                                        <option value="0">中奖名单</option>
+                                        <option value="1" selected>全部名单</option>
+                                </if>
+                            </select>
+                            <input id="s_keyword" name="s_keyword" type="search" class="form-control input-sm"
+                                   value="{$search}" placeholder="会员ID/手机号">
+                            <a href="{:U('Admin/lottery/lotteryList/')}" class="btn btn-success"
+                               data-loader="App-loader" data-loadername="商家统计" data-search="App-search">
+                                <i class="fa fa-search"></i>搜索
+                            </a>
+
+                            <a href="#" class="btn btn-success" id="exportVip">
+                                <i class="fa fa-table"></i>导出Excel
+                            </a>
+                            <empty name="vo5.soncate">
+                                <a class="btn btn-danger" data-type="confirm" data-ajax="{:U('Admin/Lottery/delAlready/',array('all'=>1))}" data-content="确定要清除列表？"><i class="fa fa-trash-o"></i>清除列表</a>
+                            </empty>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <table id="App-table" class="table table-bordered table-hover">
+            <thead class="bordered-darkorange">
+            <tr role="row">
+                <th width="80px">会员ID</th>
+                <th width="200px">会员名称</th>
+                <th width="100px">手机号</th>
+                <th width="100px">中奖情况</th>
+                <th width="100px">抽奖时间</th>
+                <!--<th width="100px">分销佣金</th>-->
+                <!--<th width="100px">消费金额</th>-->
+                <!--<th width="100px">已返金额</th>-->
+                <!--<th width="100px">VIA提成</th>-->
+                <!--<th width="100px">最后访问</th>-->
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <volist name="data" id="vo">
+                <tr>
+                    <td class=" sorting_1">{$vo.vip_id}</td>
+                    <td>{$vo.name}</td>
+                    <td>{$vo.mobile}</td>
+                    <td>
+                        <if condition="$vo.prize_level eq 0"> <span class="label label-default"> 未中奖</span>
+                            <elseif condition="$vo.prize_level eq 1"/><span class="label label-warning"> 一等奖</span>
+                            <elseif condition="$vo.prize_level eq 2"/><span class="label label-primary"> 二等奖</span>
+                            <else /><span class="label label-success"> 三等奖</span>
+                        </if>
+                    </td>
+                    <td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
+                    <td class="center">
+                        <if condition="$vo.prize_level eq 0">
+                            <elseif condition="$vo.got_time neq 0"/>
+                            已领奖({$vo.got_time|date='Y-m-d H:i:s',###})
+                            <else />
+                            <empty name="vo5.soncate">&nbsp;&nbsp;
+                                <a class="btn btn-success btn-xs" data-type="confirm" data-ajax="{:U('Admin/Lottery/setLottery/',array('id'=>$vo['id']))}" data-content="您确定要兑奖吗?"><i class="fa fa-thumbs-up"></i> 兑奖</a>
+                            </empty>
+                        </if>
+                        <empty name="vo5.soncate">&nbsp;&nbsp;<a class="btn btn-danger btn-xs" data-type="del" data-ajax="{:U('Admin/Lottery/delAlready/',array('id'=>$vo['id']))}"><i class="fa fa-trash-o"></i> 删除</a>
+                        </empty>
+                    </td>
+                </tr>
+            </volist>
+            </tbody>
+        </table>
+        <div class="row DTTTFooter">
+            {$page}
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    //导出会员数据
+    $('#exportVip').on('click', function () {
+        window.open("{:U('Admin/Lottery/LotteryExport')}");
+    })
+</script>

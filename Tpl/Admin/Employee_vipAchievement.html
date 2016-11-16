@@ -1,0 +1,98 @@
+<div class="row">
+    <div class="col-xs-12 col-md-12">
+        <div class="widget">
+            <div class="widget-header bg-blue">
+                <i class="widget-icon fa fa-arrow-down"></i>
+                <span class="widget-caption">{$employee.nickname}下线列表</span>
+                <div class="widget-buttons">
+                    <a href="#" data-toggle="maximize">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a href="#" data-toggle="collapse">
+                        <i class="fa fa-minus"></i>
+                    </a>
+                    <a href="#" data-toggle="dispose">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="widget-body">
+                <div class="table-toolbar">
+                    <a href="{:U('Admin/Employee/achievement/')}" class="btn btn-primary" data-loader="App-loader" data-loadername="返回">
+                        <i class="glyphicon glyphicon-share-alt"></i>返回
+                    </a>
+                    <div class="pull-right">
+                        <form id="App-search">
+                            <label style="margin-bottom: 0px;">
+                                <input name="search" type="search" class="form-control input-sm" value="{$search}{$eid}">
+                            </label>
+                            <a href="{:U('Admin/Employee/vipAchievement',array('eid'=>$employee['id']))}" class="btn btn-success" data-loader="App-loader" data-loadername="搜索" data-search="App-search">
+                                <i class="fa fa-search"></i>搜索
+                            </a>
+                        </form>
+                    </div>
+                </div>
+                <table id="App-table" class="table table-bordered table-hover">
+                    <thead class="bordered-darkorange">
+                        <tr role="row">
+                            <th>ID</th>
+                            <th>会员层级</th>
+                            <th>姓名</th>
+                            <th>微信昵称</th>
+                            <th>手机号</th>
+                            <th>是否分销商</th>
+                            <th>个人订单成交总额</th>
+                            <th>创建时间</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <volist name="cache" id="vo">
+                            <tr id="item{$vo.id}">
+                                <td>{$vo.id}</td>
+                                <td>{$vo.plv}</td>
+                                <td>{$vo.name}</td>
+                                <td>{$vo.nickname}</td>
+                                <td>{$vo.mobile}</td>
+                                <td>{$vo.fxname}</td>
+                                <td>{$vo.success_order_payprice}</td>
+                                <td>{$vo.ctime|date='Y/m/d H:i',###}</td>
+                            </tr>
+                        </volist>
+                    </tbody>
+                </table>
+                <div class="row DTTTFooter">
+                    {$page}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--面包屑导航封装-->
+<div id="tmpbread" style="display: none;">{$breadhtml}</div>
+<script type="text/javascript">
+setBread($('#tmpbread').html());
+</script>
+<!--/面包屑导航封装-->
+<!--全选特效封装/全部删除-->
+<script type="text/javascript">
+//全选
+var checkall = $('#App-table .App-checkall');
+var checks = $('#App-table .App-check');
+var trs = $('#App-table tbody tr');
+$(checkall).on('click', function() {
+    if ($(this).is(":checked")) {
+        $(checks).prop("checked", "checked");
+    } else {
+        $(checks).removeAttr("checked");
+    }
+});
+$(trs).on('click', function() {
+    var c = $(this).find("input[type=checkbox]");
+    if ($(c).is(":checked")) {
+        $(c).removeAttr("checked");
+    } else {
+        $(c).prop("checked", "checked");
+    }
+});
+</script>
+<!--/全选特效封装-->

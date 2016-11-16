@@ -1,0 +1,39 @@
+<volist name="data" id="vo">
+    <div class="ads-lst border-b1 ovflw mr-b back2 color6">
+        <p class="ads-tt border-b1">{$vo.bill_code}<span class="fr color3">
+				<switch name="vo.status">
+                    <case value="0">处理中</case>
+                    <case value="1">已完成</case>
+                </switch></span></p>
+        <div class="ads_orinfo ads_padding3 ovflw" style="padding-bottom: 0px;">
+            <div class="ads_orinfol ovflw fl">
+                <h4>商家：{$vo.supplier_name}</h4>
+
+                <p class="fonts2">
+                    <eq name="vo.is_pay" value="1"><span class="fl"> 应收 </span></eq>
+                    <eq name="vo.is_pay" value="0"><span class="fl"> 应付 </span></eq>
+                    金额：{$vo.money|number_format=###,2}
+                </p>
+               <!-- <p class="fonts2">手续费：{$vo.tx_fee}</p>-->
+
+                <p class="fonts2">备注：{$vo.memo}</p>
+            </div>
+        </div>
+        <p class="ads_ortt3 fonts85 ovflw">
+                <span class="fr">
+                    <eq name="vo.status" value="0">
+                        <a href="{:U('App/Vip/checkCancel')}?id={$vo.id}" class="home-cz">取消对账单</a>
+                    </eq>
+                    <a href="{:U('App/Vip/checkDetail')}?id={$vo.id}" class="home-cz">查看对账单</a>
+                </span>
+            </eq>
+            <eq name="vo.status" value="0">
+                <eq name="vo.is_pay" value="1">
+                    <span class="fr">
+                        <a data="{$vo.id}" href="#" class="home-rz">确认收款</a>
+                    </span>
+                </eq>
+            </eq>
+        </p>
+    </div>
+</volist>

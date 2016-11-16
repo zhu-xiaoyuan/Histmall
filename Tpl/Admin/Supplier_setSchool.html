@@ -1,0 +1,267 @@
+<div class="row">
+     <div class="col-xs-12 col-xs-12">
+          <div class="widget radius-bordered">
+              <div class="widget-header bg-blue">
+				<i class="widget-icon fa fa-arrow-down"></i>
+				<span class="widget-caption">标签设置</span>
+				<div class="widget-buttons">
+					<a href="#" data-toggle="maximize">
+						<i class="fa fa-expand"></i>
+					</a>
+					<a href="#" data-toggle="collapse">
+						<i class="fa fa-minus"></i>
+					</a>
+					<a href="#" data-toggle="dispose">
+						<i class="fa fa-times"></i>
+					</a>
+				</div>
+			</div>
+              <div class="widget-body">
+                  <form class="form-horizontal" id="set_school">
+                      <input type="hidden" name="id" value="{$_GET['id']}">
+                      <div class="form-title">
+                          <a href="{:U('Admin/Supplier/schoolManage/')}" class="btn btn-primary" data-loader="App-loader" data-loadername="标签列表">
+                              <i class="fa fa-mail-reply"></i>返回
+                          </a>
+                      </div>
+                      <!--城市-->
+                      <div class="form-group">
+                          <label class="col-sm-2 control-label">城市<span style="color:#f00">  *</span></label>
+                          <div class="col-sm-4">
+                              <input type="text" value="{$cache.name}" class="form-control" readonly/>
+                          </div>
+                      </div>
+                      <!--学校名称-->
+                      <div class="form-group">
+                          <label class="col-sm-2 control-label">学校名称<span style="color:#f00"> *</span></label>
+                          <div class="col-sm-4">
+                              <input type="text" name="school_name" value="{$cache.school_name}" class="form-control" placeholder="输入学校名称"
+                                     data-bv-notempty="true" data-bv-notempty-message="请输入学校名称"/>
+                          </div>
+                      </div>
+                      <!--总监ID信息-->
+                      <div class="form-group">
+                          <label class="col-sm-2 control-label">总监ID<span style="color:#f00"> *</span></label>
+                          <div class="col-sm-4">
+                              <input type="text" id="dire_id" name="role_1_id" class="form-control" placeholder="输入总监ID" value="{$cache.role_1_id}"
+                                     data-bv-notempty="true" data-bv-notempty-message="请输入总监ID"
+                                     data-bv-numeric="true"  data-bv-numeric-message="总监ID应为数字"/>
+                          </div>
+                          <div class="col-sm-6" id="dire_info">
+
+                          </div>
+                      </div>
+                      <!--VIA-ID信息-->
+                      <div class="form-group">
+                          <label class="col-sm-2 control-label">VIA-ID<span style="color:#f00"> *</span></label>
+                          <div class="col-sm-4">
+                              <input type="text" id="via_id" name="role_2_id" class="form-control" placeholder="输入VIA-ID"  value="{$cache.role_2_id}" data-bv-notempty="true" data-bv-notempty-message="请输入VIA-ID" data-bv-numeric="true"  data-bv-numeric-message="VIA-ID应为数字"/>
+                          </div>
+                          <div class="col-sm-6" id="via_info">
+
+                          </div>
+                      </div>
+                      <!--按钮-->
+                      <div class="row">
+                          <div class="col-sm-12">
+                              <div class="form-group">
+                                  <label class="control-label col-sm-3"></label>
+                                  <div class="col-sm-4">
+                                      <button type='submit' class="btn btn-lg btn-blue next_step">
+                                          保存
+                                      </button>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </form>
+                  <div class="form-title">
+                      <button class="btn btn-primary" id="bootbox-options">
+                          <i class="fa fa-plus"></i>添加推广人员
+                      </button>
+                  </div>
+                  <table id="App-table" class="table table-bordered table-hover">
+                      <thead class="borderred-darkorange">
+                      <tr role="row">
+                          <th>推广人员ID</th>
+                          <th>名称</th>
+                          <th>手机号</th>
+                          <th class="text-center">操作</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <notempty name="tgInfo">
+                          <volist name="tgInfo" id="vo">
+                              <tr>
+                                  <td style="padding:10px" class="h5">{$vo.id}</td>
+                                  <td style="padding:10px" class="h5">{$vo.name}</td>
+                                  <td style="padding:10px" class="h5">{$vo.mobile}</td>
+                                  <td class="text-center">
+                                      <a class="btn btn-darkorange btn-sm" data-content="确认要删除该推广员吗？删除之后将不再返佣【此操作不可逆转】。" data-ajax="/Admin/Supplier/closeTg/id/{$vo.id}" data-type="del" href="/Admin/Supplier/closeTg"><i class="fa fa-trash-o"></i>删除</a>
+                                  </td>
+                              </tr>
+                          </volist>
+                          <else />
+                          <tr>
+                              <td colspan="6" class="h5 text-center">
+                                  暂无数据
+                              </td>
+                          </tr>
+                      </notempty>
+                      </tbody>
+                  </table>
+                  <div class="row DTTTFooter">
+                      {$page}
+                  </div>
+            </div>
+        </div>
+	</div>
+     
+</div>
+
+<div id="myModal" style="display:none;">
+    <div class="row">
+        <div class="col-sm-1">
+        </div>
+        <div class="col-sm-4">
+            <input type="text"  name="role_3_id" class="form-control tg_id" placeholder="输入推广ID" oninput="tg_info(this)"/>
+        </div>
+        <div class="col-sm-6 tg_info">
+
+        </div>
+    </div>
+</div>
+<!--面包屑导航封装-->
+<div id="tmpbread" style="display: none;">{$breadhtml}</div>
+<script type="text/javascript">
+	setBread($('#tmpbread').html());
+</script>
+<!--/面包屑导航封装-->
+<!--表单验证与提交封装-->
+<script type="text/javascript">
+	$('#set_school').bootstrapValidator({
+		submitHandler: function (validator, form, submitButton) {
+           var tourl="{:U('Admin/Supplier/setSchool')}";
+			var data=$('#set_school').serialize();
+			$.App.ajax('post',tourl,data,null);
+			return false;
+        },
+	});
+
+    //获取总监信息
+    $('#dire_id').on('input',function(e){
+        var dire_id = $.trim($(this).val());
+        //如果为假或不为数字，不执行
+        if(!dire_id || isNaN(dire_id)){
+            return false;
+        }
+        $.ajax({
+            url     : '/Admin/Supplier/getVipInfo',
+            dataType: 'json',
+            data    : {vip_id:dire_id},
+            success : function(data){
+                if(data.status == 1){   //成功返回数据
+                    var str = "<span class='pull-left'><img src="+data.info.headimgurl+" height='35'/></span>";
+                    str += "<span class='pull-left'>昵称 ：<span style='color:#428bca'>"+data.info.nickname+"</span><br/>手机号 ： <span style='color:#428bca'>"+data.info.mobile+"</span></span>";
+                    $('#dire_info').empty().append(str);
+                    canSubmit = true;
+                }else{
+                    $('#dire_info').empty().append('<span style="color:#f00">'+data.msg+'</span>')
+                    canSubmit = false;
+                }
+            }
+        })
+    })
+
+    //获取ViA信息
+    $('#via_id').on('input',function(e){
+        var via_id = $.trim($(this).val());
+        //如果为假或不为数字，不执行
+        if(!via_id || isNaN(via_id)){
+            return false;
+        }
+        $.ajax({
+            url     : '/Admin/Supplier/getVipInfo',
+            dataType: 'json',
+            data    : {vip_id:via_id},
+            success : function(data){
+                if(data.status == 1){   //成功返回数据
+                    var str = "<span class='pull-left'><img src="+data.info.headimgurl+" height='35'/></span>";
+                    str += "<span class='pull-left'>昵称 ：<span style='color:#428bca'>"+data.info.nickname+"</span><br/>手机号 ： <span style='color:#428bca'>"+data.info.mobile+"</span></span>";
+                    $('#via_info').empty().append(str);
+                    canSubmit = true;
+                }else{
+                    $('#via_info').empty().append('<span style="color:#f00">'+data.msg+'</span>')
+                    canSubmit = false;
+                }
+            }
+        })
+    })
+
+    //获取推广人员信息
+    function tg_info(obj){
+        var tg_id = $.trim($(obj).val());
+        //如果为假或不为数字，不执行
+        if(!tg_id || isNaN(tg_id)){
+            return false;
+        }
+        $.ajax({
+            url     : "{:U('/Admin/Supplier/getVipInfo')}",
+            dataType: 'json',
+            data    : {vip_id:tg_id},
+            success : function(data){
+                if(data.status == 1){   //成功返回数据
+                    var str = "<span class='pull-left'><img src="+data.info.headimgurl+" height='35'/></span>";
+                    str += "<span class='pull-left'>昵称 ：<span style='color:#428bca'>"+data.info.nickname+"</span><br/>手机号 ： <span style='color:#428bca'>"+data.info.mobile+"</span></span>";
+                    $('.modal-body .tg_info').html(str);
+                    canSubmit = true;
+                }else{
+                    $('.modal-body .tg_info').empty().append('<span style="color:#f00">'+data.msg+'</span>')
+                    canSubmit = false;
+                }
+            }
+        })
+    }
+
+    $("#bootbox-options").on('click', function(){
+        bootbox.dialog({
+            message: $("#myModal").html(),
+            title: "添加推广人员",
+            className: "modal-darkorange",
+            buttons: {
+                success: {
+                    label: "确定",
+                    className: "btn-blue",
+                    callback: function (){
+                        var tg_id = $(".modal-body .tg_id").val();
+                        var id = "{$_GET['id']}";
+                        var zj_id = "{$cache.role_1_id}";
+                        var vai_id = "{$cache.role_2_id}";
+                        $.ajax({
+                            url     : "{:U('/Admin/Supplier/setTg')}",
+                            type   :'post',
+                            dataType: 'json',
+                            data    : {'tg_id':tg_id,'id':id,'zj_id':zj_id,'vai_id':vai_id},
+                            success : function(info) {
+                                if (info.status == 1) {   //成功返回数据
+                                    $.App.alert('success', info['msg']);
+                                    $('#App-reloader').trigger('click');
+                                } else {
+                                    $.App.alert('danger', info['msg']);
+                                }
+                            }
+                        })
+
+                    }
+                },
+                "取消": {
+                    className: "btn-danger",
+                    callback: function () { }
+                }
+            }
+        });
+    });
+
+    $('#dire_id').trigger('input');
+    $('#via_id').trigger('input');
+</script>

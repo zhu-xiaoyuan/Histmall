@@ -1,0 +1,51 @@
+<div class="row">
+     <div class="col-lg-6 col-sm-6 col-xs-12">
+          <div class="widget radius-bordered">
+              <div class="widget-header bordered-bottom bordered-blue">
+                   <span class="widget-caption">全局配置</span>
+              </div>
+              <div class="widget-body">
+                   <form id="AppForm" method="post" class="form-horizontal"
+                                                  data-bv-message=""
+                                                  data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
+                                                  data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
+                                                  data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+                   <div class="form-title">
+                        	全局配置有效
+                   </div>
+                   <div class="form-group">
+                        <label class="col-lg-4 control-label">预留字段</label>
+                        <div class="col-lg-8">
+                        <input type="text" class="form-control" name="username"
+                                                               data-bv-message="The username is not valid"
+                                                               data-bv-notempty="true"
+                                                               data-bv-notempty-message="The username is required and cannot be empty"
+                                                               data-bv-regexp="true"
+                                                               data-bv-regexp-regexp="[a-zA-Z0-9_\.]+"
+                                                               data-bv-regexp-message="The username can only consist of alphabetical, number, dot and underscore"
+                                                               data-bv-stringlength="true"
+                                                               data-bv-stringlength-min="6"
+                                                               data-bv-stringlength-max="30"
+                                                               data-bv-stringlength-message="The username must be more than 6 and less than 30 characters long"
+                                                               data-bv-different="true"
+                                                               data-bv-different-field="password"
+                                                               data-bv-different-message="The username and password cannot be the same as each other" />
+                        </div>
+                        </div>
+						<div class="form-group">
+                             <div class="col-lg-offset-4 col-lg-8">
+                             <input class="btn btn-palegreen" type="submit" value="Validate" />
+                        </div>
+                    </div>
+                   </form>
+                </div>
+        </div>
+	</div>
+     
+</div>
+<!--面包屑导航封装-->
+<div id="tmpbread" style="display: none;">{$breadhtml}</div>
+<script type="text/javascript">
+	setBread($('#tmpbread').html());
+</script>
+<!--/面包屑导航封装-->

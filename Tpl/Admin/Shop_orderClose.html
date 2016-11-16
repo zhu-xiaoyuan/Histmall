@@ -1,0 +1,25 @@
+ <div class="row">
+        <div class="col-md-12">
+                <form id="AppOrderClose" action="" method="post" class="form-horizontal"
+                                                  data-bv-message=""
+                                                  data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
+                                                  data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
+                                                  data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+                   <input type="hidden" name="id" value="{$cache.id}">                  
+                  
+                   <div class="form-group">
+                        <label class="col-lg-3 control-label">关闭客服<sup>*</sup></label>
+                        <div class="col-lg-7">
+                        	<input id="AppOrderCloseAdmin" type="text" class="form-control" name="closeadmin" value="{$cache.closeadmin}" placeholder="输入关闭客服名称">
+                        </div>
+                   </div>
+                   <div class="form-group">
+                        <label class="col-lg-3 control-label">关闭说明<sup>*</sup></label>
+                        <div class="col-lg-7">
+                        	<textarea id="AppOrderCloseMsg" class="form-control" name="closemsg" rows="5" >{$cache.closemsg}</textarea>
+                        </div>
+                   </div>
+               </form>
+        </div>
+</div>
+

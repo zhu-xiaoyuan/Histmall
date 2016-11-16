@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>注册页面</title>
+	   <meta charset="utf-8" />
+		<!--页面优化-->
+		<meta name="MobileOptimized" content="320">
+		<!--默认宽度320-->
+		<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+		<!--viewport 等比 不缩放-->
+		<meta http-equiv="cleartype" content="on">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<!--删除苹果菜单-->
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		<!--默认颜色-->
+		<meta name="apple-mobile-web-app-title" content="yes">
+		<meta name="apple-touch-fullscreen" content="yes">
+		<!--加载全部后 显示-->
+		<meta content="telephone=no" name="format-detection" />
+		<!--不识别电话-->
+		<meta content="email=no" name="format-detection" />
+		<link rel="stylesheet" href="__PUBLIC__/App/css/style.css" />
+		<script type="text/javascript" src="__PUBLIC__/App/js/zepto.min.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/App/gmu/gmu.min.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/App/gmu/app-basegmu.js"></script>
+	</head>
+	<body class="reg">
+		<div class="reg-hd" style="margin-top: 32px"></div>
+		<div class="reg-c">
+			<div class="reg-frm">
+				<div class="reg-input">
+					<span class="icons iconfont fl">&#xe652</span>
+					<input type="text" class="inputs fl" placeholder="手机号码" id="mobile"/>
+				</div>
+				<if condition="$isverify eq 1">
+				<div class="reg-input">
+					<span class="icons iconfont fl">&#xe667</span>
+					<input type="text" class="inputs fl" placeholder="验证码" id="code" style="width: 40%;"/>
+					<a href="#" class="reg-yzm fr color8" data-status="{$status}">获取验证码</a>
+				</div>
+				</if>
+				<div class="reg-input">
+					<span class="icons iconfont fl">&#xe6c0</span>
+					<input type="password" class="inputs fl" placeholder="设置密码" id="password"/>
+				</div>
+			</div>
+			<a href="javascript:void(0)" class="reg-btn text-c">马上注册</a>
+			<div class="reg-ft">
+				<a href="javascript:history.go(-1)" class="fl"><span class="back fl"></span><span class="fl">&nbsp;返回</span></a>
+				<a href="{:U('App/vip/login')}" class="fr">已有账号立马登录</a></div>
+		</div>
+		<!--通用分享-->
+		<include file="./Tpl/App/Shop_share.html" />
+	</body>
+</html>
+<script>
+	var times={$times};
+	var intval;
+	if (times>0) {
+		$('.reg-yzm').addClass('reg-disable');
+		intval=setInterval(intfun,1000);
+	}
+	$('.reg-yzm').click(function(){
+		var status = $(this).data('status');
+		if (status==1) {
+			var re = /^1\d{10}$/;
+			var mobile = $('#mobile').val();
+		    if (re.test(mobile)) {
+				$.getJSON("{:U('App/Vip/sendCode')}",{'mobile':mobile},function(e){
+					if(e.status=='1'){
+						zbb_msg(e.msg);
+						$('.reg-yzm').data('status','0');
+						$('.reg-yzm').addClass('reg-disable');
+						times=e.times;
+						intval=setInterval(intfun,1000);
+					} else {
+						zbb_msg(e.msg);
+					}
+				});
+		    } else {
+		        zbb_msg("手机号码错误");
+		    }
+		}
+	});	
+	
+	function intfun(){
+		if ((times-1)<1) {
+			window.clearInterval(intval);
+			$('.reg-yzm').data('status','1');
+			$('.reg-yzm').removeClass('reg-disable');
+			$('.reg-yzm').text("获取验证码");
+		} else {
+			$('.reg-yzm').text("获取验证码 ("+(times-1)+")");
+			times--;
+		}
+	}
+	
+    $('.reg-btn').click(function(){
+		var mobile = $('#mobile').val();
+		var password = $('#password').val();
+		var code = $('#code').val();
+		var re = /^1\d{10}$/;
+		if (re.test(mobile)==false) {
+			zbb_msg("手机号不正确！");
+			return;
+		}
+		if (code=='') {
+			zbb_msg("请输入验证码！");
+			return;
+		}
+		if (password=='') {
+			zbb_msg("请输入密码！");
+			return;
+		}
+	    $.ajax({
+			type:'post',
+			data:{'mobile':mobile,'password':password,'code':code},
+			url:"{:U('vip/reg')}",
+			dataType:'json',
+			success:function(e){
+				if(e.status == 1){
+					zbb_alert(e.msg,function(){
+						window.location.href="{:U('App/Vip/login')}"+"/mobile/"+e.mobile;
+					});
+				}else{
+					zbb_alert(e.msg);
+					return false;
+				}
+				
+			},
+			error:function(){
+			    zbb_alert('通讯失败！');
+				return false;
+			}
+		});	
+		return false;
+	});
+</script>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>账单详情</title>
+    <meta charset="utf-8"/>
+    <!--页面优化-->
+    <meta name="MobileOptimized" content="320">
+    <!--默认宽度320-->
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <!--viewport 等比 不缩放-->
+    <meta http-equiv="cleartype" content="on">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!--删除苹果菜单-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!--默认颜色-->
+    <meta name="apple-mobile-web-app-title" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <!--加载全部后 显示-->
+    <meta content="telephone=no" name="format-detection"/>
+    <!--不识别电话-->
+    <meta content="email=no" name="format-detection"/>
+    <link rel="stylesheet" href="__PUBLIC__/App/css/style.css"/>
+    <link rel="stylesheet" href="__PUBLIC__/App/css/dropload.css"/>
+    <script src="__PUBLIC__/App/js/zepto.min.js"></script>
+    <style>
+        .plist-ul li > a {
+            background-color: white;
+        }
+    </style>
+</head>
+<body class="back1 ">
+<div class="odrd_cc back2 ovflw color9 border-b1 border-t1 mr-b">
+    <div class="border-b1 odrd_tt">账单信息</div>
+    <div class="odrd_stu">
+        <p>账单状态：<em class="color3">
+            <switch name="cache.status">
+                <case value="0">处理中</case>
+                <case value="1">已完成</case>
+                <case value="2">已取消</case>
+            </switch>
+        </em></p>
+        <p>账单类型：<em class="color3">
+            <eq name='cache.is_pay' value="0">应付</eq>
+            <eq name='cache.is_pay' value="1">应收</eq>
+        </em></p>
+        <p>账单总额：<em class="color3">
+            ￥{$cache.money}
+        </em></p>
+
+        <p>账单编号：{$cache.bill_code}</p>
+
+        <p>对账时间：{$cache.apply_time|date="Y/m/d H:i:s",###}</p>
+        <eq name='cache.status' value="1">
+            <p>银行交易流水号：{$cache.tn}</p>
+
+            <p>银行交易完成时间：{$cache.trade_complete_time|date="Y/m/d H:i:s",###}</p>
+
+            <p>账单完成时间：{$cache.complete_time|date="Y/m/d H:i:s",###}</p>
+        </eq>
+        <eq name='cache.status' value="2"><p>账单取消时间：{$cache.complete_time|date="Y/m/d H:i:s",###}</p></eq>
+        <notempty name='cache.memo'><p>备注：{$cache.memo}</p></notempty>
+    </div>
+</div>
+<div class="ads-lst border-b1 ovflw mr-b back2 color6 border-t1" style="margin-bottom: 60px;">
+    <p class="ads-tt border-b1 color9">账单明细</p>
+
+    <div id="main">
+    </div>
+</div>
+<div id="html" style="display: none"></div>
+<div class="dtl-ft ovflw">
+    <div class=" fl dtl-icon dtl-bck ovflw">
+        <a href="{:U('App/Vip/checkOrder')}">
+            <i class="iconfont">&#xe679</i>
+        </a>
+    </div>
+</div>
+</body>
+<script src="__PUBLIC__/App/js/dropload.min.js"></script>
+<script>
+    $(function () {
+        var num = 10;
+        var counter = 0;
+        var dropload = $(".ads-lst").dropload({
+            scrollArea: window,
+            loadDownFn: function (me) {
+                $("#html").load("{:U('App/Vip/checkDetailItem')}?pg=" + counter + "&pc=" + num + "&bid={$cache.id}", function (html, status) {
+                    $("#html").html("");
+                    if (status == "success") {
+                        if (html == "") {
+                            dropload.noData();
+                            dropload.resetload();
+                            return;
+                        } else {
+                            $('#main').append(html);
+                            counter++;
+                            dropload.resetload();
+                        }
+                    } else {
+                        dropload.resetload();
+                    }
+                });
+            }
+        });
+    });
+</script>
+</html>

@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Head -->
+
+<head>
+    <meta charset="utf-8"/>
+    <title>{$_SESSION.CMS.set.name}-分销管理平台</title>
+    <meta name="description" content="blank page"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="shortcut icon" href="__PUBLIC__/Admin/img/favicon.png" type="image/x-icon">
+    <!--Basic Styles-->
+    <link href="__PUBLIC__/Admin/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="__PUBLIC__/Admin/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="__PUBLIC__/Admin/css/weather-icons.min.css" rel="stylesheet"/>
+    <!--Beyond styles-->
+    <link id="beyond-link" href="__PUBLIC__/Admin/css/beyond.min.css" rel="stylesheet"/>
+    <link href="__PUBLIC__/Admin/css/demo.min.css" rel="stylesheet"/>
+    <link href="__PUBLIC__/Admin/css/typicons.min.css" rel="stylesheet"/>
+    <link href="__PUBLIC__/Admin/css/animate.min.css" rel="stylesheet"/>
+    <link href="__PUBLIC__/Admin/css/appcms.css" rel="stylesheet"/>
+    <link href="__PUBLIC__/Admin/css/daterangepicker.css" rel="stylesheet"/>
+
+    <!--Skin Script: Place this script in head to load scripts for skins and rtl support-->
+    <!--<script src="__PUBLIC__/Admin/js/skins.min.js"></script>-->
+    <style>
+        .upimgwell {
+            margin-bottom: 0px;
+        }
+
+        .clear {
+            clear: both;
+        }
+
+        .FL {
+            float: left;
+        }
+
+        .FR {
+            float: right;
+        }
+
+        .profile-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 100%;
+            line-height: 30px !important;
+            overflow: hidden;
+            text-align: center;
+            font-size: 14px;
+            font-family: Arial, "Microsoft Yahei", Simsun;
+            display: block;
+            float: left;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<!-- /Head -->
+<!-- Body -->
+<body>
+<!-- Loading Container -->
+<div class="loading-container" id="App-loading-wrap">
+    <div id="loading" style="top: 150px; display: block;">
+        <div class="lbk"></div>
+        <div class="lcont"><img src="__PUBLIC__/Admin/img/loading.gif" alt="loading...">正在加载...</div>
+    </div>
+</div>
+<!--  /Loading Container -->
+<!-- Navbar -->
+<div class="navbar">
+    <div class="navbar-inner">
+        <div class="navbar-container">
+            <!-- Navbar Barnd -->
+            <div class="navbar-header pull-left" style="text-align:center;margin-left: 10px; padding-top: 10px;">
+                <a href="javascript:void(0)" class="navbar-brand">
+                    <small>
+                        {$_SESSION.CMS.set.name}
+                    </small>
+                </a>
+            </div>
+            <!-- /Navbar Barnd -->
+            <!-- Sidebar Collapse -->
+            <div class="sidebar-collapse" id="sidebar-collapse">
+                <i class="collapse-icon fa fa-bars"></i>
+            </div>
+            <!-- /Sidebar Collapse -->
+            <!-- Account Area and Settings -->
+            <div class="navbar-header pull-right">
+                <div class="navbar-account">
+                    <ul class="account-area">
+                        <li>
+                            <a class="login-area dropdown-toggle" data-toggle="dropdown">
+                                <section>
+                                    <h2><span class="profile"><span><span class="profile-avatar"></span>{$_SESSION.CMS.user.nickname}</span></span>
+                                    </h2>
+                                </section>
+                            </a>
+                            <!--Login Area Dropdown-->
+                            <ul class="pull-right dropdown-menu dropdown-arrow dropdown-login-area">
+                                <li class="username"><a>{$_SESSION.CMS.user.nickname}</a></li>
+                                <!--/Theme Selector Area-->
+                                <li class="dropdown-footer">
+                                    <a href="{:U('Admin/Public/logout')}">
+                                        注销登录
+                                    </a>
+                                </li>
+                            </ul>
+                            <!--/Login Area Dropdown-->
+                        </li>
+                        <!-- /Account Area -->
+                        <!--Note: notice that setting div must start right after account area list.
+                        no space must be between these elements-->
+                        <!-- Settings -->
+                    </ul>
+                    <!-- Settings -->
+                </div>
+            </div>
+            <!-- /Account Area and Settings -->
+        </div>
+    </div>
+</div>
+<!-- /Navbar -->
+<!-- Main Container -->
+<div class="main-container container-fluid">
+    <!-- Page Container -->
+    <div class="page-container">
+        <!-- Page Sidebar -->
+        <div class="page-sidebar" id="sidebar">
+            <!-- Sidebar Menu -->
+            <ul class="nav sidebar-menu">
+                <li style="display:none">
+                    <a id="AppHome" href="{:U('Admin/Index/main')}" data-loader="App-loader" data-loadername="主控面板">
+                        <i class="menu-icon glyphicon glyphicon-home"></i>
+                        <span class="menu-text"> 系统首页 </span>
+                    </a>
+                </li>
+                <!--菜单-->
+                <volist name="menu" id="vo">
+                    <li>
+                        <empty name="vo[1]"> <!--如果没有子菜单-->
+                            <a data-loadername="{$vo[0].name}" data-loader="App-loader" href=<eq name="vo[0]['url']" value='#'>'#'<else/>{:U($vo[0]['url'])}</eq>>
+                                <i class="{$vo[0].icon}"></i>
+                                <span class="menu-text">{$vo[0].name}</span>
+                            </a>
+                        <else/>  <!--如果有子菜单-->
+                            <!--<a class="menu-dropdown" href=<eq name="vo[0]['url']" value='#'>'#'<else/>{:U($vo[0]['url'])}</eq>>-->
+                            <a class="menu-dropdown" href="#">
+                                <i class="{$vo[0].icon}"></i>
+                                <span class="menu-text">{$vo[0].name}</span>
+                                <i class="menu-expand"></i>
+                            </a>
+                            <ul class="submenu" style="display:none">
+                                <volist name="vo[1]" id="vv">
+                                    <li>
+                                        <a data-loadername="{$vv['name']}" data-loader="App-loader" href="{:U($vv['url'])}">
+                                            <i class="{$vv['icon']}"></i>
+                                            <span class="menu-text">{$vv['name']}</span>
+                                        </a>
+                                    </li>
+                                </volist>
+                            </ul>
+                        </empty>
+                    </li>
+                </volist>
+            </ul>
+            <!-- /Sidebar Menu -->
+        </div>
+        <!-- /Page Sidebar -->
+        <!-- Page Content -->
+        <div class="page-content">
+            <!-- Page Breadcrumb -->
+            <div class="page-breadcrumbs">
+                <ul class="breadcrumb" id="App-bread">
+                    <li>
+                        <i class="fa fa-home"></i>
+                        <span>首页</span>
+                    </li>
+                    <li class="active">主控面板</li>
+                </ul>
+            </div>
+            <!-- /Page Breadcrumb -->
+            <!-- Page Header -->
+            <div class="page-header position-relative">
+                <div class="header-title">
+                    <h1 id="App-loader-title">
+                        主控面板
+                    </h1>
+                </div>
+                <!--Header Buttons-->
+                <div class="header-buttons">
+                    <a class="sidebar-toggler" href="#">
+                        <i class="fa fa-arrows-h"></i>
+                    </a>
+                    <a class="refresh" id="refresh-toggler" href="{:U('Admin/Index/main')}" data-loader="App-loader"
+                       data-name="主控面板">
+                        <i class="glyphicon glyphicon-refresh"></i>
+                    </a>
+                    <a class="fullscreen" id="fullscreen-toggler" href="#">
+                        <i class="glyphicon glyphicon-fullscreen"></i>
+                    </a>
+                </div>
+                <!--Header Buttons End-->
+            </div>
+            <!-- /Page Header -->
+            <!-- Page Body -->
+            <div id="App-loader" class="page-body">
+                <!-- 主加载器 -->
+            </div>
+            <!--图片库-->
+            <!-- /Page Body -->
+        </div>
+        <!-- /Page Content -->
+    </div>
+    <!-- /Page Container -->
+    <!-- Main Container -->
+</div>
+<!--全局隐藏控件-->
+<div class="hide">
+    <!--AppReloader-->
+    <a id="App-reloader" href="#">JOELRELOADER</a>
+    <!--单图片上传控件-->
+    <iframe style="display:none" name='doupimg_frame' id="doupimg_frame"></iframe>
+    <form enctype="multipart/form-data" action="{:U('Admin/Upload/doupimg')}" method="post" id="App-form-upimg"
+          target="doupimg_frame">
+        <input type="file" id="jupimg" name="jupimg" accept="image/*">
+    </form>
+</div>
+<!--基础脚本-->
+<script src="__PUBLIC__/Admin/js/jquery-2.0.3.min.js"></script>
+<script src="__PUBLIC__/Admin/js/bootstrap.min.js"></script>
+<script src="__PUBLIC__/Admin/js/beyond.min.js"></script>
+<script src="__PUBLIC__/Admin/js/toastr/toastr.js"></script>
+<script src="__PUBLIC__/Admin/js/validation/bootstrapValidator.js"></script>
+<script src="__PUBLIC__/Admin/js/bootbox/bootbox.js"></script>
+<!--统计脚本-->
+<script src="__PUBLIC__/Admin/js/charts/easypiechart/jquery.easypiechart.js"></script>
+<script src="__PUBLIC__/Admin/js/charts/easypiechart/easypiechart-init.js"></script>
+<script src="__PUBLIC__/Admin/js/charts/flot/jquery.flot.js"></script>
+<script src="__PUBLIC__/Admin/js/charts/flot/jquery.flot.orderBars.js"></script>
+<script src="__PUBLIC__/Admin/js/charts/flot/jquery.flot.tooltip.js"></script>
+<script src="__PUBLIC__/Admin/js/charts/flot/jquery.flot.resize.js"></script>
+<script src="__PUBLIC__/Admin/js/charts/flot/jquery.flot.selection.js"></script>
+<script src="__PUBLIC__/Admin/js/charts/flot/jquery.flot.crosshair.js"></script>
+<script src="__PUBLIC__/Admin/js/charts/flot/jquery.flot.stack.js"></script>
+<script src="__PUBLIC__/Admin/js/charts/flot/jquery.flot.time.js"></script>
+<script src="__PUBLIC__/Admin/js/charts/flot/jquery.flot.pie.js"></script>
+<script src="__PUBLIC__/Admin/js/charts/chartjs/Chart.js"></script>
+
+<!-- echarts -->
+<script src="__PUBLIC__/Admin/js/datetime/moment.min.js"></script>
+<script src="__PUBLIC__/Admin/libs/echarts/echarts.min.js"></script>
+
+<script src="__PUBLIC__/Admin/js/datetime/jquery.daterangepicker.js"></script>
+
+<!--百度地图类库-->
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=DfuRIaWyWIq93c5u8ug2d41Ly0Wp0yLl"></script>
+<!--App全局API-->
+<script src="__PUBLIC__/Admin/js/appapi.js"></script>
+<script type="text/javascript">
+    var RootPath = "__ROOT__";
+    var AppLoaderTitle = $('#App-loader-title');
+    var AppLoaderRefresh = $('#refresh-toggler');
+    var AppLoaderReloader = $('#App-reloader');
+    var AppSbLi = $('.sidebar-menu li');
+    //主导航高亮
+    var AppSideli = $('.submenu li');
+    //公共设置HTML内容方法
+    function setHtml(id, html) {
+        $(id).html(html);
+    }
+
+    //初始化主框架加载后的操作
+    function initFrame() {
+        var AppLoaderTitle = $('#App-loader-title');
+        var AppLoaderRefresh = $('#refresh-toggler');
+        var AppLoaderReloader = $('#App-reloader');
+        //处理Frame加载后的所有链接
+        var links = $('a');
+        $(links).on('click', function () {
+
+            //$(AppSideli).removeClass('active');
+            var loader = $(this).data('loader');
+            var tourl = $(this).attr('href');
+            var name = $(this).data('loadername');
+            $(AppLoaderReloader).attr('href', tourl).data('loader', loader).data('loadername', name);
+            if (loader) {
+                //高亮主导航
+                var li = $(this).parent('li');
+                //$(li).siblings().removeClass('active');
+                $(AppSbLi).removeClass('active');
+                $(li).addClass('active');
+                //如果是主Loader
+                if (loader == 'App-loader') {
+                    setHtml(AppLoaderTitle, name);
+                    $(AppLoaderRefresh).attr('href', tourl).data('loader', 'App-loader').data('loadername', name);
+
+                }
+                $('#' + loader).empty().load(tourl, function () {
+                    initLoader(loader);
+                });
+                return false;
+            }
+        });
+    }
+    //初始化Loader加载后的操作
+    function initLoader(loader) {
+        //加载Widget特效
+        InitiateWidgets();
+        //处理Loader加载后的所有链接
+        var loaderlinks = $('#' + loader + ' a');
+        $(loaderlinks).on('click', function () {
+            var loader = $(this).data('loader');
+            var tourl = $(this).attr('href');
+            var search = $(this).data('search');
+            var name = $(this).data('loadername');
+            //特殊按钮特效--全部阻止
+            var type = $(this).data('type');
+
+            if (type) {
+                switch (type) {
+                    case 'del':
+                        var content = $(this).data('content');
+                        if (!content) content = "确定要删除吗？";
+                        var toajax = $(this).data('ajax');
+                        var funok = function () {
+                            var callok = function () {
+                                //成功删除后刷新
+                                $(AppLoaderReloader).trigger('click');
+                                return false;
+                            };
+                            var callerr = function () {
+                                //拦截错误
+                                return false;
+                            };
+                            $.App.ajax('post', toajax, 'nodata', callok, callerr);
+                        }
+                        $.App.confirm(content, funok);
+                        return false;
+                        //
+                        break;
+                    case 'confirm':
+                        var content = $(this).data('content');
+                        if (!content) content = "确定要更改吗？";
+                        var toajax = $(this).data('ajax');
+                        var funok = function () {
+                            var callok = function () {
+                                //成功删除后刷新
+                                $(AppLoaderReloader).trigger('click');
+                                return false;
+                            };
+                            var callerr = function () {
+                                //拦截错误
+                                return false;
+                            };
+                            $.App.ajax('post', toajax, 'nodata', callok, callerr);
+                        }
+                        $.App.confirm(content, funok);
+                        return false;
+                        //
+                        break;
+                    default:
+                        $.App.alert('danger', '此Type属性系统未定义！');
+                        break;
+                }
+
+            } else {
+                //不存在特殊效果时，绑定Reloader刷新地址
+                $(AppLoaderReloader).attr('href', tourl).data('loader', loader).data('loadername', name).data('search', search);
+            }
+
+            if (loader) {
+                //如果是主Loader
+                if (loader == 'App-loader') {
+                    setHtml(AppLoaderTitle, name);
+                    $(AppLoaderRefresh).attr('href', tourl).data('loader', 'App-loader').data('loadername', name);
+                }
+                //如果有搜索条件绑定
+                if (search) {
+                    var sv = $('#' + search).serialize();
+                    if (sv) {
+                        tourl = tourl + '?' + sv;
+                    }
+                }
+                $('#' + loader).empty().load(tourl, function () {
+                    initLoader(loader);
+                });
+                return false;
+            }
+        });
+
+    }
+    //公共设置面包屑导航
+    function setBread(html) {
+        $('#App-bread').empty().html(html);
+        $('#App-bread a').on('click', function () {
+            var loader = $(this).data('loader');
+            var name = $(this).data('loadername');
+            var tourl = $(this).attr('href');
+            setHtml(AppLoaderTitle, name);
+            $(AppLoaderRefresh).attr('href', tourl).data('loader', 'App-loader').data('loadername', name);
+            $('#' + loader).empty().load(tourl, function () {
+                initLoader(loader);
+            });
+            return false;
+        });
+    }
+
+    //App默认图片上传管理器
+    function appImguploader(fbid, isall) {
+        //fbid 查找带回的文本框ID,全局唯一
+        //isall 多图,单图模式
+        $.ajax({
+            type: "post",
+            url: "{:U('Admin/Upload/indeximg')}",
+            data: {
+                'fbid': fbid,
+                'isall': isall
+            },
+            dataType: "json",
+            //beforeSend:$.App.loading(),
+            success: function (mb) {
+                //$.App.loading();
+                bootbox.dialog({
+                    message: mb,
+                    title: "图片上传管理器",
+                    className: "modal-darkorange",
+                    buttons: {
+                        '<i class="glyphicon glyphicon-refresh"></i>加载更多': {
+                            className: 'btn-default pull-left',
+                            callback: function () {
+                                $('#App-uploader-getmore').trigger("click");
+                                return false;
+                            }
+                        },
+                        "追加": {
+                            className: "btn-success",
+                            callback: function () {
+                                if (isall == 'false') {
+                                    $('#' + fbid).val($('#App-uploader-findback').val());
+                                } else {
+                                    $('#' + fbid).val($('#' + fbid).val() + "," + $('#App-uploader-findback').val());
+                                }
+                            }
+                        },
+                        "替换": {
+                            className: "btn-blue",
+                            callback: function () {
+                                $('#' + fbid).val($('#App-uploader-findback').val());
+                            }
+                        },
+                        "取消": {
+                            className: "btn-danger",
+                            callback: function () {
+                            }
+                        }
+                    }
+                });
+            },
+            error: function (xhr) {
+                $.App.alert('danger', '通讯失败！请重试！');
+            }
+        });
+        return false;
+    }
+    //App默认图片预览器
+    function appImgviewer(fbid) {
+        //fbid 查找带回的文本框ID,全局唯一
+        //isall 多图,单图模式
+        var ids = $('#' + fbid).val();
+        if (!ids) {
+            $.App.alert('danger', '您还没有图片可以预览！');
+            return false;
+        }
+        $.ajax({
+            type: "post",
+            url: "{:U('Admin/Index/appImgviewer')}",
+            data: {
+                'ids': ids
+            },
+            dataType: "json",
+            success: function (mb) {
+                bootbox.dialog({
+                    message: mb,
+                    title: "图片预览器",
+                    className: "modal-darkorange",
+                    buttons: {
+                        success: {
+                            label: "确定",
+                            className: "btn-blue",
+                            callback: function () {
+                            }
+                        },
+                        "取消": {
+                            className: "btn-danger",
+                            callback: function () {
+                            }
+                        }
+                    }
+                });
+            },
+            error: function (xhr) {
+                $.App.alert('danger', '通讯失败！请重试！');
+            }
+        });
+        return false;
+    }
+    //App默认百度地图控件
+    function baiduDitu(fbaddid, fblngid, fblatid) {
+        var fbadd = $('#' + fbaddid);
+        var fblng = $('#' + fblngid);
+        var fblat = $('#' + fblatid);
+        if (!fbadd || !fblng || !fblat) {
+            $.App.alert('danger', '回调控件不完整!');
+        }
+        //fbid 查找带回的文本框ID,全局唯一
+        $.ajax({
+            type: "post",
+            url: "{:U('Admin/Public/baiduDitu')}",
+            data: {
+                'address': $(fbadd).val(),
+                'lng': $(fblng).val(),
+                'lat': $(fblat).val()
+            },
+            dataType: "json",
+            success: function (mb) {
+                bootbox.dialog({
+                    message: mb,
+                    title: "百度地图控件",
+                    className: "modal-darkorange",
+                    buttons: {
+                        success: {
+                            label: "确定",
+                            className: "btn-blue",
+                            callback: function () {
+                                $(fbadd).val($('#baiduDituaddress').val());
+                                $(fblng).val($('#baiduDitulng').val());
+                                $(fblat).val($('#baiduDitulat').val());
+                            }
+                        },
+                        "取消": {
+                            className: "btn-danger",
+                            callback: function () {
+                            }
+                        }
+                    }
+                });
+            },
+            error: function (xhr) {
+                $.App.alert('danger', '通讯失败！请重试！');
+            }
+        });
+        return false;
+    }
+    //App默认SKU管理器
+    function appSkuloader(ids, fbid) {
+        //ids  已选择的属性
+        //fbid 查找带回的文本框ID,全局唯一
+        $.ajax({
+            type: "post",
+            url: "{:U('Admin/Shop/skuLoader')}",
+            data: {
+                'ids': ids,
+                'fbid': fbid
+            },
+            dataType: "json",
+            //beforeSend:$.App.loading(),
+            success: function (mb) {
+                //$.App.loading();
+                bootbox.dialog({
+                    message: mb,
+                    title: "商品Sku管理器",
+                    className: "modal-darkorange",
+                    buttons: {
+                        "取消": {
+                            className: "btn-danger",
+                            callback: function () {
+                            }
+                        }
+                    }
+                });
+            },
+            error: function (xhr) {
+                $.App.alert('danger', '通讯失败！请重试！');
+            }
+        });
+        return false;
+    }
+    $(document).ready(function () {
+        initFrame();
+        //初始化图表
+        //InitiateEasyPieChart.init();
+        $('#AppHome').trigger('click');
+    });
+</script>
+</body>
+<!--  /Body -->
+
+</html>

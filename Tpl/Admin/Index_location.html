@@ -1,0 +1,85 @@
+<div class="row">
+    <div class="col-xs-12 col-xs-12">
+        <div class="widget radius-bordered">
+            <div class="widget-header bg-blue">
+                <i class="widget-icon fa fa-arrow-down"></i>
+                <span class="widget-caption">区域设置</span>
+                <div class="widget-buttons">
+                    <a href="#" data-toggle="maximize">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a href="#" data-toggle="collapse">
+                        <i class="fa fa-minus"></i>
+                    </a>
+                    <a href="#" data-toggle="dispose">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="widget-body">
+                <form id="AppForm" action="" method="post" class="form-horizontal" data-bv-message="" data-bv-feedbackicons-valid="glyphicon glyphicon-ok" data-bv-feedbackicons-invalid="glyphicon glyphicon-remove" data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">省</label>
+                        <div class="col-lg-4">
+                            <select class="form-control location" name="province" id="province" data-bv-notempty="true" data-bv-notempty-message="不能为空" data-method="city">
+                                <option value="">请选择省</option>
+                                <volist name="province" id="vo">
+                                    <option value="{$vo.id}">{$vo.name}</option>
+                                </volist>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">市</label>
+                        <div class="col-lg-4">
+                            <select class="form-control location" name="city" id="city" data-bv-notempty="true" data-bv-notempty-message="不能为空" data-method="area">
+                                <option value="">请选择市</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">区</label>
+                        <div class="col-lg-4">
+                            <select class="form-control" name="area" id="area" data-bv-notempty="true" data-bv-notempty-message="不能为空">
+                                <option value="">请选择区</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-offset-2 col-lg-4">
+                            <button class="btn btn-primary btn-lg" type="reset">保存</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <button class="btn btn-palegreen btn-lg" type="reset">重填</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--面包屑导航封装-->
+<div id="tmpbread" style="display: none;">{$breadhtml}</div>
+<script type="text/javascript">
+setBread($('#tmpbread').html());
+
+$('.location').change(function() {
+    var pid = $(this).val();
+    var method = $(this).data('method');
+    $.getJSON("{:U('Admin/Index/getLocation')}", {
+        'pid': pid,
+        'method': method
+    }, function(e) {
+        if (e.status == '1') {
+            if (method == 'city') {
+                html = '<option value="">请选择市</option>';
+                $('#area').html('<option value="">请选择区</option>');
+            } else {
+                html = '<option value="">请选择区</option>';
+            }
+            for (var i = 0; i < e.data.length; i++) {
+                html += '<option value="' + e.data[i].id + '">' + e.data[i].name + '</option>';
+            }
+            $('#' + method).html(html);
+        }
+    });
+});
+</script>

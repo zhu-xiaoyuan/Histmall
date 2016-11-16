@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>推广确认</title>
+	    <meta charset="utf-8" />
+		<!--页面优化-->
+		<meta name="MobileOptimized" content="320">
+		<!--默认宽度320-->
+		<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+		<!--viewport 等比 不缩放-->
+		<meta http-equiv="cleartype" content="on">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<!--删除苹果菜单-->
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		<!--默认颜色-->
+		<meta name="apple-mobile-web-app-title" content="yes">
+		<meta name="apple-touch-fullscreen" content="yes">
+		<!--加载全部后 显示-->
+		<meta content="telephone=no" name="format-detection" />
+        <!--weui-->
+        <link href="http://cdn.bootcss.com/weui/0.4.2/style/weui.min.css" rel="stylesheet">
+		<!--不识别电话-->
+		<meta content="email=no" name="format-detection" />
+		<link rel="stylesheet" href="__PUBLIC__/App/css/style.css" />
+		<script type="text/javascript" src="__PUBLIC__/App/js/zepto.min.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/App/gmu/gmu.min.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/App/gmu/app-basegmu.js"></script>
+	</head>
+	<body class="back1">
+
+	<div class="weui_msg">
+		<div class="weui_icon_area">
+			<img src="{$data.headimgurl}" style="width:100px;border-radius: 100%;"/>
+			<!--<i class="weui_icon_msg weui_icon_info"></i>-->
+		</div>
+		<div class="weui_text_area">
+			<h2 class="weui_msg_title">申请人： {$data.apply_nickname} </h2>
+			<p class="weui_msg_desc">申请时间：{$data.create_time|date='Y-m-d H:i:s',###}</p>
+			<p class="weui_msg_desc">确定要【{$data.apply_nickname}】加入团队，成为推广人员吗？</p>
+			<input type="hidden" id="post_url" name="url" value="{:U('App/Fx/confirmTg')}"/>
+			<input type="hidden" id="apply_tg_id" name="id" value="{$data.id}"/>
+		</div>
+		<div class="weui_opr_area">
+			<p class="weui_btn_area">
+				<button data-status="1" class="weui_btn weui_btn_primary">确定</button>
+				<button data-status="2" class="weui_btn weui_btn_warn">拒绝</button>
+			</p>
+		</div>
+	</div>
+
+	<div class="insert1"></div>
+	<div class="dtl-ft ovflw">
+			<div class=" fl dtl-icon dtl-bck ovflw">
+				<a href="{:U('App/Fx/promotionLog')}">
+					<i class="iconfont">&#xe679</i>
+				</a>
+			</div>
+	</div>
+
+	<div id="toast" style="display: none;">
+		<div class="weui_mask_transparent"></div>
+		<div class="weui_toast">
+			<i class="weui_icon_toast"></i>
+			<p class="weui_toast_content"></p>
+		</div>
+	</div>
+
+	</body>
+	
+</html>
+<script>
+	var id = $('#apply_tg_id').val();
+	var url = $('#post_url').val();
+	//同意
+	$('.weui_btn').click(function(){
+		$(this).html('提交中');
+		$('.weui_btn').addClass('weui_btn_disabled');
+		$('.weui_btn').attr('disabled','disabled');
+		var status = $(this).data('status');
+		$.ajax({
+			url		: url,
+			data	: {id:id,status:status},
+			type	: 'post',
+			success : function(data){
+				$('.weui_toast_content').html(data.msg);
+				$('#toast').attr('style','');
+				setTimeout(redirect,2000);
+			},
+			error	: function(){
+				alert('网络问题，刷新后重试');
+			}
+		})
+		var redirect = function(){
+			location.href='{:U("App/Fx/promotionLog")}';
+		}
+	})
+</script>

@@ -1,0 +1,179 @@
+<!doctype html>
+<html>
+<head>
+    <title>订单列表</title>
+    <meta charset="utf-8"/>
+    <!--页面优化-->
+    <meta name="MobileOptimized" content="320">
+    <!--默认宽度320-->
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <!--viewport 等比 不缩放-->
+    <meta http-equiv="cleartype" content="on">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!--删除苹果菜单-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!--默认颜色-->
+    <meta name="apple-mobile-web-app-title" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <!--加载全部后 显示-->
+    <meta content="telephone=no" name="format-detection"/>
+    <!--不识别电话-->
+    <meta content="email=no" name="format-detection"/>
+    <link rel="stylesheet" href="__PUBLIC__/App/css/style.css"/>
+    <!--组件依赖js begin-->
+    <script src="__PUBLIC__/App/js/zepto.min.js"></script>
+    <script src="__PUBLIC__/App/js/base.js"></script>
+    <!--组件依赖js end-->
+    <script type="text/javascript" src="__PUBLIC__/App/gmu/gmu.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/App/gmu/app-basegmu.js"></script>
+
+
+</head>
+<body class="back1">
+<div class="ads-tabs ovflw">
+    <a href="{:U('App/Shop/orderList',array('sid'=>0,'type'=>4))}" class="fl text-c"><span
+        <eq name='type' value='4'>class='active'</eq>
+        >全部</span></a>
+    <a href="{:U('App/Shop/orderList',array('sid'=>0,'type'=>1))}" class="fl text-c "><span
+        <eq name='type' value='1'>class='active'</eq>
+        >待付款</span></a>
+    <a href="{:U('App/Shop/orderList',array('sid'=>0,'type'=>2))}" class="fl text-c"><span
+        <eq name='type' value='2'>class='active'</eq>
+        >待收货</span></a>
+    <a href="{:U('App/Shop/orderList',array('sid'=>0,'type'=>3))}" class="fl text-c"><span
+        <eq name='type' value='3'>class='active'</eq>
+        >已完成</span></a>
+</div>
+<div class="ads-cc">
+    <volist name="cache" id="vo">
+        <div class="ads-lst border-b1 ovflw mr-b back2 color6">
+            <p class="ads-tt border-b1">{$vo.oid}<span class="fr color3">
+				<switch name="vo.status">
+                    <case value="0">已取消</case>
+                    <case value="1">待付款</case>
+                    <case value="2">待发货</case>
+                    <case value="3">待收货</case>
+                    <case value="4">退货中</case>
+                    <case value="5">已完成</case>
+                    <case value="6">已关闭</case>
+                    <case value="7">退货完成</case>
+
+                    <case value="10">待付款 </case>
+                    <case value="14">已付款 </case>
+                    <case value="11">审核中</case>
+                    <case value="12">已完成</case>
+                    <case value="13">已关闭</case>
+                </switch></span></p>
+            <volist name="vo.items" id="vt">
+                <div class="ads_orinfo ads_padding3 ovflw border-b1">
+                    <div class="ads_orinfol ovflw fl">
+                        <div class="ads_or_img fl">
+                            <!-- 图片大小为147*101 -->
+                            <img class="minPic" data-src="{$vt.pic}"/>
+                        </div>
+                        <h3>{$vt.name}</h3>
+                        <notempty name="vt.skuattr">
+                            <p class="color3 fonts2">{$vt.skuattr}</p>
+                        </notempty>
+                    </div>
+                    <div class="ads_orprice ovflw ">
+                        <p><em class="fonts85">￥</em><em class="fonts18">{$vt.price|number_format=###,2}</em></p>
+
+                        <p class="ads_ornum fonts85">X{$vt.num}</p>
+                    </div>
+                </div>
+            </volist>
+            <p class=" ads_ortt3 fonts85 ovflw border-b1"><span class="fl">共{$vo.totalnum}件商品</span>
+                <eq name="vo.other" value="0">
+                    <span class="fr">实付：<em
+                            class="fonts18">￥{$vo.payprice}</em></span>
+                </eq>
+                <eq name="vo.other" value="1">
+                    <span class="fr">代支付</span>
+                </eq>
+            </p>
+
+            <eq name="vo.order_type" value="0">
+                <p class="ads_ortt3 fonts85 ovflw">
+                    <span class="iconfont" style="color: #7e3794;">&#xe670;</span>
+                    <span class="fr">
+                          <eq name="vo.status" value='1'>
+                              <a href="{:U('App/Shop/orderCancel',array('sid'=>0,'orderid'=>$vo['id']))}"
+                                 class="home-cz">取消订单
+                              </a>
+                          </eq>
+                          <a href="{:U('App/Shop/orderDetail',array('sid'=>0,'orderid'=>$vo['id'],'cate'=>0,'type'=>$_GET['type']))}"
+                             class="home-cz">查看订单
+                          </a>
+                          <eq name="vo.status" value='1'>
+                              <a href="{:U('App/Shop/pay',array('sid'=>0,'orderid'=>$vo['id'],'paytype'=>$vo['paytype']))}"
+                                 class="home-rz">付款
+                              </a>
+                          </eq>
+                          <eq name="vo.status" value='3'>
+                              <eq name="shopset.isth" value='1'>
+                                  <a href="{:U('App/Shop/orderTuihuo',array('sid'=>0,'orderid'=>$vo['id']))}"
+                                     class="home-cz">我要退货
+                                  </a>
+                              </eq>
+                              <a href="{:U('App/Shop/orderOK',array('sid'=>0,'orderid'=>$vo['id']))}"
+                                 class="home-rz">确认收货
+                              </a>
+                          </eq>
+                    </span>
+                </p>
+            </eq>
+            <eq name="vo.order_type" value="1">
+                <p class="ads_ortt3 fonts85 ovflw">
+                    <span class="iconfont" style="color: #ed4e2a">&#xe676;</span>
+                    <span class="fr">
+                          <eq name="vo.status" value='10'>
+                              <eq name="vo.is_pay" value='0'>
+                                  <eq name="vo.is_my" value='1'>
+                                      <a href="{:U('App/Business/orderCancel',array('sid'=>0,'orderid'=>$vo['id']))}"
+                                         class="home-cz">取消订单
+                                      </a>
+                                  </eq>
+                              </eq>
+                          </eq>
+                              <a href="{:U('App/Shop/orderDetail',array('sid'=>0,'orderid'=>$vo['id'],'cate'=>1,'type'=>$_GET['type']))}"
+                                 class="home-cz">查看订单
+                              </a>
+                              <eq name="vo.status" value='10'>
+                                  <eq name="vo.is_play" value="0">
+                                      <a href="{:U('App/Business/pay',array('sid'=>0,'orderid'=>$vo['id'],'paytype'=>$vo['paytype']))}"
+                                         class="home-rz">付款
+                                      </a>
+                                  </eq>
+                              </eq>
+                        <!--<eq name="vo.status" value='2'>
+                            <a href="{:U('App/Shop/orderOK',array('sid'=>0,'orderid'=>$vo['id']))}"
+                               class="home-rz">确认收货
+                            </a>
+                        </eq>-->
+                    </span>
+                </p>
+            </eq>
+        </div>
+    </volist>
+</div>
+<empty name="cache">
+    <div class="list_none text-c">
+        <p class="color6">暂无订单</p>
+    </div>
+</empty>
+<!-- 底部导航 -->
+<include file="./Tpl/App/Shop_footer.html"/>
+<!--通用分享-->
+<include file="./Tpl/App/Shop_share.html"/>
+<eq name="_SESSION['WAP']['vip']['school_id']" value="0">
+    <include file="./Tpl/App/Shop_selectSchool.html"/>
+</eq>
+</body>
+<script>
+    $(function () {
+        $('.minPic').minThumb();
+        $("#ftvip").attr("style", "color: rgb(25, 165, 243)");
+    });
+</script>
+</html>

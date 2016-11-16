@@ -1,0 +1,252 @@
+<style>
+    .money {
+        font-size: 20px;
+        color: blue;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+
+    .plan_money {
+        font-size: 20px;
+        color: red;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+</style>
+<div class="row">
+    <div class="col-xs-12 col-md-12">
+        <div class="widget">
+            <div class="widget-header bg-blue">
+                <i class="widget-icon fa fa-arrow-down"></i>
+                <span class="widget-caption">返现管理</span>
+
+                <div class="widget-buttons">
+                    <a href="#" data-toggle="maximize">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a href="#" data-toggle="collapse">
+                        <i class="fa fa-minus"></i>
+                    </a>
+                    <a href="#" data-toggle="dispose">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="widget-body">
+                <div class="row">
+                    <eq name="bonus.status" value="1">
+                        <h5 class="row-title before-success"><i class="fa  fa-clock-o success"></i>
+                            分红时间：{$bonus.bonus_operate_time|date='Y-m-d H:i:s',###}
+                            <span class="label label-success">已分红</span>
+                        </h5>
+                        <else/>
+                        <h5 class="row-title before-warning"><i class="fa  fa-clock-o warning"></i>
+                            <notempty name="bonus.create_time">
+                                统计时间：{$bonus.create_time|date='Y-m-d H:i:s',###}
+                                <span class="label label-warning">未分红</span>
+                                <else/>
+                                未发现可用数据
+                            </notempty>
+                        </h5>
+                    </eq>
+
+                </div>
+                <div class="row">
+
+                    <div class="col-sm-4">
+                        <div class="well bordered-top bordered-bottom bordered-pink">
+                            <h4 class="block">分红资金池余额</h4>
+
+                            <h3>
+                                ￥{$bonus.bonus_capital_pool_remainder|number_format=###,2}
+                            </h3>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="well bordered-top bordered-bottom bordered-success">
+                            <h4 class="block">今日分红金额</h4>
+                            <eq name="bonus.status" value="1">
+                                <h3>
+                                    ￥<span>{$bonus.real_money|number_format=###,2}</span>
+                                </h3>
+                                <else/>
+                                <h3>
+                                    ￥<span id="today-bonus-money" data-plan-money="{$bonus.plan_money}"
+                                           data-money="{$bonus.plan_money}">{$bonus.plan_money|number_format=###,2}</span>
+                                </h3>
+                                <a href="javascript:;" class="btn btn-warning btn-circle"
+                                   style="width:100px;height:100px;line-height:100px;padding:0;font-size:2.0rem;font-family: Microsoft YaHei, 宋体;position: absolute;top:15px;right:15px;"
+                                   data-id="{$bonus.id}" onclick="apply_process(this)">分红</a>
+                            </eq>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="well bordered-top bordered-bottom bordered-blue">
+                            <h4 class="block">资金池余额</h4>
+
+                            <h3>
+                                ￥{$bonus.capital_pool_remainder|number_format=###,2}
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-toolbar">
+                    <eq name="bonus.status" value="0">
+                        <div class="pull-left">
+                            <form class="margin-bottom-10 form-inline">
+                                <label class="label-control">把"分红金额"调整为</label>
+
+                                <div class="input-group input-group-sm">
+                                    <input id="real_money" value="" type="text" class="form-control input-sm"
+                                           placeholder="">
+                                    <span class="input-group-addon">
+                                         元
+                                      </span>
+                                </div>
+
+                                <button class="btn btn-default" id="btnChange">调整</button>
+                            </form>
+                        </div>
+                    </eq>
+                    <div class="pull-right">
+                        <form id="App-search" class="form-inline">
+                            <input name="search" type="search" class="form-control input-sm" placeholder="会员ID/名称/电话"
+                                   value="{$search}">
+                            <a href="{:U('Admin/Money/manage/')}" class="btn btn-success" data-loader="App-loader"
+                               data-loadername="返现管理" data-search="App-search">
+                                <i class="fa fa-search"></i>搜索
+                            </a>
+                        </form>
+                    </div>
+                </div>
+                <table id="App-table" class="table table-bordered table-hover">
+                    <thead class="bordered-darkorange">
+                    <tr role="row">
+                        <th>会员ID</th>
+                        <th>会员名称</th>
+                        <th>手机号</th>
+                        <th>账户余额</th>
+                        <th>应返金额</th>
+                        <th>操作时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <volist name="cache" id="vo">
+                        <tr id="item{$vo.id}">
+                            <td class=" sorting_1">{$vo.vip_id}</td>
+                            <td class=" ">{$vo.vip_name}</td>
+                            <td class=" ">{$vo.vip_phone}</td>
+                            <td class=" ">{$vo.vip_amount|number_format=###,2}</td>
+                            <td class=" ">{$vo.money|number_format=###,2}</td>
+                            <td class=" ">{$vo.create_time|date='Y-m-d H:i:s',###}</td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </table>
+                <div class="row DTTTFooter">
+                    {$page}
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!--面包屑导航封装-->
+<div id="tmpbread" style="display: none;">{$breadhtml}</div>
+<script type="text/javascript">
+    setBread($('#tmpbread').html());
+</script>
+<script src="__PUBLIC__/Admin/js/jquery.number.min.js"></script>
+<!--/面包屑导航封装-->
+<!--全选特效封装/全部删除-->
+<script type="text/javascript">
+
+    function apply_process(o) {
+        $.App.confirm("<h4>确认要分红/返现吗？</h4>", function () {
+            var id = $(o).data('id');
+            var money = parseInt($('#today-bonus-money').attr('data-money'));
+            var data = {
+                bonus_record_id: id,
+                money: money
+            };
+            //console.log(data);
+            $.ajax({
+                type: 'post',
+                url: "{:U('Admin/Money/back_money')}",
+                data: data,
+                dataType: "json",
+                beforeSend: $.App.loading(),//执行ajax前执行loading函数.直到success
+                success: function (info) {
+                    $.App.loading();
+                    if (info.status == 1) {
+                        var msg = $('#tpl-bonus-success').html();
+                        msg = msg.replace('{{bonus_vip}}', info.data['bonus_vip']).replace('{{plan_money}}', $.number(info.data['plan_money'], 2)).replace('{{real_money}}', $.number(info.data['real_money'], 2));
+                        $.App.confirm(msg, function () {
+                            $('#refresh-toggler').trigger('click');
+                        }, function () {
+                            $('#refresh-toggler').trigger('click');
+                        });
+                    } else {
+                        $.App.alert('danger', info.msg);
+                    }
+                }, //成功时执行Response函数
+                error: function (info) {
+                    alert('操作失败，请重试或检查网络连接！')
+                }//失败时调用函数
+            });
+        }, function () {
+
+        });
+
+        return false;
+    }
+
+    $('#btnChange').click(function () {
+        var money = parseFloat($('#real_money').val().trim());
+        //alert(money+","+plan_money);
+        if (money <= 0) {
+            Notify('金额不合法,请重新调整', 'top-right', '3000', 'warning', 'fa-info', true);
+            return false;
+        } else if (money) {
+            $('#today-bonus-money').attr('data-money', money);
+            $('#today-bonus-money').html($.number(money, 2));
+        }
+        return false;
+    });
+
+</script>
+<!--/全选特效封装-->
+<script type="text/template" id="tpl-bonus-success">
+    <div class="well with-header" style="margin-top:30px;">
+        <div class="header bordered-sky">成功</div>
+        <div class="labels-container">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">参与分红人数</label>
+
+                    <div class="col-lg-4">
+                        <label class="control-label" style="font-size:1.5rem;">{{bonus_vip}}</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">计划分红金额</label>
+
+                    <div class="col-lg-4">
+                        <label class="control-label" style="font-size:1.5rem;">{{plan_money}}</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">实际分红金额</label>
+
+                    <div class="col-lg-4">
+                        <label class="control-label" style="font-size:1.5rem;">{{real_money}}</label>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</script>

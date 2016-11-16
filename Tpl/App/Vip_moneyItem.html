@@ -1,0 +1,41 @@
+<volist name="cache" id="vo">
+    <li style="width: 100%;">
+        <a href="#" style="padding: 5px;">
+            <h1 class="plist-tt fonts4 ovflw" style="height:30px;">{$vo.name}
+                -
+                <switch name="vo.status">
+                    <case value="11">已申请</case>
+                    <case value="12">已完成</case>
+                    <case value="20">未发放</case>
+                    <case value="21">未领取</case>
+                    <case value="22">已领取</case>
+                    <case value="30">已付款</case>
+                    <case value="31">待核对</case>
+                    <case value="32">已完成</case>
+                    <case value="42">已付款</case>
+                    <case value="43">已发货</case>
+                    <case value="44">退货中</case>
+                    <case value="45">已完成</case>
+                    <case value="50">已完成</case>
+                    <case value="60">已完成</case>
+                    <case value="70">已完成</case>
+                </switch>
+                <span style="float: right;">{$vo.time|date="Y-m-d H:i",###}</span>
+            </h1>
+
+            <p>
+                <span class="plist-yp color3">
+                    <eq name="vo.type" value="0">
+                        <em class="fonts1" style="color: green;">＋￥{$vo.price}</em>
+                    </eq>
+                     <eq name="vo.type" value="1">
+                         <em class="fonts1">－￥{$vo.price|number_format=###,2}</em>
+                     </eq>
+                </span>&nbsp;
+                <span style="float: right;font-size: 13px;">
+                    {$vo.code}
+                </span>
+            </p>
+        </a>
+    </li>
+</volist>

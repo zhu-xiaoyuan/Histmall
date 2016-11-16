@@ -1,0 +1,196 @@
+<style>
+	#App-uploader-body .imgwp{ float: left; width: 130px; height: 100px; overflow: hidden; text-align: center; margin-left: 10.5px; margin-bottom: 10.5px; border: 1px solid #F5F5F5; position: relative; cursor: pointer;}
+	#App-uploader-body .cover{ width: 130px; height: 100px; position: absolute; left: 0px; top:0px; background:url('__PUBLIC__/Admin/img/choosed.png'); display: none;}
+	#App-uploader-body .imgwp:hover{border: 1px solid #ED4E2A;}
+	#App-uploader-body .imgwp img{width: 100%; height: 100%; vertical-align: middle;}
+	#App-uploader-body .group{ position: absolute; right: 0px; top: 0px;}
+	#tooltip{color:white; border:0px;background-color: rgba(0, 0, 0, 0.6);padding:4px;display: none;position: absolute;width:130px}
+</style>
+<div id="App-uploader">
+	<div id="App-uploader-header">
+		<div class="hide">
+			<iframe name='App-uploader-frame' id="App-uploader-frame"></iframe>
+			<form enctype="multipart/form-data" action="{:U('Admin/Upload/doupimg')}" method="post" id="App-uploader-form" target="App-uploader-frame" >
+			 	<input type="file" id="App-uploader-file" name="appfile[]" multiple accept="image/*">
+		 	</form>
+	 	</div>
+		<div class="alert alert-success">
+			  <button id="App-uploader-getmore" class="btn btn-default hidden"><i class="glyphicon glyphicon-refresh"></i>加载更多</button>
+              <button id="App-uploader-start" class="btn btn-default"><i class="glyphicon glyphicon-search"></i>选择图片</button>
+              <i class="fa-fw fa fa-info"></i>
+              <strong>提示：</strong> <span id="App-uploader-result">您还未选择任何图片.</span>
+            <button id="App-uploader-clear" class="btn btn-default pull-right"><i class="glyphicon glyphicon-remove"></i>清除文件</button>
+        </div>
+        <div class="input-group input-group-sm" style="margin-bottom: 20px;">
+        		<input type="text" class="form-control" disabled value="" id="App-uploader-findback" placeholder="点击下方图片自动添加">
+           		<span class="input-group-btn">
+                	<button class="btn btn-default shiny" type="button" id="App-uploader-delall" onclick="delall()"><i class="glyphicon glyphicon-trash"></i>删除图片</button>
+                </span>
+        </div>
+	</div>
+	<div id="App-uploader-body" data-page = "2">
+        <div class="tooltip-inner" id="tooltip"> 朱孝远</div>
+		<volist name="cache" id="vo">
+			<div class="imgwp" data-id = "{$vo.id}" data-check = "0" onclick="checkupload(this);" onmousemove="ov(this)" data-width="{$vo.width}" data-height="{$vo.height}" data-path="{$vo.savepath}" data-img="{$vo.name}" data-name="{$vo.savename}">
+				<img src="{$vo.savepath}/{$vo.savename}?imageView2/1/w/256/h/196" />
+				<div class="cover"></div>
+			</div>
+		</volist>
+	</div>
+	<div class="clear"></div>
+</div>
+<script>
+	var fbid="{$fbid}";
+	var isall="{$isall}"=="true"?true:false;
+	var Jupfile=$("#App-uploader-file");
+	var Jupresult=$("#App-uploader-result");
+	var Jupstart=$("#App-uploader-start");
+	var Jupform=$("#App-uploader-form");
+	var Jupgetmore=$("#App-uploader-getmore");
+	var Jupbody=$('#App-uploader-body');
+	var Jupfindback=$('#App-uploader-findback');
+	var Jupdelall=$('#App-uploader-delall');
+
+	//上传后回调
+	function doupimgcallback(info,upval) {
+		if(upval){
+            $.App.alert('success',info);
+			$('#App-uploader-body').find('.imgwp').remove();
+			$(Jupbody).data('page',1);
+            $(Jupgetmore).trigger('click');
+            $(Jupfindback).val('');
+        }else{
+            $.App.alert('danger',info)
+        }
+        clearUploadFile();
+    }
+
+    function clearUploadFile(){
+        var cfile=$(Jupfile).clone().val("");
+        $(Jupfile).remove();
+        Jupfile  = cfile;
+        $(Jupfile).on('change',uploadFileChange);
+        cfile.appendTo(Jupform);
+        $(Jupstart).html('<i class="glyphicon glyphicon-search"></i>选择图片').removeClass('btn-primary').addClass('btn-default');
+        $(Jupresult).html('您还未选择任何图片.');
+    }
+	//图片选择函数
+	function checkupload(obj){
+		var id=$(obj).data('id');
+		var ischeck=$(obj).data('check');
+		var cover=$(obj).find('.cover');
+		if(!isall){
+			var objs=$(Jupbody).find('.imgwp');
+		}
+		va=$(Jupfindback).val();
+		if(!isall){
+			//单图模式
+			$(objs).each(function(){
+				if($(this).data('check')==1){
+					$(this).data('check',0);
+					$(this).find('.cover').hide();
+				}
+			});
+			$(Jupfindback).val(id);
+			$(obj).data('check',1);
+			$(cover).show();
+		}else{
+			//图集模式
+			if(ischeck=='1'){
+				$(obj).data('check',0);
+				$(Jupfindback).val(va.replace(id+',',''));
+				$(cover).hide();
+			}else{
+				$(obj).data('check',1);
+				$(Jupfindback).val(va+id+',');
+				$(cover).show();
+			}
+		}
+
+	}
+    //删除图片
+    function delall(){
+        var imgId = $(Jupfindback).val();
+        var toUrl = "{:U('Admin/Upload/delimgs')}";
+        var imgObjs = $(".imgwp[data-id="+imgId+"]");
+        $.ajax({
+            type:"post",
+            data:{'ids':imgId},
+            url:toUrl,
+            success:function(info){
+                if(info['status'] == 1){
+                    imgObjs.remove();
+                    $.App.alert('success',info['msg']);
+                }else{
+                    $.App.alert('dange','通讯失败！请重试！');
+                }
+            },
+            error:function(x){
+                $.App.alert('dange','通讯失败！请重试！');
+            }
+        });
+    }
+
+	function ov(obj){
+	/*	var id=$(obj).data('id');
+		var ischeck=$(obj).data('check');
+		var cover=$(obj).find('.cover');
+        */
+        var tooltip = $("#tooltip");
+        var width = $(obj).css('width');
+        var top = $(obj).position().top;
+        var left = $(obj).position().left;
+        tooltip.css({'position':'absolute','top':top+78+'px','left':left+10+'px','z-index':11,'font-size':'10px'});
+//        var savepath = $(obj).data('path');
+//        var savename = $(obj).data('name');
+//        var image=new Image();
+//        image.src = savepath + "/"+ savename;
+//        var width=image.width,height=image.height;
+//		console.log($(obj).data('img'))
+		var size_width = $(obj).data('width');
+		var size_height = $(obj).data('height');
+        tooltip[0].innerHTML = size_width + "x" +size_height;
+        tooltip.css('display','block');
+
+	}
+	//上传变化
+    function uploadFileChange(){
+        $(Jupstart).html('<i class="glyphicon glyphicon-upload"></i>上传图片').removeClass('btn-default').addClass('btn-primary');
+        $(Jupresult).html('您有'+document.getElementById("App-uploader-file").files.length+'等待上传！');
+    };
+	$(Jupfile).on('change',uploadFileChange);
+	//上传按钮
+	$(Jupstart).on('click',function(){
+		var len=document.getElementById("App-uploader-file").files.length;
+		if(len){
+			$("#App-uploader-form").submit();
+		}else{ $(Jupfile).trigger("click");}
+		return false;
+	});
+	//加载更多
+	$(Jupgetmore).on('click',function(){
+		var p=$(Jupbody).data('page');
+		var moreurl="{:U('Admin/Upload/getmoreimg/')}";
+		var more;
+		$.ajax({
+			type:"post",
+			data:{'p':p},
+			dataType: "json",
+			url:moreurl,
+			success:function(info){
+				if(info){
+					$(info).appendTo($(Jupbody));
+					$(Jupbody).data('page',(p+1));
+				}else{
+					$.App.alert('success','没有图片了!请上传！');
+				}
+			},
+			error:function(x){
+				$.App.alert('dange','通讯失败！请重试！');
+			}
+		});
+	});
+    $('#App-uploader-clear').on('click', function () {
+        clearUploadFile();
+    });
+</script>

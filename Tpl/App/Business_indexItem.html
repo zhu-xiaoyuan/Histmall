@@ -1,0 +1,12 @@
+<volist name="store" id="vo">
+    <a href="{:U('App/Business/storeView')}?id={$vo.id}" class="weui_media_box weui_media_appmsg">
+        <div class="weui_media_hd">
+            <img class="weui_media_appmsg_thumb" data-src="{$vo.imgurl}">
+        </div>
+        <div class="weui_media_bd">
+            <h4 class="weui_media_title">{$vo.name}</h4>
+
+            <p class="weui_media_desc">{$vo.province}{$vo.city}{$vo.area}{$vo.address}</p>
+        </div>
+    </a>
+</volist>

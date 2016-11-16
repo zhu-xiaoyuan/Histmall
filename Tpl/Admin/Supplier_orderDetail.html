@@ -1,0 +1,131 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="widget">
+            <div class="widget-header bg-blue">
+                <i class="widget-icon fa fa-arrow-down"></i>
+                <span class="widget-caption">订单详情</span>
+                <div class="widget-buttons">
+                    <a href="#" data-toggle="maximize">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a href="#" data-toggle="collapse">
+                        <i class="fa fa-minus"></i>
+                    </a>
+                    <a href="#" data-toggle="dispose">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="widget-body">
+                <div class="form-title">
+                    <a class="btn btn-primary" href="{:U('Admin/Supplier/orderManage',array('order_status'=>$_GET[order_status]))}" data-loadername="订单管理" data-loader="App-loader">
+                        <i class="fa fa-reply"></i> 返 回
+                    </a>
+                </div>
+                <div class="row form-horizontal">
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">订单号：</label>
+                        <div class="col-lg-4">
+                            <label class="control-label">{$info.order_code}</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">商家信息：</label>
+                        <div class="col-lg-4">
+                            <label class="control-label">
+                                <label class="label label-default">ID</label> {$info.vip_seller_id}
+                                <label class="label label-default">名称</label> {$info.su_name}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">买家信息：</label>
+                        <div class="col-lg-4">
+                            <label class="control-label">
+                                <label class="label label-default">ID</label> {$info.vip_buyer_id}
+                                <label class="label label-default">名称</label> {$info.vip_nickname}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">订单价格：</label>
+                        <div class="col-lg-4">
+                            <label class="control-label">{$info.total_price}</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">支付价格：</label>
+                        <div class="col-lg-4">
+                            <label class="control-label">{$info.pay_price}</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">支付类型：</label>
+                        <div class="col-lg-4">
+                            <label class="control-label">{$info.pay_type}</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">消费内容：</label>
+                        <div class="col-lg-4">
+                            <label class="control-label">{$info.memo}</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">订单状态：</label>
+                        <div class="col-lg-4">
+                            <label class="control-label">{$info.status_name}</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">下单时间：</label>
+                        <div class="col-lg-4">
+                            <label class="control-label">{$info.order_time}</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">订单来源：</label>
+                        <div class="col-lg-4">
+                            <label class="control-label">
+                                <switch name="info.creator_type">
+                                    <case value="0">消费者</case>
+                                    <case value="1">商家</case>
+                                    <case value="2">平台</case>
+                                </switch>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-title">订单进度</div>
+                <div class="row">
+                    <div class="col-sm-offset-1">
+                        <table class="table" style="max-width:600px;">
+                            <tr><td>时间</td><td>状态</td><td>消息</td></tr>
+                            <volist name="process" id="vo">
+                                <tr>
+                                    <td>{$vo.ctime|date='Y-m-d H:i:s',###}</td>
+                                    <td>
+                                        <switch name="vo.type">
+                                            <case value="-1">取消订单</case>
+                                            <case value="0">默认状态</case>
+                                            <case value="1">新增订单</case>
+                                            <case value="2">支付成功</case>
+                                            <case value="3">发货订单</case>
+                                            <case value="4">申请退货</case>
+                                            <case value="5">交易完成</case>
+                                            <case value="6">交易关闭</case>
+                                        </switch>
+                                    </td>
+                                    <td>{$vo.msg}</td>
+                                </tr>
+                            </volist>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

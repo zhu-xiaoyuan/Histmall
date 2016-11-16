@@ -1,0 +1,30 @@
+<div style="text-align: center; width: 570px; overflow: hidden;" id="App-sku-loader-wrap">
+	<empty name="cache"><p>没有未选择的SKU属性了</p></empty>
+<volist name="cache" id="vo">
+	<p><button class="btn btn-default" data-id = "{$vo.id}">{$vo.name}:{$vo.items}</button></p>
+</volist>
+</div>
+<script>
+    var fbname="{$findback}";
+    var findback=$('#'+fbname);
+	var bts=$('#App-sku-loader-wrap button');
+	$(bts).on('click',function(){
+		var id=$(this).data('id');
+		var bt=$(this);
+		$.ajax({
+					type:"post",
+					url:"{:U('Admin/Shop/skuFindback')}",
+					data:{'id':id},
+					dataType: "json",
+					success:function(mb){
+						$(findback).append(mb);
+						$.App.alert('success','添加属性成功！');
+						$(bt).remove();
+						initShopSku();
+					},
+					error:function(xhr){
+						$.App.alert('danger','通讯失败！请重试！');
+					}
+		});
+	});
+</script>

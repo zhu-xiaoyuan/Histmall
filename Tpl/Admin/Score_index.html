@@ -1,0 +1,70 @@
+<!-- DataTables Example -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="widget-container fluid-height clearfix">
+            <div class="widget-content padded clearfix">
+                <table class="table table-hover" style="margin-bottom: 12px">
+                    <thead>
+                    <th class="check-header hidden-xs">
+                        <label><input id="checkAll" name="checkAll" type="checkbox"><span></span></label>
+                    </th>
+                    <th>
+                        ID
+                    </th>
+                    <th>
+                        商品名称
+                    </th>
+                    <th class="hidden-xs">
+                        商品积分
+                    </th>
+                    <th class="hidden-xs">
+                        推荐状态
+                    </th>
+                    <th>
+                        状态
+                    </th>
+                    <th>
+                        操作
+                    </th>
+                    </thead>
+                    <tbody>
+                    <volist name="product" id="product">
+                        <tr>
+                            <td class="check hidden-xs">
+                                <label><input name="optionsRadios1" type="checkbox"
+                                              value="option1"><span></span></label>
+                            </td>
+                            <td>
+                                {$product.id}
+                            </td>
+                            <td>
+                                {$product.name}
+                            </td>
+                            <td class="hidden-xs">
+                                {$product.score}
+                            </td>
+                            <td class="hidden-xs">
+                                <span class="label label-success">{$product.recommend}</span>
+                            </td>
+                            <td>
+                                <span class="label label-success">{$product.status}</span>
+                            </td>
+                            <td class="hidden-xs">
+                                <style type="text/css">
+                                    .action-buttons > a {
+                                        margin-left: 5px;
+                                    }
+                                </style>
+                                <div class="action-buttons" style="cursor: pointer;">
+                                    <a class="table-actions" href="{:U(\'Admin/Score/del\')}" data-type="del" data-ajax="{:U(\'Admin/Score/del\',array(\'id\'=>$product[\'id\']))}">删除</a>
+                                </div>
+                            </td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </table>
+                {$page}
+            </div>
+        </div>
+    </div>
+</div>

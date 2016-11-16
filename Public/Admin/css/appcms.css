@@ -1,0 +1,65 @@
+/*通用数据表单*/
+.DTTTFooter {
+margin: 0;
+background: #fff;
+overflow: hidden;
+padding: 5px 5px 2px 10px;
+border: 1px solid #ddd;
+border-top: 0px;
+background-color: #eee;
+background-image: -webkit-linear-gradient(top, #f2f2f2 0, #fafafa 100%);
+background-image: -moz-linear-gradient(top, #f2f2f2 0, #fafafa 100%);
+background-image: linear-gradient(to bottom, #f2f2f2 0, #fafafa 100%);
+}
+div.dataTables_info {
+padding-top: 8px;
+}
+div.dataTables_paginate {
+float: right;
+margin: 0;
+}
+sup{color: red;}
+
+#loading, #loading .lbk, #loading .lcont {
+    width: 146px;
+    height: 146px;
+}
+#loading {
+    position: absolute;
+    left: 50%;
+    top: 60px;
+    z-index: 99;
+}
+
+#loading .lbk {
+    background-color: #000;
+    opacity: .5;
+    border-radius: 10px;
+    margin: -73px 0 0 -73px;
+    z-index: 0;
+}
+#loading .lbk, #loading .lcont {
+    position: relative;
+}
+#loading, #loading .lbk, #loading .lcont {
+    width: 146px;
+    height: 146px;
+}
+
+#loading .lcont {
+    margin: -146px 0 0 -73px;
+    text-align: center;
+    color: #f5f5f5;
+    font-size: 14px;
+    line-height: 35px;
+    z-index: 1;
+}
+#loading img {
+    width: 35px;
+    height: 35px;
+    margin: 30px auto;
+    display: block;
+}
+img, fieldset {
+    border: none;
+}

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <title>拼团专区</title>
+    <meta charset="utf-8"/>
+    <!--页面优化-->
+    <meta name="MobileOptimized" content="320">
+    <!--默认宽度320-->
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <!--viewport 等比 不缩放-->
+    <meta http-equiv="cleartype" content="on">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!--删除苹果菜单-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!--默认颜色-->
+    <meta name="apple-mobile-web-app-title" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <!--加载全部后 显示-->
+    <meta content="telephone=no" name="format-detection"/>
+    <!--不识别电话-->
+    <meta content="email=no" name="format-detection"/>
+    <link rel="stylesheet" href="__PUBLIC__/App/css/style.css"/>
+    <link rel="stylesheet" href="__PUBLIC__/App/css/dropload.css"/>
+    <script src="__PUBLIC__/App/js/zepto.min.js"></script>
+    <script src="__PUBLIC__/App/js/base.js"></script>
+    <style>
+        .showImg-div {
+            height: 160px;
+        }
+        .group_buy{
+            background-color:#f00;
+            border-radius:5px;
+            color:#fff;
+            font-size: 13px;
+            padding: 4px;
+            margin-top:2px;
+            text-align:center;
+            float: right;
+        }
+    </style>
+</head>
+<body>
+<div id="html" style="display: none;"></div>
+<div class="title-bg">|&nbsp;&nbsp;共有{$sum}件团购商品</div>
+<div class="index-plist ovflw" id="index-plist">
+    <ul class="plist-ul ovflw">
+
+    </ul>
+</div>
+</body>
+<input id="cid" value="{$cid}" type="hidden">
+<input id="kw" value="{$kw}" type="hidden">
+<script src="__PUBLIC__/App/js/dropload.min.js"></script>
+<script>
+    $(function () {
+        var num = 10;
+        var counter = 0;
+        var dropload = $("#index-plist").dropload({
+            scrollArea: window,
+            loadDownFn: function (me) {
+                $("#html").load("{:U('App/Shop/groupItem')}?num=" + counter + "&page=" + num, function (html, status) {
+                    $("#html").html("");
+                    if (status == "success") {
+                        if (html == "") {
+                            dropload.noData();
+                            dropload.resetload();
+                            return;
+                        } else {
+                            $('#index-plist>ul').append(html);
+                            $(".showImg").goodsIndex();
+                            counter++;
+                            dropload.resetload();
+                        }
+                    } else {
+                        dropload.resetload();
+                    }
+                });
+            }
+        });
+    });
+
+</script>
+<include file="./Tpl/App/Shop_share.html"/>
+</html>

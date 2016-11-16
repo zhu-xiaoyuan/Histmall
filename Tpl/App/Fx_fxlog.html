@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>收获日志</title>
+    <meta charset="utf-8"/>
+    <!--页面优化-->
+    <meta name="MobileOptimized" content="320">
+    <!--默认宽度320-->
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <!--viewport 等比 不缩放-->
+    <meta http-equiv="cleartype" content="on">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!--删除苹果菜单-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!--默认颜色-->
+    <meta name="apple-mobile-web-app-title" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <!--加载全部后 显示-->
+    <meta content="telephone=no" name="format-detection"/>
+    <!--不识别电话-->
+    <meta content="email=no" name="format-detection"/>
+    <link rel="stylesheet" href="__PUBLIC__/App/css/style.css"/>
+    <link rel="stylesheet" href="__PUBLIC__/App/css/dropload.css"/>
+    <script type="text/javascript" src="__PUBLIC__/App/js/zepto.min.js"></script>
+</head>
+<body class="back1">
+<div class="ovflw back2" style="margin-bottom: 50px;">
+    <ul class="achos-ul ovflw">
+
+    </ul>
+</div>
+<div id="html" style="display: none;"></div>
+
+<div class="insert1"></div>
+<div class="dtl-ft ovflw">
+    <div class=" fl dtl-icon dtl-bck ovflw">
+        <a href="{:U('App/Fx/index')}">
+            <i class="iconfont">&#xe679</i>
+        </a>
+    </div>
+</div>
+<!--通用分享-->
+<include file="./Tpl/App/Shop_share.html"/>
+</body>
+<script type="text/javascript" src="__PUBLIC__/App/js/dropload.min.js"></script>
+<script>
+    $(function () {
+        var num = 10;
+        var counter = 0;
+        var dropload = $(".back2").dropload({
+            scrollArea: window,
+            loadDownFn: function (me) {
+                $("#html").load("{:U('App/Fx/fxlogItem')}?pg=" + counter + "&pc=" + num, function (html, status) {
+                    if (status == "success") {
+                        if (html == "") {
+                            dropload.noData();
+                            dropload.resetload();
+                            return;
+                        } else {
+                            $('.achos-ul').append(html);
+                            $("#html").html("");
+                            counter++;
+                            dropload.resetload();
+                        }
+                    } else {
+                        dropload.resetload();
+                    }
+                });
+            }
+        });
+    });
+</script>
+</html>

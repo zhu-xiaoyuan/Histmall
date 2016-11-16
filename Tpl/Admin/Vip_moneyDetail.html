@@ -1,0 +1,195 @@
+<div class="row">
+    <div class="col-xs-12 col-md-12">
+        <div class="widget">
+            <div class="widget-header bg-blue">
+                <i class="widget-icon fa fa-arrow-down"></i>
+                <span class="widget-caption">余额明细</span>
+                <div class="widget-buttons">
+                    <a href="#" data-toggle="maximize">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a href="#" data-toggle="collapse">
+                        <i class="fa fa-minus"></i>
+                    </a>
+                    <a href="#" data-toggle="dispose">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="widget-body">
+                <div class="table-toolbar">
+                    <a href="{:U('Admin/Vip/txorder/status/1')}" class="btn btn-primary" data-loader="App-loader" data-loadername="设置分组">
+                        <i class="fa fa-mail-reply"></i>返回
+                    </a>
+
+                </div>
+                <table id="App-table" class="table table-bordered table-hover">
+                    <thead class="bordered-darkorange">
+                    <tr role="row">
+                        <!--<th>会员ID</th>-->
+                        <th>类型</th>
+                        <th>金额</th>
+                        <th>时间</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <volist name="cache" id="vo">
+                        <tr id="item{$vo.id}">
+                            <!--<td class=" sorting_1">{$vo.id}</td>-->
+                            <td>{$vo.action}</td>
+                            <td class=" ">{$vo.money|number_format=###,2}</td>
+                            <td class=" ">{$vo.time|date='Y/m/d H:i',###}</td>
+
+                        </tr>
+                    </volist>
+                    </tbody>
+                </table>
+                <!--<div class="row DTTTFooter">-->
+                    <!--{$page}-->
+                <!--</div>-->
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!--<script src="__PUBLIC__/Admin/js/datetime/moment.min.js"></script>-->
+
+<!--<script src="__PUBLIC__/Admin/js/datetime/jquery.daterangepicker.js"></script>-->
+
+<!--面包屑导航封装-->
+<div id="tmpbread" style="display: none;">{$breadhtml}</div>
+<script type="text/javascript">
+    setBread($('#tmpbread').html());
+</script>
+<!--/面包屑导航封装-->
+<!--全选特效封装/全部删除-->
+<script type="text/javascript">
+    //全选
+    var checkall = $('#App-table .App-checkall');
+    var checks = $('#App-table .App-check');
+    var trs = $('#App-table tbody tr');
+    $(checkall).on('click', function() {
+        if ($(this).is(":checked")) {
+            $(checks).prop("checked", "checked");
+        } else {
+            $(checks).removeAttr("checked");
+        }
+    });
+    $(trs).on('click', function() {
+        var c = $(this).find("input[type=checkbox]");
+        if ($(c).is(":checked")) {
+            $(c).removeAttr("checked");
+        } else {
+            $(c).prop("checked", "checked");
+        }
+    });
+    //全删
+    $('#App-delall').on('click', function() {
+        var checks = $(".App-check:checked");
+        var chk = '';
+        $(checks).each(function() {
+            chk += $(this).val() + ',';
+        });
+        if (!chk) {
+            $.App.alert('danger', '请选择要删除的项目！');
+            return false;
+        }
+        var toajax = "{:U('Admin/Employee/employeeDel')}" + "/id/" + chk;
+        var funok = function() {
+            var callok = function() {
+                //成功删除后刷新
+                $('#refresh-toggler').trigger('click');
+                return false;
+            };
+            var callerr = function() {
+                //拦截错误
+                return false;
+            };
+            $.App.ajax('post', toajax, 'nodata', callok, callerr);
+        }
+        $.App.confirm("确认要删除吗？", funok);
+    });
+</script>
+<script>
+
+    $('#btnOk').click(function(){
+        var id =$('#apply_id').val();
+
+        var tn = $('#tn').val().trim();
+        var memo = $('#memo').val();
+
+        if(tn.length == 0){
+            Notify('流水号不能为空', 'top-right', '3000', 'warning', 'fa-edit', true);
+            return false;
+        }
+
+        var tourl = "{:U('Admin/Bill/ok')}";
+        var data = {
+            tn:tn,
+            memo:memo,
+            id:id
+        }
+        //console.log(data);
+        var callok = function() {
+            //刷新
+            $('#refresh-toggler').trigger('click');
+            return false;
+        };
+
+        $.App.ajax('post', tourl, data, callok);
+        $('#dialog').modal('hide');
+        return false;
+
+    })
+
+
+
+//    $(document).ready(function() {
+//        $('#model_tn').bootstrapValidator({
+//            feedbackIcons: {
+//                valid: 'glyphicon glyphicon-ok',
+//                invalid: 'glyphicon glyphicon-remove',
+//                validating: 'glyphicon glyphicon-refresh'
+//            },
+//            fields: {
+//                tn: {
+//                    validators: {
+//                        notEmpty: {
+//                            message: '流水号不能为空'
+//                        }
+//                    }
+//                }
+//            }
+//        });
+//    });
+
+//    $(function () {
+//
+//        $('#complete_date').dateRangePicker({
+//                    //batchMode:'week',
+//                    showShortcuts:true,
+//                    shortcuts:{
+//                        'prev':['week'],
+//                        'next':['week']
+//                    },
+//                    showWeekNumbers: true,
+//                    startOfWeek: 'monday',
+//                    separator: ' ~ '
+//                })
+//                .bind('datepicker-apply',function(event,obj)
+//                {
+//                    /* This event will be triggered when second date is selected */
+//                    console.log(obj);
+//
+//                    //var start = Date.parse(obj.date1);
+//                    //var end = Date.parse(obj.date2);
+//                    // console.log(end);
+//                    //$('#currentQuery').val(start+","+end);
+//                    //查询数据
+//
+//                });
+//    });
+</script>
+<!--/全选特效封装-->

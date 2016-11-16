@@ -1,0 +1,263 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="widget">
+            <div class="widget-header bg-blue">
+                <i class="widget-icon fa fa-arrow-down"></i>
+                <span class="widget-caption">创建订单</span>
+                <div class="widget-buttons">
+                    <a href="#" data-toggle="maximize">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a href="#" data-toggle="collapse">
+                        <i class="fa fa-minus"></i>
+                    </a>
+                    <a href="#" data-toggle="dispose">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="widget-body">
+                <div class="form-title">
+                    <a class="btn btn-primary" data-loader="App-loader" data-loadername="订单管理" href="{:U('Admin/Supplier/orderManage')}">
+                        <i class="fa fa-reply"></i>返回
+                    </a>
+                </div>
+                <div class="row">
+                    <div class="col-sm-11 col-sm-offset-1">
+                        <form class="form-horizontal" name="createOrder" id="createOrder">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">买家ID<span style="color:#f00"> *</span></label>
+                                <div class="col-sm-3">
+                                    <input type="text" id="vip_id" name="vip_id" class="form-control" placeholder="输入买家ID"
+                                           data-bv-notempty="true" data-bv-notempty-message="请输入买家ID"
+                                           data-bv-numeric="true"  data-bv-numeric-message="买家ID应为数字"/>
+                                </div>
+                                <div class="col-sm-6" id="vip_info">
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">商家ID<span style="color:#f00"> *</span></label>
+                                <div class="col-sm-3">
+                                    <input type="text" id="supplier_id" name="supplier_id" class="form-control" placeholder="输入商家ID"
+                                        data-bv-notempty="true" data-bv-notempty-message="请输入商家ID"
+                                        data-bv-numeric="true" data-bv-numeric-message="商家ID应为数字"/>
+                                </div>
+                                <div class="col-sm-6" id="supplier_info">
+                                    <!--联系人：XXX 电话：11111133359<br/>
+                                    商家名称 ：xxxxxxxxxx-->
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">店铺名称</label>
+                                <div class="col-sm-10">
+                                    <span class="h4" style="color:#d00;padding-top:10px;" id="store_name">
+                                        <!--店铺名称放在这里-->
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">应打款金额 <span style="color:#f00">*</span></label>
+                                <input type="hidden" name="ratio" value="{$ratio}" id="ratio"/>
+                                <div class="col-sm-3">
+                                    <input type="text" id="pay_price" name="pay_price" class="form-control" placeholder="请输入消费金额"
+                                           data-bv-greaterthan-value=0.00  	data-bv-greaterthan-message="输入金额需大于0" data-bv-greaterthan-inclusive="true"
+                                           data-bv-notempty="true" data-bv-notempty-message="请输入消费金额"
+                                           data-bv-numeric="true" data-bv-numeric-message="消费金额应为数字"/>
+                                    <div style="padding-top:10px;">
+                                        实际消费金额 <span style="color:#d00;">￥</span><span style="color:#d00;" id="totalPrice">0</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-1 no-padding-left" style="padding-top:5px;">元</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">商家打款是否已到账 <span style="color:#f00">*</span></label>
+                                <div class="col-sm-9">
+                                    <div class="radio-inline">
+                                        <label>
+                                            <input type="radio" name="pay" value="1"/>
+                                            <span class="text">是</span>
+                                        </label>
+                                    </div>
+                                    <div class="radio-inline">
+                                        <label>
+                                            <input checked type="radio" name="pay" value="0"/>
+                                            <span class="text">否</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group" id="form_tn" style="display:none">
+                                <label class="col-sm-2 control-label">打款流水号 <span style="color:#f00">*</span></label>
+                                <div class="col-sm-6">
+                                    <input id="tn" type="text" name="tn" class="form-control" placeholder="请输入打款流水号"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">消费内容</label>
+                                <div class="col-sm-6">
+                                    <textarea type="text" id="memo" name="content" class="form-control" placeholder="输入消费内容"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 invisible">提交按钮</label>
+                                <div class="col-sm-8">
+                                    <button type="submit" class="btn btn-primary" id="saveBtn">
+                                        <i class="fa fa-save"></i> 保存
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="tmpbread" style="display: none;">{$breadhtml}</div>
+<script type="text/javascript">
+    setBread($('#tmpbread').html());
+</script>
+<script src="__PUBLIC__/Admin/js/validation/bootstrapValidator.js"></script>
+<script>
+    $(function(){
+        var ratio = $('#ratio').val();//应付金额与实际消费金额的比率；从后台获取的
+        var canSubmit = true;   //买家信息、商家信息获取错误则赋值为false
+
+        //获取买家信息
+        $('#vip_id').on('input',function(e){
+            var vip_id = $.trim($(this).val());
+            //如果为假或不为数字，不执行
+            if(!vip_id || isNaN(vip_id)){
+                return false;
+            }
+            $.ajax({
+                url     : '/Admin/Supplier/getVipInfo',
+                dataType: 'json',
+                data    : {vip_id:vip_id},
+                success : function(data){
+                    if(data.status == 1){   //成功返回数据
+                        var str = "<span class='pull-left'><img src="+data.info.headimgurl+" height='35'/></span>";
+                        str += "<span class='pull-left'>昵称 ：<span style='color:#428bca'>"+data.info.nickname+"</span><br/>手机号 ： <span style='color:#428bca'>"+data.info.mobile+"</span></span>";
+                        $('#vip_info').empty().append(str);
+                        canSubmit = true;
+                    }else{
+                        $('#vip_info').empty().append('<span style="color:#f00">'+data.msg+'</span>')
+                        canSubmit = false;
+                    }
+                }
+            })
+        })
+
+        //获取商家信息
+        $('#supplier_id').on('input',function(e){
+            var supplier_id = $.trim($(this).val());
+            //如果为假或不为数字，不执行
+            if(!supplier_id || isNaN(supplier_id)){
+                $('#store_name').empty();
+                $('#supplier_info').empty();
+                return false;
+            }
+
+            $.ajax({
+                url     : '/Admin/Supplier/getSupplierInfo',
+                dataType: 'json',
+                data    : {supplier_id:supplier_id},
+                success : function(data){
+                    if(data.status == 1){   //成功返回数据
+                        var str = "商家名称：<span style='color:#f00'>"+data.info.su_name+"</span><br/>";
+                        str += "联系人：<span style='color:#428bca'>"+data.info.contact_name+" </span> 电话:<span style='color:#428bca'>"+data.info.contact_phone+"</span>";
+                        $('#supplier_info').empty().append(str);
+                        $('#store_name').html(data.info.st_name);
+                        canSubmit = true;
+                    }else{
+                        $('#supplier_info').empty().append('<span style="color:#f00">'+data.msg+'</span>');
+                        $('#store_name').empty();
+                        canSubmit = false;
+                    }
+                }
+            })
+        })
+
+        //获取应付金额 createOrder_getPayPrice
+        $('#pay_price').on('input',function(e){
+            var payPrice = $.trim($(this).val());
+            if(payPrice<0){
+                $(this).val('');
+                $.App.alert('danger','应打款金额不能小于0');
+            }
+            //如果为假或不为数字，不执行
+            if(!payPrice || isNaN(payPrice)){
+                $('#totalPrice').html(0);
+                return false;
+            }
+            var consume_price = (payPrice<0 ? 0 : payPrice/ratio);
+
+            $('#totalPrice').html(consume_price.toFixed(2));
+        })
+
+        //表格数据验证
+        $('#createOrder').bootstrapValidator({
+            submitHandler   : function(validator,form,submitButton){
+                if(canSubmit){  //买家信息、商家信息获取错误则赋值为false
+                    var pay = $('input[name=pay]:checked').val();
+                    var tn = $.trim($('#tn').val());
+                    if(pay == 1){
+                        if(tn == ''){
+                            $.App.alert('danger','请输入定案流水号');
+                            return;
+                        }
+                    }
+
+                    var vip_buyer_id = $.trim($('#vip_id').val());
+                    var supplier_id = $.trim($('#supplier_id').val());
+                    var pay_price = $.trim($('#pay_price').val());
+                    if(pay_price<=0){
+                        $.App.alert('danger','应打款金额需大于0');
+                        return;
+                    }
+                    var memo = $.trim($('#memo').val());
+                    $.ajax({
+                        url     : '/Admin/Supplier/createOrderSave',
+                        method  : 'post',
+                        dataType: 'json',
+                        data    : {vip_buyer_id:vip_buyer_id,pay_price:pay_price,supplier_id:supplier_id,pay:pay,memo:memo,tn:tn},
+                        success : function(data){
+                            if(data.status == 1){
+                                $.App.alert('success',data.msg);
+                                $('.form-title a').trigger('click');
+                            }else{
+                                $.App.alert('danger',data.msg);
+                            }
+                        },
+                        error   : function(){
+                            alert('something wrong, please try again!');
+                        }
+                    })
+                }else{
+                    $.App.alert('danger','请检查后再提交');
+                    return false;
+                }
+            }
+        })
+
+        //如果已经打过款，需要输入流水号
+        $('input[name=pay]').change(function(){
+            var pay = $(this).val();
+            if(pay==1){    //pay为真（1），急需要输入流水号
+                $('#form_tn').fadeIn();
+            }else{
+                $('#form_tn').fadeOut();
+            }
+        })
+
+    })
+</script>

@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+<head>
+    <title>{$_SESSION['WAP']['shopset']['name']}</title>
+    <meta charset="utf-8"/>
+    <!--页面优化-->
+    <meta name="MobileOptimized" content="320">
+    <!--默认宽度320-->
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <!--viewport 等比 不缩放-->
+    <meta http-equiv="cleartype" content="on">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!--删除苹果菜单-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!--默认颜色-->
+    <meta name="apple-mobile-web-app-title" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <!--加载全部后 显示-->
+    <meta content="telephone=no" name="format-detection"/>
+    <!--不识别电话-->
+    <meta content="email=no" name="format-detection"/>
+    <link rel="stylesheet" href="__PUBLIC__/App/css/style.css"/>
+    <link href="http://cdn.bootcss.com/weui/0.4.2/style/weui.min.css" rel="stylesheet">
+    <script src="__PUBLIC__/App/js/zepto.min.js"></script>
+    <style>
+        .weui_search_bar:after, .weui_cells:before {
+            border-top: 0px;
+            border-bottom: 0px;
+        }
+    </style>
+</head>
+<body>
+<div class="weui_search_bar" id="search_bar">
+    <form class="weui_search_outer" action="{:U('App/Shop/goodsList')}" method="post">
+        <div class="weui_search_inner">
+            <i class="weui_icon_search"></i>
+            <input type="search" name="kw" class="weui_search_input" id="search_input" placeholder="搜索"/>
+            <a href="javascript:" class="weui_icon_clear" id="search_clear"></a>
+        </div>
+        <label for="search_input" class="weui_search_text" id="search_text">
+            <i class="weui_icon_search"></i>
+            <span>搜索</span>
+        </label>
+    </form>
+    <a href="javascript:" class="weui_search_cancel" id="search_cancel">取消</a>
+</div>
+<div style="background-color: #efeff4">
+    <span class="topArrow"></span>
+</div>
+<div class="weui_cells weui_cells_access" style="margin-top: -25px;background-color: #ffffff;">
+    <empty name="cate">
+        <a class="weui_cell">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>未找到子类别</p>
+            </div>
+        </a>
+
+    </empty>
+    <volist name="cate" id="vo">
+        <!--<neq name="vo.soncate" value="">
+            <a class="weui_cell" href="{:U('App/Shop/search')}?cid={$vo.id}">
+                <else/>
+                <a class="weui_cell" href="{:U('App/Shop/goodsList')}?cid={$vo.id}">
+        </neq>-->
+        <a class="weui_cell" href="{:U('App/Shop/goodsList')}?cid={$vo.id}">
+        <div class="weui_cell_bd weui_cell_primary">
+            <p>{$vo.name}</p>
+        </div>
+        <div class="weui_cell_ft">
+        </div>
+        </a>
+    </volist>
+</div>
+</body>
+<script>
+    $(function () {
+        $('#search_input').on('focus', function () {
+            var $weuiSearchBar = $('#search_bar');
+            $weuiSearchBar.addClass('weui_search_focusing');
+        }).on('blur', '#search_input', function () {
+            var $weuiSearchBar = $('#search_bar');
+            $weuiSearchBar.removeClass('weui_search_focusing');
+            if ($(this).val()) {
+                $('#search_text').hide();
+            } else {
+                $('#search_text').show();
+            }
+        }).on('input', '#search_input', function () {
+            var $searchShow = $("#search_show");
+            if ($(this).val()) {
+                $searchShow.show();
+            } else {
+                $searchShow.hide();
+            }
+        }).on('touchend', '#search_cancel', function () {
+            $("#search_show").hide();
+            $('#search_input').val('');
+        }).on('touchend', '#search_clear', function () {
+            $("#search_show").hide();
+            $('#search_input').val('');
+        });
+    });
+</script>
+</html>

@@ -1,0 +1,233 @@
+<!--SKU属性-->
+<div class="row">
+	<div class="col-xs-12 col-md-12">
+		<div class="widget">
+			<div class="widget-header bg-green">
+				<i class="widget-icon fa fa-arrow-down"></i>
+				<span class="widget-caption">当前SKU属性</span>
+				<div class="widget-buttons">
+					<a href="#" data-toggle="maximize">
+						<i class="fa fa-expand"></i>
+					</a>
+					<a href="#" data-toggle="collapse">
+						<i class="fa fa-minus"></i>
+					</a>
+					<a href="#" data-toggle="dispose">
+						<i class="fa fa-times"></i>
+					</a>
+				</div>
+			</div>
+			
+			<div class="widget-body">
+				<div class="table-toolbar">
+					<button class="btn btn-primary" id="App-skuattr-add">
+						<i class="fa fa-plus"></i>添加SKU属性
+					</button>
+					<button class="btn btn-success" id="App-skuattr-save">
+						<i class="fa fa-delicious"></i>保存所有SKU属性
+					</button>
+					<button  class="btn btn-danger" id="App-skuattr-makesku">
+						<i class="fa fa-flag-checkered"></i>更新生成所有SKU
+					</button>
+				</div>
+				<table id="App-table-skuattr" class="table table-bordered table-hover">
+					<thead class="bordered-darkorange">
+						<tr role="row">
+							<th width="200">属性名称</th>
+							<th>属性值</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody id="App-sku-findback">
+						<foreach name="skuinfo" item="vo">
+						<tr class="App-checktr" data-id='{$vo.attrid}' data-label='{$vo.attrlabel}' >
+							<td class=" ">{$vo.attrlabel}</td>
+							<td class=" ">
+							<div class="checkbox" style="margin-bottom: 0px; margin-top: 0px;">
+							   <foreach name="vo.allitems" item="vo2">
+							       <label>
+							       <input type="checkbox" class="colored-blue App-check" <notempty name="vo2.checked">checked="checked"</notempty> value="{$vo2.path}" data-label = "{$vo2.name}">
+							       <span class="text">{$vo2.name}</span>
+							       </label>
+						       </foreach>
+						    </div>								
+							</td>
+							<td class="center "><button class="App-skuattr-del btn btn-xs btn-darkorange">移除此属性</button></td>
+					    </tr>
+					    </foreach>
+					</tbody>
+				</table>
+			<!--widgetbody结束-->
+			</div>
+		</div>
+	</div>
+</div>
+<!--SKU-->
+<div class="row">
+	<div class="col-xs-12 col-md-12">
+		<div class="widget">
+			<div class="widget-header bg-blue">
+				<i class="widget-icon fa fa-arrow-down"></i>
+				<span class="widget-caption">商品SKU-{$goods.name}</span>
+				<div class="widget-buttons">
+					<a href="#" data-toggle="maximize">
+						<i class="fa fa-expand"></i>
+					</a>
+					<a href="#" data-toggle="collapse">
+						<i class="fa fa-minus"></i>
+					</a>
+					<a href="#" data-toggle="dispose">
+						<i class="fa fa-times"></i>
+					</a>
+				</div>
+			</div>
+			<div class="widget-body">
+				<div class="table-toolbar">
+					<div class="pull-right">
+						<form id="App-search">
+							<label style="margin-bottom: 0px;">
+								<input name="name" type="search" class="form-control input-sm" value="{$name}" placeholder="按属性值模糊搜索">
+							</label>
+							<a href="{:U('Admin/Shop/sku/',array('id'=>$goods[id]))}" class="btn btn-success" data-loader="App-loader" data-loadername="商品Sku" data-search="App-search">
+								<i class="fa fa-search"></i>搜索
+							</a>
+						</form>
+					</div>
+					<div class="clear"></div>
+				</div>
+
+				<table id="App-table" class="table table-bordered table-hover">
+					<thead class="bordered-darkorange">
+						<tr role="row">
+							<th width="30px"><div class="checkbox" style="margin-bottom: 0px; margin-top: 0px;">
+									<label style="padding-left: 4px;"> <input type="checkbox" class="App-checkall colored-blue">
+                                     <span class="text"></span>
+									</label>                                    
+                                </div></th>
+							<th>ID</th>
+							<th>属性名称</th>
+							<th>属性值</th>
+							<th>价格</th>
+							<th title="商品开启团购后，此规格 对应的价格">团购价格<span class="badge badge-default" title="商品开启团购后，此规格 对应的价格"> ? </span> </th>
+							<th>库存</th>
+							<th>销量</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody >
+						<volist name="cache" id="vo">
+							<tr id="item{$vo.id}">
+								<td>
+									<div class="checkbox" style="margin-bottom: 0px; margin-top: 0px;">
+										<label style="padding-left: 4px;"> <input name="checkvalue" type="checkbox" class="colored-blue App-check" value="{$vo.id}">
+	                                     <span class="text"></span>
+										</label>                                    
+	                                </div>
+								</td>
+								<td class=" sorting_1">{$vo.id}</td>
+								<td class=" ">{$vo.sku}</td>
+								<td class=" ">{$vo.skuattr}</td>
+								<td class=" ">{$vo.price|number_format=###,2}</td>
+								<td class=" ">{$vo.group_buy_price|number_format=###,2}</td>
+								<td class=" ">{$vo.num}</td>
+								<td class=" ">{$vo.sells}</td>
+								<td class="center "><a href="{:U('Admin/Shop/skuSet/',array('id'=>$vo['id']))}" class="btn btn-success btn-xs" data-loader="App-loader" data-loadername="商品SKU设置"><i class="fa fa-edit"></i> 编辑</a></td>
+							</tr>
+						</volist>
+												
+					</tbody>
+				</table>
+				<div class="row DTTTFooter">
+					{$page}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!--面包屑导航封装-->
+<div id="tmpbread" style="display: none;">{$breadhtml}</div>
+<script type="text/javascript">
+	setBread($('#tmpbread').html());
+</script>
+<!--/面包屑导航封装-->
+<!--商品SKU初始化特效-->
+<script type="text/javascript">
+	var goodsid="{$goodsid}";
+	
+	function initShopSku(){	
+		//初始化
+		//全选
+		var trs=$('#App-table-skuattr .App-checktr');
+		$(checkall).on('click',function(){
+				if($(this).is(":checked")){			
+					$(checks).prop("checked","checked");
+				}else{
+					$(checks).removeAttr("checked");
+				}		
+		});
+		$('.App-skuattr-del').on('click',function(){
+			$(this).parent().parent("tr").remove();
+		});
+	
+	}
+	//新增
+		$('#App-skuattr-add').on('click',function(){
+			var trs=$('#App-table-skuattr .App-checktr');
+			var fbid="App-sku-findback";
+			var ids="";
+			$(trs).each(function(){
+				var id=$(this).data('id');
+				ids=ids+id+',';
+			});
+			appSkuloader(ids,fbid);
+			//return false;
+		});
+		//保存
+		$('#App-skuattr-save').on('click',function(){
+			var trs=$('#App-table-skuattr .App-checktr');
+			//var data="";
+			var data = [];
+			$(trs).each(function(){
+				var id=$(this).data('id');
+				var label=$(this).data('label');
+				var str='';
+				var checks=$(this).find('.App-check');
+				$(checks).each(function(){
+					if($(this).is(":checked")){
+						str=str+$(this).val()+":"+$(this).data('label')+',';
+					}
+				});
+				//data=data+id+":"+label+"-"+str+";";
+				data.push({id:id,label:label,str:str});
+			});
+			console.log(data);
+			//alert(data);
+			var toajax="{:U('Admin/Shop/skuattrSave')}"+"/id/"+goodsid;
+			var callok=function(){
+				$(AppLoaderReloader).trigger('click');
+				return false;
+			};
+			var callerr=function(){
+				//拦截错误
+				return false;
+			};
+			$.App.ajax('post',toajax,{'data':data},callok,callerr);
+		});
+		
+		//生成SKU
+		$('#App-skuattr-makesku').on('click',function(){
+			var toajax="{:U('Admin/Shop/skuattrMake')}"+"/id/"+goodsid;
+			var callok=function(){
+				$(AppLoaderReloader).trigger('click');
+				return false;
+			};
+			var callerr=function(){
+				//拦截错误
+				return false;
+			};
+			$.App.ajax('post',toajax,'nodata',callok,callerr);
+		});
+	initShopSku();	
+	
+</script>
+<!--/全选特效封装-->

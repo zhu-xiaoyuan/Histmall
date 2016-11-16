@@ -1,0 +1,21 @@
+<volist name="cache" id="vo">
+    <li style="width: 100%;">
+        <a href="#" style="padding: 5px;">
+            <h1 class="plist-tt fonts4 ovflw" style="height:30px;">{$vo.order_code}
+
+                <span style="float: right;">{$vo.order_time|date="Y-m-d H:i",###}</span>
+            </h1>
+
+            <p>
+                <span class="plist-yp color3">
+                    <eq name="vo.is_need_return" value="0">
+                        <em class="fonts1" style="color: green;">应收：￥{$vo.pay_price|number_format=###,2}</em>
+                    </eq>
+                   <eq name="vo.is_need_return" value="1">
+                       <em class="fonts1">应付：￥{$vo.pay_price|number_format=###,2}</em>
+                   </eq>
+                </span>
+            </p>
+        </a>
+    </li>
+</volist>

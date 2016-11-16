@@ -1,0 +1,310 @@
+<div class="row">
+     <div class="col-xs-12 col-xs-12">
+          <div class="widget radius-bordered">
+              <div class="widget-header bg-blue">
+				<i class="widget-icon fa fa-arrow-down"></i>
+				<span class="widget-caption">订单详情</span>
+				<div class="widget-buttons">
+					<a href="#" data-toggle="maximize">
+						<i class="fa fa-expand"></i>
+					</a>
+					<a href="#" data-toggle="collapse">
+						<i class="fa fa-minus"></i>
+					</a>
+					<a href="#" data-toggle="dispose">
+						<i class="fa fa-times"></i>
+					</a>
+				</div>
+			</div>
+              <div class="widget-body">
+                   <form id="AppForm" action="" method="post" class="form-horizontal"
+                                                  data-bv-message=""
+                                                  data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
+                                                  data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
+                                                  data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+                  <input type="hidden" name="id" value="{$cache.id}">
+                  <div class="form-title">
+                        <empty name="backUrl">
+                            <a class="btn btn-primary" data-loader="App-loader" data-loadername="商城订单" href="{:U('Admin/Shop/order',array('status'=>$_GET['status']))}"><i class="fa fa-reply"></i>返回</a>
+                        <else/>
+                            <a class="btn btn-primary" data-loader="App-loader" data-loadername="商城订单" href="{$backUrl}"><i class="fa fa-reply"></i>返回</a>
+                        </empty>
+                   </div>
+                       <div class="form-group">
+                           <label class="col-lg-2 control-label">商品明细</label>
+                           <div class="col-lg-4">
+                               <table class="table table-hover">
+                                   <thead class="bordered-darkorange">
+                                   <tr>
+                                       <th>#</th>
+                                       <th>名称</th>
+                                       <th>数量</th>
+                                       <th>属性</th>
+                                   </tr>
+                                   </thead>
+                                   <tbody>
+                                   <volist name="cache.items" id="vo">
+                                       <tr>
+                                           <td>{$key+1}</td>
+                                           <td>{$vo.name}</td>
+                                           <td>{$vo.num}</td>
+                                           <td>{$vo.skuattr}</td>
+                                       </tr>
+                                   </volist>
+                                   </tbody>
+                               </table>
+                           </div>
+                       </div>
+                       <div class="form-title"></div>
+                   <div class="form-group">
+                        <label class="col-lg-2 control-label">订单编号</label>
+                        <div class="col-lg-4">
+                        	<input type="text" class="form-control" value="{$cache.oid}" readonly>
+                        </div>
+                   </div>
+                   <div class="form-group">
+                        <label class="col-lg-2 control-label">订单状态</label>
+                        <div class="col-lg-4">
+                        	<input type="text" class="form-control" value=
+                        	'<switch name="cache.status">
+								<case value="0">已取消</case>
+								<case value="1">待付款</case>
+								<case value="2">待发货</case>
+								<case value="3">已发货</case>
+								<case value="4">退货中</case>
+								<case value="5">已完成-{$cache.etime|date="Y/m/d",###}</case>
+								<case value="6">已关闭-{$cache.closetime|date="Y/m/d",###}</case>
+								<case value="7">已退货-{$cache.tuihuotime|date="Y/m/d",###}</case>
+							</switch>' readonly>
+                        </div>
+                   </div>
+                   <div class="form-group">
+                        <label class="col-lg-2 control-label">订单总额</label>
+                        <div class="col-lg-4">
+                        	<input type="text" class="form-control" value="{$cache.totalprice}" readonly>
+                        </div>
+                   </div>
+                   <div class="form-group">
+                        <label class="col-lg-2 control-label">实付总额</label>
+                        <div class="col-lg-4">
+                        	<input type="text" class="form-control" value="{$cache.payprice}" readonly>
+                        </div>
+                   </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">邮费总额</label>
+                        <div class="col-lg-4">
+                        	<input type="text" class="form-control" value="{$cache.yf}" readonly>
+                        </div>
+                   </div>
+                   <div class="form-group">
+                        <label class="col-lg-2 control-label">创建时间</label>
+                        <div class="col-lg-4">
+                        	<input type="text" class="form-control" value='{$cache.ctime|date="Y/m/d H:i:s",###}' readonly>
+                        </div>
+                   </div>
+                   <div class="form-group">
+                        <label class="col-lg-2 control-label">收件人</label>
+                        <div class="col-lg-4">
+                        	<input type="text" class="form-control" value="{$cache.vipname}" readonly>
+                        </div>
+                   </div>
+                   <div class="form-group">
+                        <label class="col-lg-2 control-label">联系方式</label>
+                        <div class="col-lg-4">
+                        	<input type="text" class="form-control" value="{$cache.vipmobile}" readonly>
+                        </div>
+                   </div>
+                   <div class="form-group">
+                        <label class="col-lg-2 control-label">收货地址</label>
+                        <div class="col-lg-4">
+                        	<input type="text" class="form-control" value="{$cache.vipaddress}" readonly>
+                        </div>
+                   </div>
+                   <div class="form-group">
+                        <label class="col-lg-2 control-label">客户留言</label>
+                        <div class="col-lg-4">
+                        	<input type="text" class="form-control" value="{$cache.msg}" readonly>
+                        </div>
+                   </div>
+                   <div class="form-title"></div>
+                   <div class="form-group">
+                        <label class="col-lg-2 control-label">会员ID</label>
+                        <div class="col-lg-4">
+                        	<input type="text" class="form-control" value="{$cache.vipid}" readonly>
+                        </div>
+                   </div>
+                   <div class="form-group">
+                        <label class="col-lg-2 control-label">会员昵称</label>
+                        <div class="col-lg-4">
+                        	<input type="text" class="form-control" value="{$vip.nickname}" readonly>
+                        </div>
+                   </div>
+                   <if condition="$cache.paytime neq ''">
+                   <div class="form-title"></div>
+                   <div class="form-group">
+                        <label class="col-lg-2 control-label">支付方式</label>
+                        <div class="col-lg-4">
+                        	<input type="text" class="form-control" value=
+                        	'<switch name="cache.paytype">
+								<case value="money">余额支付</case>
+								<case value="alipaywap">支付宝WAP支付</case>
+								<case value="wxpay">微信支付</case>
+							</switch>' readonly>
+                        </div>
+                   </div>
+                   <eq name="cache.paytype" value="alipaywap">
+	                   <div class="form-group">
+	                        <label class="col-lg-2 control-label">支付宝支付帐户</label>
+	                        <div class="col-lg-4">
+	                        	<input type="text" class="form-control" value="aliaccount" readonly>
+	                        </div>
+	                   </div>
+                   </eq>
+                   <div class="form-group">
+                        <label class="col-lg-2 control-label">支付时间</label>
+                        <div class="col-lg-4">
+                        	<input type="text" class="form-control" value="{$cache.paytime|date="Y/m/d H:i:s",###}" readonly>
+                        </div>
+                   </div>
+                   </if>
+                   <if condition="$cache.fahuokd neq ''">
+                   <div class="form-title"></div>
+                   <div class="form-group">
+                        <label class="col-lg-2 control-label">发货快递</label>
+                        <div class="col-lg-4">
+                        	<input type="text" class="form-control" value="{$cache.fahuokd}" readonly>
+                        </div>
+                   </div>
+                   <div class="form-group">
+                        <label class="col-lg-2 control-label">发货快递单号</label>
+                        <div class="col-lg-4">
+                        	<input type="text" class="form-control" value="{$cache.fahuokdnum}" readonly>
+                        </div>
+                   </div>
+                   </if>
+                   <if condition="$cache.changetime neq ''">
+                   <div class="form-title"></div>
+                   <div class="form-group">
+                        <label class="col-lg-2 control-label">改价说明</label>
+                        <div class="col-lg-4">
+                        	<input type="text" class="form-control" value="{$cache.changemsg}" readonly>
+                        </div>
+                   </div>
+                   <div class="form-group">
+                        <label class="col-lg-2 control-label">改价客服</label>
+                        <div class="col-lg-4">
+                        	<input type="text" class="form-control" value="{$cache.changeadmin}" readonly>
+                        </div>
+                   </div>
+                   <div class="form-group">
+                        <label class="col-lg-2 control-label">改价时间</label>
+                        <div class="col-lg-4">
+                        	<input type="text" class="form-control" value="{$cache.changetime|date="Y/m/d H:i:s",###}" readonly>
+                        </div>
+                   </div>
+                   </if>
+                   <if condition="$cache.closetime neq ''">
+                   <div class="form-title"></div>
+                   <div class="form-group">
+                        <label class="col-lg-2 control-label">关闭说明</label>
+                        <div class="col-lg-4">
+                        	<input type="text" class="form-control" value="{$cache.closemsg}" readonly>
+                        </div>
+                   </div>
+                   <div class="form-group">
+                        <label class="col-lg-2 control-label">关闭客服</label>
+                        <div class="col-lg-4">
+                        	<input type="text" class="form-control" value="{$cache.closeadmin}" readonly>
+                        </div>
+                   </div>
+                   <div class="form-group">
+                        <label class="col-lg-2 control-label">关闭时间</label>
+                        <div class="col-lg-4">
+                        	<input type="text" class="form-control" value="{$cache.closetime|date="Y/m/d H:i:s",###}" readonly>
+                        </div>
+                   </div>
+                   </if>
+                    <if condition="$cache.tuihuosqtime neq ''">
+                   <div class="form-title"></div>
+                   <div class="form-group">
+                        <label class="col-lg-2 control-label">退货金额</label>
+                        <div class="col-lg-4">
+                        	<input type="text" class="form-control" value="{$cache.tuihuoprice}" readonly>
+                        </div>
+                   </div>
+                   <div class="form-group">
+                        <label class="col-lg-2 control-label">退货快递公司</label>
+                        <div class="col-lg-4">
+                        	<input type="text" class="form-control" value="{$cache.tuihuokd}" readonly>
+                        </div>
+                   </div>
+                   <div class="form-group">
+                        <label class="col-lg-2 control-label">退货快递单号</label>
+                        <div class="col-lg-4">
+                        	<input type="text" class="form-control" value="{$cache.tuihuokdnum}" readonly>
+                        </div>
+                   </div>
+                   <div class="form-group">
+                        <label class="col-lg-2 control-label">退货说明</label>
+                        <div class="col-lg-4">
+                        	<input type="text" class="form-control" value="{$cache.tuihuomsg}" readonly>
+                        </div>
+                   </div>
+                   <div class="form-group">
+                        <label class="col-lg-2 control-label">关闭客服</label>
+                        <div class="col-lg-4">
+                        	<input type="text" class="form-control" value="{$cache.tuihuoadmin}" readonly>
+                        </div>
+                   </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">退货申请时间</label>
+                        <div class="col-lg-4">
+                            <input type="text" class="form-control" value="{$cache.tuihuosqtime|date="Y/m/d H:i:s",###}" readonly>
+                        </div>
+                    </div>
+                   <div class="form-group">
+                        <label class="col-lg-2 control-label">退货时间</label>
+                        <div class="col-lg-4">
+                        	<input type="text" class="form-control" value="{$cache.tuihuotime|date="Y/m/d H:i:s",###}" readonly>
+                        </div>
+                   </div>
+                   </if>
+                   <div class="form-title"></div>
+
+                   <div class="form-group">
+                        <label class="col-lg-2 control-label">订单进度</label>
+                        <div class="col-lg-4">
+                        	<p><label class="control-label">{$cache.ctime|date="Y/m/d H:i",###} 订单生成</label></p>
+                        	<eq name="cache.status" value="0">
+                        	<p><label class="control-label">订单已取消，不再跟踪状态。</label></p>
+                        	</eq>
+                        	<foreach name="log" item="vo">
+		                    <p><label class="control-label">{$vo.ctime|date="Y/m/d H:i",###} {$vo.msg}</label></p>
+		                    </foreach>
+
+                        </div>
+                   </div>
+                   <!--分销逻辑-->
+                   <div class="form-title"></div>
+                   <div class="form-group">
+                        <label class="col-lg-2 control-label">分销日志</label>
+                        <div class="col-lg-4">
+                        	<foreach name="fxlog" item="vo">
+		                    <p><label class="control-label">{$vo.ctime|date="Y/m/d H:i",###} <span class="darkorange">{$vo.fromname}</span>&nbsp;贡献给&nbsp;<span class="darkorange">{$vo.toname}</span>&nbsp;分销佣金：<span class="darkorange">{$vo.fxyj}</span>元</label></p>
+		                    </foreach>
+                        </div>
+                   </div>
+                   
+                </div>
+               </form>
+            </div>
+        </div>
+	</div>
+
+</div>
+<!--面包屑导航封装-->
+<div id="tmpbread" style="display: none;">{$breadhtml}</div>
+<script type="text/javascript">
+	setBread($('#tmpbread').html());
+</script>
+<!--/面包屑导航封装-->

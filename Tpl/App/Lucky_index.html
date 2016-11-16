@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{$_SESSION['SHOP']['set']['name']}-抢红包</title>
+    <meta charset="utf-8"/>
+    <!--页面优化-->
+    <meta name="MobileOptimized" content="320">
+    <!--默认宽度320-->
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <!--viewport 等比 不缩放-->
+    <meta http-equiv="cleartype" content="on">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!--删除苹果菜单-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!--默认颜色-->
+    <meta name="apple-mobile-web-app-title" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <!--加载全部后 显示-->
+    <meta content="telephone=no" name="format-detection"/>
+    <!--不识别电话-->
+    <meta content="email=no" name="format-detection"/>
+    <script type="text/javascript" src="__PUBLIC__/App/js/zepto.min.js"></script>
+    <!--<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>-->
+    <!--<script type="text/javascript" src="__PUBLIC__/App/js/jquery.html5Loader.min.js"></script>-->
+    <!--<link rel="stylesheet" href="http://apps.bdimg.com/libs/animate.css/3.1.0/animate.min.css">-->
+    <style>
+        *{padding:0;margin:0;}
+        html,body, .full{width:100%;height:100%;over-flow:hidden;}
+        body{max-width:640px;margin:0 auto;}
+       /*.load-mask {  display: block;  position: fixed;  top: 0;  bottom: 0;  width: 100%;
+            right: 0;  left: 0;  z-index: 999999;  background: #2d2d49;}
+        .loading-wrapper {  position: fixed;  top: 50%;  left: 50%;  margin-left: -100px;
+            margin-top: -100px;  width: 200px;  height: 200px;  text-align: center;}
+        .loading-wrapper .circle {  margin: auto;  width: 100px;  height: 100px;  line-height: 100px;
+            border-radius: 50%;  font-size: 2rem;  color: #fff;  text-align: center;  border: solid 5px #960b0e;}
+        .loading-wrapper .label {color: #fff;font-family: Microsoft YaHei, 宋体;margin-top: 5px;}*/
+        .margin-auto{margin:0 auto;}
+        input, .title{font-family: Microsoft YaHei, 宋体;color:#333;}
+        .text-center{text-align:center;}
+        .bg-red{background-color:#B42C1E;}
+        .bg-yellow{background-color:#FBEBD2;}
+        img{width:100%;display:block;max-width:640px;}
+    </style>
+</head>
+<body>
+<div class="top bg-red" style="padding:20% 0 5% 0;">
+    <div class="title text-center" style="color:#fff;font-size:22px;font-weight:normal;">
+        输口令 抢红包
+    </div>
+    <br/>
+    <input id="command" type="text" name="command" class="margin-auto full text-center" style="display:block;height:40px;border:0;border-radius:20px;padding:0 10px;width:55%;"
+        onkeyup="this.value=stripscript(this.value)"/>
+</div>
+<div class="" style="padding:0;margin:0;">
+    <img src="__PUBLIC__/App/img/lucky/lucky_index_1.jpg"/>
+</div>
+<div class="middle text-center bg-yellow">
+    <button class="submit bg-red" style="border:0;color:#fff;height:60px;width:200px;border-radius: 25px;font-size:20px;">
+        抢 红 包
+    </button>
+</div>
+<div class="bottom" style="background:url('__PUBLIC__/App/img/lucky/lucky_index_2.jpg') no-repeat top center;background-size:cover;height:50%;">
+    <div class="tips" style="padding:20px 40px;color:#888;">
+        <p>tips:</p>
+        <p>1.一次抽奖活动，一人最多中奖一次</p>
+        <p>2.抽奖活动将以 <b>微信红包</b> 的形式发送到各位同学手中，童叟无欺哦</p>
+        <p>3.有任何疑问，都可以咨询客服，或在公众号内直接询问小猫哦</p>
+        <p>4.活动最终解释权归小猫所有</p>
+        <p>5.不用再看啦！快抢红包吧！</p>
+    </div>
+    <!--<img src="__PUBLIC__/App/img/lucky/lucky_index_2.jpg"/>-->
+</div>
+<!--<div class="load-mask">
+    <div class="loading-wrapper">
+        <div class="circle" id="loading-percent">0%</div>
+        <div class="label">loading...</div>
+    </div>
+</div>-->
+<script>
+    /*$(document).ready(function () {
+        $.html5Loader({
+            debugMode: false,
+            filesToLoad: {
+                files: [{
+                    id: 'app-bg',
+                    type: "IMAGE",
+                    source: "__PUBLIC__/App/img/lucky/lucky_index_1.jpg",
+                    size: 180614
+                }]
+            },
+            onUpdate: function (percentage) {
+                $('#loading-percent').text(percentage + '%');
+            },
+            onElementLoaded: function (obj, elm) {
+                $('.bg').css({
+                    background: 'url("' + elm.src + '")',
+                    //background: 'url("' + elm.src + '")',
+                    backgroundSize: "100%",
+                    backgroundRepeat: "no-repeat"
+                });
+            },
+            onComplete: function () {
+                $('.load-mask').fadeOut();
+            }
+        });
+    });*/
+</script>
+<script>
+    $('.submit').click(function(){
+        var command = stripscript($.trim($('#command').val()));
+        if(command){
+            $.ajax({
+                url     : '{:U("App/Lucky/checkCommand")}',
+                data    : {command:command},
+                type    : 'post',
+                success : function(data){
+                    if(data.status){
+                        location.href='{:U("App/Lucky/prizeProcess")}/config_id/'+data.config_id;
+                    }else{
+                        alert(data.msg);
+                    }
+                },
+                error   : function(){
+                    alert('网络连接错误，请重试');
+                }
+            })
+        }else{
+            alert('请输入口令哦！');
+        }
+    })
+
+    function stripscript(value) {
+        var pattern = new RegExp("[`~!@#$^&*()=|{}':;',\\\\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”\"“\'。，、？]")
+        var rs = "";
+        for (var i = 0; i < value.length; i++) {
+            rs = rs + value.substr(i, 1).replace(pattern, '');
+        }
+        return rs;
+    }
+</script>
+</body>
+</html>

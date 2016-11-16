@@ -1,0 +1,15 @@
+<volist name="cache" id="vo">
+    <div class="ads-lst border-b1 ovflw mr-b back2 color6">
+        <div class="ads_orinfo ovflw">
+            <div class="ads_orinfol ovflw" style="padding-bottom:10px;">
+                <h4 style="padding: 5px 0px">{$vo.name}</h4>
+
+                <p class="fonts2" style="padding: 5px 0px">营业额：{$vo.total_money|number_format=###,2}</p>
+
+                <p class="fonts2" style="padding: 5px 0px">贡献奖金：{$vo.tc}</p>
+
+                <p class="fonts2" style="padding: 5px 0px">入驻时间：{$vo.create_time|date="Y-m-d",###}</p>
+            </div>
+        </div>
+    </div>
+</volist>

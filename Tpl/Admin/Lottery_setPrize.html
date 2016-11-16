@@ -1,0 +1,239 @@
+<div class="row">
+    <div class="col-xs-12 col-md-12">
+        <div class="widget">
+            <div class="widget-header bg-blue">
+                <i class="widget-icon fa fa-arrow-down"></i>
+                <span class="widget-caption">中奖设置</span>
+                <div class="widget-buttons">
+                    <a href="#" data-toggle="maximize">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a href="#" data-toggle="collapse">
+                        <i class="fa fa-minus"></i>
+                    </a>
+                    <a href="#" data-toggle="dispose">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="widget-body">
+                <form class="form-horizontal" id="set_config">
+
+                    <!--一等奖数量-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="total_prize_level_1" class="control-label col-sm-2">一等奖数量</label>
+                                <div class="col-sm-4">
+                                    <input type="text" value="{$data['total_prize_level_1']}" class="form-control" name="total_prize_level_1" id="total_prize_level_1" placeholder="输入一等奖数量" data-bv-numeric="true" data-bv-numeric-message="一等奖数量为数字" data-bv-field="total_prize_level_1">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--二等奖数量-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="total_prize_level_2" class="control-label col-sm-2">二等奖数量</label>
+                                <div class="col-sm-4">
+                                    <input type="text" value="{$data['total_prize_level_2']}" class="form-control" name="total_prize_level_2" id="total_prize_level_2" placeholder="输入二等奖数量" data-bv-numeric="true" data-bv-numeric-message="二等奖数量为数字" data-bv-field="total_prize_level_2">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--三等奖数量-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="total_prize_level_3" class="control-label col-sm-2">三等奖数量</label>
+                                <div class="col-sm-4">
+                                    <input type="text" value="{$data['total_prize_level_3']}" class="form-control" name="total_prize_level_3" id="total_prize_level_3" placeholder="输入三等奖数量" data-bv-numeric="true" data-bv-numeric-message="三等奖数量为数字" data-bv-field="total_prize_level_3">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--一等奖已抽数量-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="used_prize_level_1" class="control-label col-sm-2">一等奖已抽数量</label>
+                                <div class="col-sm-4">
+                                    <input type="text" value="{$data['used_prize_level_1']}" class="form-control" name="used_prize_level_1" id="used_prize_level_1" placeholder="输入一等奖已抽数量" data-bv-numeric="true" data-bv-numeric-message="一等奖已抽数量为数字" data-bv-field="used_prize_level_1">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--二等奖已抽数量-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="used_prize_level_2" class="control-label col-sm-2">二等奖已抽数量</label>
+                                <div class="col-sm-4">
+                                    <input type="text" value="{$data['used_prize_level_2']}" class="form-control" name="used_prize_level_2" id="used_prize_level_2" placeholder="输入二等奖已抽数量" data-bv-numeric="true" data-bv-numeric-message="二等奖已抽数量为数字" data-bv-field="used_prize_level_2">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--三等奖已抽数量-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="used_prize_level_3" class="control-label col-sm-2">三等奖已抽数量</label>
+                                <div class="col-sm-4">
+                                    <input type="text" value="{$data['used_prize_level_3']}" class="form-control" name="used_prize_level_3" id="used_prize_level_3" placeholder="输入三等奖已抽数量" data-bv-numeric="true" data-bv-numeric-message="三等奖已抽数量为数字" data-bv-field="used_prize_level_3">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--参与总人数-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="total_person">参与总人数</label>
+                                <div class="col-sm-4">
+                                    <input type="text" value="{$data['total_person']}" class="form-control" name="total_person" id="total_person" placeholder="参与总人数"
+                                           data-bv-numeric="true" data-bv-numeric-message="参与人数为数字" data-bv-field="total_person"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--当前抽取等级-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="active_prize_level">当前抽取等级</label>
+                                <div class="col-sm-4">
+                                    <select id="active_prize_level" class="form-control" name="active_prize_level">
+                                        <if condition="$data['active_prize_level'] eq 0">
+                                                <option value="0" selected>关闭</option>
+                                                <option value="1">一等奖</option>
+                                                <option value="2">二等奖</option>
+                                                <option value="3">三等奖</option>
+                                            <elseif condition="$data['active_prize_level'] eq 1"/>
+                                                <option value="0">关闭</option>
+                                                <option value="1" selected>一等奖</option>
+                                                <option value="2">二等奖</option>
+                                                <option value="3">三等奖</option>
+                                            <elseif condition="$data['active_prize_level'] eq 2"/>
+                                                <option value="0">关闭</option>
+                                                <option value="1" >一等奖</option>
+                                                <option value="2" selected>二等奖</option>
+                                                <option value="3">三等奖</option>
+                                            <else />
+                                                <option value="0">关闭</option>
+                                                <option value="1" >一等奖</option>
+                                                <option value="2">二等奖</option>
+                                                <option value="3" selected>三等奖</option>
+                                        </if>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--开启抽奖-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">仅充值</label>
+                                <div class="col-sm-8">
+                                    <div class="radio" style="margin-left: -20px">
+                                        <label>
+                                            <input type="hidden" name="only_charge" value="{$data.only_charge}" id="only_charge">
+                                            <if condition="$data['only_charge'] eq 1">
+                                                <input class="checkbox-slider slider-icon colored-darkorange"  type="checkbox" checked="checked" id="k-only_charge">
+                                            <else />
+                                                <input class="checkbox-slider slider-icon colored-darkorange"  type="checkbox" id="k-only_charge">
+                                            </if>
+                                            <span class="text darkorange"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">开启抽奖</label>
+                                <div class="col-sm-8">
+                                    <div class="radio" style="margin-left: -20px">
+                                        <!--<label>-->
+                                        <!--<if condition="$data['is_enable'] eq 0">-->
+                                        <!--<input value="0" checked class="colored-success" type="radio" name="is_enable">-->
+                                        <!--<else />-->
+                                        <!--<input value="0" class="colored-success" type="radio" name="is_enable">-->
+                                        <!--</if>-->
+
+                                        <!--<span class="text">关闭</span>-->
+                                        <!--</label>-->
+                                        <label>
+                                            <input type="hidden" name="is_enable" value="{$data.is_enable}" id="val">
+                                            <if condition="$data['is_enable'] eq 1">
+                                                <input class="checkbox-slider slider-icon colored-darkorange"  type="checkbox" checked="checked" id="k-button">
+                                                <else />
+                                                <input class="checkbox-slider slider-icon colored-darkorange"  type="checkbox" id="k-button">
+                                            </if>
+                                            <span class="text darkorange"></span>
+                                        </label>
+                                    </div>
+                                    <!--<div class="radio col-sm-2">-->
+                                    <!--<label>-->
+                                    <!--<if condition="$data['is_enable'] eq 1">-->
+                                    <!--<input checked  value="1" class="colored-success" type="radio" name="is_enable">-->
+                                    <!--<else />-->
+                                    <!--<input  value="1" class="colored-success" type="radio" name="is_enable">-->
+                                    <!--</if>-->
+                                    <!--<span class="text">开启</span>-->
+                                    <!--</label>-->
+                                    <!--</div>-->
+                                    <!--<div class="radio col-sm-2" style="display:none;">-->
+                                    <!--&lt;!&ndash;经常最后一个radio会显示不出来，所以多添加一个&ndash;&gt;-->
+                                    <!--<label>-->
+                                    <!--<input class="colored-success" type="radio">-->
+                                    <!--</label>-->
+                                    <!--</div>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--按钮-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="total_person"></label>
+                                <div class="col-sm-4">
+                                    <button type='submit' class="btn btn-lg btn-blue next_step">
+                                        保存
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--面包屑导航封装-->
+<div id="tmpbread" style="display: none;">{$breadhtml}</div>
+<script type="text/javascript">
+    setBread($('#tmpbread').html());<!--/面包屑导航封装-->
+    $(function(){
+        // 点击下一步、数据验证，成功后跳转
+        $('#set_config').bootstrapValidator({
+            submitHandler   : function(validator,form,submitButton){
+                var toUrl = '{:U("Admin/Lottery/setPrize")}';
+                var data = $('#set_config').serialize();
+                $.App.ajax('post', toUrl, data,null); //成功后执行redirectToStep2
+            }
+        });
+    })
+    $('#k-button').on('click', function() {
+        var value = $(this).prop('checked') ? 1 : 0;
+        $('#val').val(value);
+    });
+    $('#k-only_charge').on('click', function() {
+        var value = $(this).prop('checked') ? 1 : 0;
+        $('#only_charge').val(value);
+    });
+</script>

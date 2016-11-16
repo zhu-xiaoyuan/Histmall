@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>对账单列表</title>
+    <meta charset="utf-8"/>
+    <!--页面优化-->
+    <meta name="MobileOptimized" content="320">
+    <!--默认宽度320-->
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <!--viewport 等比 不缩放-->
+    <meta http-equiv="cleartype" content="on">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!--删除苹果菜单-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!--默认颜色-->
+    <meta name="apple-mobile-web-app-title" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <!--加载全部后 显示-->
+    <meta content="telephone=no" name="format-detection"/>
+    <!--不识别电话-->
+    <meta content="email=no" name="format-detection"/>
+    <link rel="stylesheet" href="__PUBLIC__/App/css/style.css"/>
+    <link rel="stylesheet" href="__PUBLIC__/App/css/dropload.css"/>
+    <link href="//cdn.bootcss.com/weui/0.4.2/style/weui.min.css" rel="stylesheet">
+    <!--组件依赖js begin-->
+    <script src="__PUBLIC__/App/js/zepto.min.js"></script>
+    <!--组件依赖js end-->
+</head>
+<body class="back1">
+<div class="ads-tabs ovflw">
+    <a href="{:U('App/Vip/checkOrder')}?type=0" class="fl text-c" style="width: 50%;">
+        <span
+        <eq name='type' value='0'>class='active'</eq>
+        >处理中的对账单</span></a>
+    <a href="{:U('App/Vip/checkOrder')}?type=1" class="fl text-c" style="width: 50%;">
+        <span
+        <eq name='type' value='1'>class='active'</eq>
+        >已完成的对账单
+        </span>
+    </a>
+</div>
+<div id="main" style="margin-bottom: 60px;">
+    <div class="ads-cc">
+
+    </div>
+</div>
+<div id="html" style="display: none;"></div>
+<!-- 底部导航 -->
+<div class="dtl-ft ovflw">
+    <div class=" fl dtl-icon dtl-bck ovflw">
+        <a href="{:U('App/Vip/store')}" class="btnBack">
+            <i class="iconfont">&#xe679</i>
+        </a>
+    </div>
+</div>
+<div id="mybox"
+     style="display: none;background: rgba(0,0,0,.5);width: 100%;height: 100%;position: fixed;top:0;bottom: 0;left: 0;right: 0;z-index: 999">
+    <div style="background-color: white;width: 80%;margin: 10% auto;padding-bottom: 20px;padding-top: 10px;">
+        <div class="weui_cells_title">请填写银行交易信息</div>
+        <div class="weui_cells weui_cells_form" style="font-size: 13px;">
+            <div class="weui_cell">
+                <div class="weui_cell_hd"><label class="weui_label">银行交易流水号</label></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input id="tn" class="weui_input" type="text">
+                </div>
+            </div>
+            <div class="weui_cell">
+                <div class="weui_cell_hd"><label class="weui_label">银行交易时间</label></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input id="dd" class="weui_input" type="datetime-local">
+                </div>
+            </div>
+        </div>
+
+        <div class="weui_btn_area">
+            <a class="weui_btn weui_btn_primary" style="font-size: 13px;">提交</a>
+
+            <a class="weui_btn weui_btn_warn" style="font-size: 13px;">取消</a>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="id"/>
+</body>
+<script src="__PUBLIC__/App/js/dropload.min.js"></script>
+<script>
+    $(function () {
+        var num = 10;
+        var counter = 0;
+        var dropload = $("#main").dropload({
+            scrollArea: window,
+            loadDownFn: function (me) {
+                $("#html").load("{:U('App/Vip/checkOrderItem')}?pg=" + counter + "&pc=" + num + "&type={$type}", function (html, status) {
+                    if (status == "success") {
+                        if (html == "") {
+                            dropload.noData();
+                            dropload.resetload();
+                            return;
+                        } else {
+                            $('.ads-cc').append(html);
+                            $("#html").html("");
+                            $(".home-rz").on("click", function () {
+                                $("#mybox").show();
+                                $("#id").val($(this).attr("data"));
+                            });
+                            $(".weui_btn_warn").on("click", function () {
+                                $("#mybox").hide();
+                                $(".weui_btn_primary").one("click", function () {
+                                    toDo(this);
+                                });
+                            });
+                            $(".weui_btn_primary").one("click", function () {
+                                toDo(this);
+                            });
+                            counter++;
+                            dropload.resetload();
+                        }
+                    } else {
+                        dropload.resetload();
+                    }
+                });
+            }
+        });
+    });
+    function toDo(e) {
+        $.post("{:U('App/Vip/checkOrderDo')}", {
+            id: $("#id").val(),
+            tn: $("#tn").val(),
+            dd: $("#dd").val()
+        }, function (d) {
+            alert(d.message);
+            location.reload();
+        }, "json")
+    }
+</script>
+</html>

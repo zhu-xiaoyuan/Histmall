@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <include file="./Tpl/App/Business_header.html"/>
+    <style>
+        .weui_btn {
+            display: inline-block;
+            float: right;
+            font-size: 13px;
+        }
+        .content img{max-width:100%;}
+    </style>
+</head>
+<body>
+<header class="ui-banner">
+    <div id="slider" class="swipe">
+        <ul class="swipe-wrap">
+            <volist name="data.pics" id="vo">
+                <li>
+                    <a href="#"><img class="ads" data-src="{$vo.imgurl}" width="80%"></a>
+                </li>
+            </volist>
+        </ul>
+        <div id="slider_on">
+            <ul>
+                <foreach name="data.pics" item="vo">
+                    <li></li>
+                </foreach>
+            </ul>
+        </div>
+    </div>
+</header>
+<div style="padding: 10px;margin-bottom: 70px;">
+    <div style="font-size: 18px;font-weight: bold;display:flex; display:-webkit-flex; flex-flow:row; -webkit-flex-flow:row; border-bottom: 1px solid #dedede;padding-bottom: 10px;">
+        <div style="flex: 3;padding: 2px 0px;">{$data.name}</div>
+        <a href="{:U('App/Business/order')}?id={$data.id}" style="font-size:1.2rem;line-height:40px;height: 40px;overflow: hidden;"
+           class="weui_btn weui_btn_primary">消费后买单</a>
+    </div>
+    <ul style="padding: 10px 0px;border-bottom: 1px solid #dedede">
+        <li><i class="iconfont">&#xe651;</i>&nbsp;&nbsp;{$data.province}{$data.city}{$data.area}{$data.address}</li>
+        <li><i class="iconfont">&#xe652;</i>&nbsp;&nbsp;<a href="tel:{$data.phone}"
+                                                           style="color: #000000">{$data.phone}</a></li>
+    </ul>
+    <div style="padding: 10px 0px;" class="content">
+        {$data.desc|htmlspecialchars_decode}
+    </div>
+</div>
+<include file="./Tpl/App/Business_footer.html"/>
+</body>
+<script src="__PUBLIC__/App/js/tool.js"></script>
+<script src="__PUBLIC__/App/js/swipe.js"></script>
+<script src="__PUBLIC__/App/js/base.js"></script>
+<script>
+    $(function () {
+        $('#slider').mBanner('slider');
+        $(".ads").swiperThumb();
+        $("#sm_home").removeAttr("style");
+        $('#sm_goods').css('color', '#19a5f3');
+    });
+</script>
+<include file="./Tpl/App/Business_sharestore.html"/>
+</html>

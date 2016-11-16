@@ -1,0 +1,176 @@
+<div class="row">
+    <div class="col-xs-12 col-xs-12">
+        <div class="widget radius-bordered">
+            <div class="widget-header bg-blue">
+                <i class="widget-icon fa fa-arrow-down"></i>
+                <span class="widget-caption">会员充值</span>
+
+                <div class="widget-buttons">
+                    <a href="#" data-toggle="maximize">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a href="#" data-toggle="collapse">
+                        <i class="fa fa-minus"></i>
+                    </a>
+                    <a href="#" data-toggle="dispose">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="widget-body">
+                <empty name="backurl">
+                    <div class="row margin-bottom-30">
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label"></label>
+
+                            <div class="col-lg-4">
+                                <div class="input-group input-group-md">
+                                    <input type="text" class="form-control" id="vip-charge-search"
+                                           placeholder="会员ID/手机号">
+                                    <a href="javascript:void(0)" class="input-group-addon" id="btn-vip-charge-search">
+                                        <i class="fa fa-search"></i>搜索
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </empty>
+                <form id="AppForm" action="" method="post" class="form-horizontal" data-bv-message=""
+                      data-bv-feedbackicons-valid="glyphicon glyphicon-ok2"
+                      data-bv-feedbackicons-invalid="glyphicon glyphicon-remove2"
+                      data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+                    <input type="hidden" id="charge-vip-id" name="id" value="{$cache.id}">
+                    <notempty name="backurl">
+                        <a href="{$backurl}"
+                           class="btn btn-primary"
+                           data-loader="App-loader"
+                           data-loadername="会员列表">
+                            <i class="fa fa-mail-reply"></i>返回
+                        </a>
+                    </notempty>
+
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">会员ID</label>
+
+                        <div class="col-lg-4">
+                            <div class="form-control-static" id="charge_vip_id">
+                                {$cache.id}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">会员昵称</label>
+
+                        <div class="col-lg-4">
+                            <div class="form-control-static" id="charge_vip_nickname">
+                                {$cache.nickname}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">真实姓名</label>
+
+                        <div class="col-lg-4">
+                            <div class="form-control-static" id="charge_vip_name">{$cache.name}</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">真实手机</label>
+
+                        <div class="col-lg-4">
+                            <div class="form-control-static" id="charge_vip_mobile">{$cache.mobile}</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">会员余额</label>
+
+                        <div class="col-lg-4">
+                            <div class="form-control-static" id="vip_money">{$cache.money}</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">充值金额</label>
+
+                        <div class="col-lg-2">
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control" id="vip_charge_money" name="charge_money"
+                                       data-bv-notempty="true" data-bv-notempty-message="请输入充值金额" placeholder="请输入充值金额"
+                                       data-bv-numeric="true" data-bv-numeric-message="请输入充值金额">
+                                    <span class="input-group-addon">
+                                          元
+                                      </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-lg-offset-2 col-lg-4">
+                            <button class="btn btn-primary btn-lg" type="submit">充值</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--面包屑导航封装-->
+<div id="tmpbread" style="display: none;">{$breadhtml}</div>
+<script type="text/javascript">
+    setBread($('#tmpbread').html());
+</script>
+<!--/面包屑导航封装-->
+<!--表单验证与提交封装-->
+<script type="text/javascript">
+    $('#AppForm').bootstrapValidator({
+        submitHandler: function (validator, form, submitButton) {
+            $.App.confirm("确认要为此会员充值吗？", function () {
+                var tourl = "{:U('Admin/Vip/charge')}";
+                var data = $('#AppForm').serialize();
+                $.App.ajax('post', tourl, data, function (rlt) {
+                    $(form).data('bootstrapValidator').resetForm();
+                    $('#vip_money').html(rlt['money']);
+                    $('#vip_charge_money').val('');
+                },function(rlt){
+                    $(form).data('bootstrapValidator').resetForm();
+                });
+            },function(){
+                $(form).data('bootstrapValidator').resetForm();
+            });
+            return false;
+        }
+    });
+
+    $('#btn-vip-charge-search').click(function () {
+
+        var vipId = $.trim($('#vip-charge-search').val());
+        if (vipId.length == 0) {
+            return;
+        }
+        $.ajax({
+            type: "post",
+            url: "{:U('Admin/Vip/getChargeUser')}",
+            data: {'id': vipId},
+            success: function (info) {
+                if (info['status']) {
+                    var vip = info['data'];
+                    $('#charge-vip-id').val(vip['id']);
+                    $('#charge_vip_id').text(vip['id']);
+                    $('#charge_vip_nickname').text(vip['nickname']);
+                    $('#charge_vip_name').text(vip['name']);
+                    $('#charge_vip_mobile').text(vip['mobile']);
+                    $('#vip_money').text(vip['money']);
+                } else {
+                    $.App.alert('danger', info['msg']);
+                }
+                return false;
+            },
+            error: function (xhr) {
+                $.App.alert('danger', '通讯失败！请重试！');
+                return false;
+            }
+        });
+    })
+</script>
+<!--/表单验证与提交封装-->

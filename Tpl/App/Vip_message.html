@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>消息中心</title>
+    <meta charset="utf-8"/>
+    <!--页面优化-->
+    <meta name="MobileOptimized" content="320">
+    <!--默认宽度320-->
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <!--viewport 等比 不缩放-->
+    <meta http-equiv="cleartype" content="on">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!--删除苹果菜单-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!--默认颜色-->
+    <meta name="apple-mobile-web-app-title" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <!--加载全部后 显示-->
+    <meta content="telephone=no" name="format-detection"/>
+    <!--不识别电话-->
+    <meta content="email=no" name="format-detection"/>
+    <link rel="stylesheet" href="__PUBLIC__/App/css/style.css"/>
+    <link rel="stylesheet" href="__PUBLIC__/App/css/dropload.css"/>
+    <script type="text/javascript" src="__PUBLIC__/App/js/zepto.min.js"></script>
+</head>
+<body>
+<div id="main" style="margin-bottom: 60px;">
+    <ul class="color6 ovflw info-lst">
+    </ul>
+</div>
+<div id="html" style="display: none;"></div>
+<div class="info-bg">
+    <div class="info-cc">
+        <div class="info-chd ovflw font-visib">
+            <div class="info-ctt fl">我的消息</div>
+            <i class="iconfont fr info-close">&#xe659</i></div>
+        <div style="padding: 10px;color: red;" id="title"></div>
+        <div class="info-scroll" id="content"></div>
+    </div>
+</div>
+
+<div class="insert1"></div>
+<div class="dtl-ft ovflw">
+    <div class=" fl dtl-icon dtl-bck ovflw">
+        <a href="{:U('App/Vip/index')}" id="addressback">
+            <i class="iconfont">&#xe679</i>
+        </a>
+    </div>
+</div>
+<script type="text/javascript">
+    //弹出详情页
+    function readMsg(id) {
+        $.getJSON("{:U('Vip/msgRead')}", {'id': id}, function (e) {
+            if (e.status = 1) {
+                $('#list' + id).find('h3').removeClass('color3');
+            }
+            $('#title').text(e.data.title);
+            $('#content').html(e.data.content);
+            $('.info-bg').show();
+        });
+    }
+
+    $('.info-close').click(function () {
+        $('.info-bg').hide();
+    });
+
+    //底部导航
+    $('.ui-navul li a').click(function () {
+        $('.ui-navul li a').css('color', '#929292');
+        $(this).css('color', '#19a5f3');
+    });
+</script>
+<!--通用分享-->
+<include file="./Tpl/App/Shop_share.html"/>
+</body>
+<script src="__PUBLIC__/App/js/dropload.min.js"></script>
+<script>
+    $(function () {
+        var num = 40;
+        var counter = 0;
+        var dropload = $("#main").dropload({
+            scrollArea: window,
+            loadDownFn: function (me) {
+                $("#html").load("{:U('App/Vip/messageItem')}?pg=" + counter + "&pc=" + num, function (html, status) {
+                    $("#html").html("");
+                    if (status == "success") {
+                        if (html == "") {
+                            dropload.noData();
+                            dropload.resetload();
+                            return;
+                        } else {
+                            $('.info-lst').append(html);
+                            counter++;
+                            dropload.resetload();
+                        }
+                    } else {
+                        dropload.resetload();
+                    }
+                });
+            }
+        });
+    });
+</script>
+</html>

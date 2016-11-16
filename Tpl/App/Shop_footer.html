@@ -1,0 +1,36 @@
+<div class="insert1"></div>
+<div class="ui-nav">
+    <ul class="ui-navul ovflw">
+        <li><a href="{:U('App/Shop/index')}" id="fthome"><span class="iconfont">&#xe6b8</span>
+            <p class="ui-navtt">首页</p></a></li>
+        <li><a href="{:U('App/Shop/groupList')}" id="ftbusiness"><span class="iconfont">&#xe676</span>
+            <p class="ui-navtt">拼团专区</p></a></li>
+        <li><a href="{:U('App/Shop/goodsList',array('cid'=>21))}" id="ftgoods"><span class="iconfont">&#xe670</span>
+            <p class="ui-navtt">更多精品</p></a></li>
+        <li><a href="{:U('App/Shop/basket',array('sid'=>0,'lasturl'=>$footlasturl))}" id="ftbasket"><span
+                class="iconfont">&#xe6af<b class="basketnum"></b></span>
+            <p class="ui-navtt">购物车</p>
+        </a></li>
+        <li><a href="{:U('App/Vip/index')}" id="ftvip"><span class="iconfont">&#xe686</span>
+            <p class="ui-navtt">个人中心</p></a></li>
+    </ul>
+</div>
+<script type="text/javascript">
+    var actname = "{$actname}";
+    $('#' + actname).css('color', '#19a5f3');
+    $.post("{:U('App/shop/getBasket')}", null, function (d) {
+        if (d.code == 0) {
+            if (d.message > 0) {
+                var basketNumDom = $(".basketnum");
+                if (d.message > 9) {
+                    d.message = '';
+                    basketNumDom.addClass('basketnum-more');
+                } else {
+                    basketNumDom.removeClass('basketnum-more');
+                }
+                basketNumDom.html(d.message);
+                basketNumDom.show();
+            }
+        }
+    }, "json");
+</script>

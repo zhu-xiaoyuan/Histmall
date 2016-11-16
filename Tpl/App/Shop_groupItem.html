@@ -1,0 +1,15 @@
+<volist name="data" id="vo">
+    <li>
+        <a href="{:U('App/Shop/goods',array('sid'=>0,'id'=>$vo['id'],'ppid'=>$_SESSION['WAP']['vipid']))}">
+            <img class="showImg" data-src="{$vo.imgurl}">
+            <!--图片尺寸：336*259-->
+            <h1 class="plist-tt fonts4 ovflw" style="height:30px;">{$vo.name}</h1>
+
+            <p style="display: block"><span class="plist-yp color3"><i class="fonts3">￥</i><em
+                    class="fonts1">{$vo.group_buy_money}</em></span>&nbsp;<span
+                    class="plist-xp fonts3">￥{$vo.oprice}</span>&nbsp;
+                <!--<span class="group_buy">去开团</span>-->
+            </p>
+        </a>
+    </li>
+</volist>

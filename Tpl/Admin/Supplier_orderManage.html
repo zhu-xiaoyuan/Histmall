@@ -1,0 +1,267 @@
+<style>
+    .order_type{
+        background-color: #5db2ff;
+        color:#fff;
+    }
+    .panel-body td{padding:5px 10px;}
+</style>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="widget">
+            <div class="widget-header bg-blue">
+                <i class="widget-icon fa fa-arrow-down"></i>
+                <span class="widget-caption">订单列表</span>
+                <div class="widget-buttons">
+                    <a href="#" data-toggle="maximize">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a href="#" data-toggle="collapse">
+                        <i class="fa fa-minus"></i>
+                    </a>
+                    <a href="#" data-toggle="dispose">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="widget-body">
+                <div class="table-tollbar">
+                    <a class="btn btn-md btn-primary" href="{:U('Admin/Supplier/orderManage_createOrder')}" data-loadername="订单管理" data-loader="App-loader">
+                        <i class="fa fa-plus"></i>添加订单
+                    </a>
+                    <a class="btn btn-md btn-primary" href="{:U('Admin/Supplier/getExcel',array('order_status'=>$_GET['order_status']))}">
+                        <i class="fa fa-save"></i></i>导出Excel
+                    </a>
+                    <div class="pull-right">
+                        <form id="App-search">
+                            <label style="margin-bottom:0px;">
+                                <input type="search" name="name" class="form-control" placeholder="搜索订单号/商家ID"/>
+                            </label>
+                            <a class="btn btn-success" data-search="App-search" data-loadername="商盟订单" data-loader="App-loader"
+                               href="{:U('Admin/Supplier/orderManage',array('order_status'=>$status))}">
+                                <i class="fa fa-search"></i>
+                                搜索
+                            </a>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="table-toolbar">
+                    <table id="App-table" class="table table-bordered table-hover">
+                        <thead class="bordered-darkorange">
+                        <tr role="row">
+                            <th>订单号</th>
+                            <th>商家ID</th>
+                            <th>商家名称</th>
+                            <th style="text-align:center;">消费金额</th>
+                            <th>买家ID</th>
+                            <th>买家</th>
+                            <th>支付方式</th>
+                            <th style="text-align:center;">支付金额</th>
+                            <th>状态</th>
+                            <th>下单时间</th>
+                            <if condition="$status neq 3"> <!--status:3关闭订单-->
+                                <th>付款时间</th>
+                            </if>
+                            <if condition="$status eq 3">
+                                <th>关闭时间</th>
+                            </if>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <empty name="orders">
+                            <tr><td class="h5" colspan="11">没有相关数据</td></tr>
+                        </empty>
+                            <volist name="orders" id="vo">
+                                <tr>
+                                    <td id="td_order_code_{$vo.id}">{$vo.order_code}</td>
+                                    <td id="">{$vo.vip_seller_id}</td>
+                                    <td id="td_su_name_{$vo.id}">{$vo.su_name}</td>
+                                    <td id="td_total_price_{$vo.id}" style="text-align:right;">{$vo.total_price|number_format=2}</td>
+                                    <td>{$vo.vip_buyer_id}</td>
+                                    <td>{$vo.vip_buyer_name}</td>
+                                    <td>
+                                        <switch name="vo.pay_type">
+                                            <case value="money">余额支付</case>
+                                            <case value="alipayApp">支付宝</case>
+                                            <case value="wxpay">微信支付</case>
+                                            <case value="offline">线下支付</case>
+                                            <default />未知
+                                        </switch>
+                                    </td>
+                                    <!--支付金额-->
+                                    <td id="td_pay_price_{$vo.id}" style="text-align:right;">{$vo.pay_price|number_format=2}</td>
+                                    <!--状态-->
+                                    <td>
+                                        <switch name="vo.status">
+                                            <case value="0">待付款</case>
+                                            <case value="1">待核对</case>
+                                            <case value="2">已完成</case>
+                                            <case value="3">已关闭</case>
+                                        </switch>
+                                    </td>
+                                    <!--下单时间-->
+                                    <td  class="h6">{$vo.order_time|date='Y-m-d H:i:s',###}</td>
+                                    <!--付款时间-->
+                                    <if condition="$status neq 3">
+                                        <td class="h6">
+                                            {$vo.pay_time|date='Y-m-d H:i:s',###}
+                                        </td>
+                                    </if>
+
+                                    <!--关闭时间-->
+                                    <if condition="$status eq 3">
+                                        <td class="h6">
+                                            {$vo.close_time|date='Y-m-d H:i:s',###}
+                                        </td>
+                                    </if>
+                                    <td>
+                                        <a class="btn btn-primary btn-xs order_detail" href="{:U('Admin/Supplier/orderDetail',array('id'=>$vo[id],'order_status'=>$vo[status]))}" data-loader="App-loader" data-loadername="订单管理--订单详情">
+                                            <i class="fa fa-eye"></i>详 情
+                                        </a>
+                                        <if condition="$vo.status eq 0">
+                                            <a data-ajax="{:U('Admin/Supplier/closeOrder',array('order_id'=>$vo[id]))}" data-content="确定要关闭订单吗？" data-type="del" class="btn btn-danger btn-xs btn-close">
+                                                <i class="fa fa-rub"></i> 关 闭
+                                            </a>
+                                        </if>
+                                        <!--<if condition="$vo.status eq 1">    &lt;!&ndash;如果订单状态为 待核对 &ndash;&gt;
+                                            <div class="btn btn-blue btn-xs verify" order_id="{$vo.id}" supplier_id="{$vo.vip_seller_id}">
+                                                <i class="fa fa-check"></i>核 对
+                                            </div>
+                                        </if>-->
+                                    </td>
+                                </tr>
+                            </volist>
+                        </tbody>
+                    </table>
+                    <div class="row DTTTFooter">
+                        {$page}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--核对按钮的弹出框  开始-->
+<!--<div id="myModal" style="display:none">
+    <table class="table">
+        <tr>
+            <td colspan="5" class="h5 text-center" id="modal_su_name"></td>
+        </tr>
+        <tr>
+            <td>订单号</td>
+            <td id="modal_order_code"></td>
+            <td></td>
+            <td>商家ID</td>
+            <td id="modal_supplier_id"></td>
+        </tr>
+        <tr>
+            <td>消费金额</td>
+            <td style="color:#f00;">￥<span id="modal_total_price"></span></td>
+            <td></td>
+            <td>应收金额</td>
+            <td style="color:#f00;">￥<span id="modal_pay_price"></span></td>
+        </tr>
+        <tr>
+            <td>银行交易流水号 <span style="color:#f00">*</span></td>
+            <td colspan="5">
+                <input type="text" class="form-control" name="tn" placeholder="请输入银行交易流水号" value=""/>
+            </td>
+        </tr>
+    </table>
+</div>-->
+<!--弹出框  结束-->
+
+<div id="tmpbread" style="display: none;">{$breadhtml}</div>
+<script type="text/javascript">
+    setBread($('#tmpbread').html());
+
+    //确定active的标签
+    var order_status = $('#order_status').val();
+    $('.widget-body a[order_status='+order_status+']').addClass('order_type');
+</script>
+<script src="__PUBLIC__/Admin/js/datetime/moment.js"></script>
+<script src="__PUBLIC__/Admin/js/datetime/daterangepicker.js"></script>
+<script>
+    //标签添加class=active
+    $(function(){
+        //时间选取
+        $('#date-picker').daterangepicker({
+            showShorcuts    : true,
+            shortcuts       : {
+                'prev'  : ['week'],
+                'next'  : ['week']
+            },
+            showWeekNumbers : true,
+            startOfWeek : 'monday',
+            separator   : '--',
+        })
+
+        //核对按钮
+        /*
+        $(".verify").on('click', function () {
+            var order_id = $(this).attr('order_id');
+            var supplier_id = $(this).attr('supplier_id');
+
+            // 1    获取需要加入modal的信息
+            var order_code  = $('#td_order_code_'+order_id).html();
+            var su_name     = $('#td_su_name_'+order_id).html();
+            var total_price = $('#td_total_price_'+order_id).html();
+            var pay_price   = $('#td_pay_price_'+order_id).html();
+            // 2    把以上信息加入到modal中，等待bootbox弹出
+            $('#modal_su_name').html(su_name);
+            $('#modal_order_code').html(order_code);
+            $('#modal_supplier_id').html(supplier_id);
+            $('#modal_total_price').html(total_price);
+            $('#modal_pay_price').html(pay_price)
+            // 3    弹出对话框
+            bootbox.dialog({
+                message: $("#myModal").html(),
+                title: "核对订单",
+                //className: "modal-darkorange",
+                buttons: {
+                    "取消": {
+                        className: "btn-danger",
+                        callback: function () { }
+                    },
+                    success: {
+                        label: " 确 认 ",
+                        className: "btn-blue",
+                        callback: function () {
+                            var tn = $('.modal-dialog').find('input').val();    //tn不在原来的#myModal里
+                            //var tn = $('#tn').attr('value')
+                            if(!tn){
+                                $.App.alert('danger','请输入银行交易流水号');
+                                return false;
+                            }
+
+                            $.ajax({
+                                url     : '{:U("Admin/Supplier/orderVerify")}',
+                                method  : 'post',
+                                dataType: 'json',
+                                data    : {order_id:order_id,tn:tn},
+                                success : function(data){
+                                    if(data.status == 1){
+                                        $.App.alert('success',data.msg);
+                                        $('#refresh-toggler').trigger('click');
+                                    }else{
+                                        $.App.alert('danger',data.msg);
+                                    }
+                                },
+                                error   : function(){
+                                    alert('something wrong, please try again!')
+                                }
+                            })
+                        }
+                    }
+
+                }
+            });
+        });*/
+    })
+
+
+</script>

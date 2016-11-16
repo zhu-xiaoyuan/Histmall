@@ -1,0 +1,29 @@
+<volist name="cache" id="vo">
+    <eq name="vo.type" value="1">
+        <li id="node{$vo.id}" data-id="{$vo.id}" class="parent">
+            <span onclick="javascript:pathopen(this);"><i class="glyphicon glyphicon-plus"></i> [{$vo.id}]{$vo.nickname}</span> <a
+                href="javascript:;"></a>
+            <span class="numPer redCol">{$vo.count1}</span>
+            <span class="numPer blueCol">{$vo.count2}</span>
+            <span class="numPer greenCol">{$vo.count3}</span>
+            <span class="numPer rouCol col-money">{$vo.total_yj|number_format=###,2}</span>
+            <span class="numPer bonusCol col-money">{$vo.total_got_bonus|number_format=###,2}/{$vo.total_bonus_amount|number_format=###,2}</span>
+            <notempty name="vo.is_tuanzhang">
+                <span class="numPer viaCol col-money">{$vo.total_tuanzhang_tc|number_format=###,2}</span>
+            </notempty>
+            <span class="numPer eyeCol" data-id="{$vo.id}" onclick="userInfo(this)"><i
+                    class="glyphicon glyphicon-eye-open"></i></span>
+        </li>
+        <else/>
+        <li id="node{$vo.id}" data-id="{$vo.id}" class="leaf">
+            <span><i class="glyphicon glyphicon-leaf"></i> [{$vo.id}]{$vo.nickname}</span>
+            <a href="javascript:;"></a>
+            <span class="numPer bonusCol col-money">{$vo.total_got_bonus|number_format=###,2}/{$vo.total_bonus_amount|number_format=###,2}</span>
+            <notempty name="vo.is_tuanzhang">
+                <span class="numPer viaCol col-money">{$vo.total_tuanzhang_tc|number_format=###,2}</span>
+            </notempty>
+            <span class="numPer eyeCol eyeColCol" data-id="{$vo.id}" onclick="userInfo(this)"><i
+                    class="glyphicon glyphicon-eye-open"></i></span>
+        </li>
+    </eq>
+</volist>

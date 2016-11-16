@@ -1,0 +1,13 @@
+<volist name="cache" id="vo">
+    <li class="ovflw border-b1">
+        <p class="ads-p">{$vo.ctime|date="Y-m-d H:i",###}</p>
+
+        <p class="ads-h3">贡献会员：{$vo.fromname}</p>
+
+        <p>订单编号：{$vo.order_code}</p>
+
+        <p>订单金额：{$vo.fxprice}</p>
+
+        <p>获得{$_SESSION['SHOP']['set']['yjname']}：{$vo.fxyj}</p>
+    </li>
+</volist>

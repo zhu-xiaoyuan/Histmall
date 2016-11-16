@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>我的店铺</title>
+    <meta charset="utf-8"/>
+    <!--页面优化-->
+    <meta name="MobileOptimized" content="320">
+    <!--默认宽度320-->
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <!--viewport 等比 不缩放-->
+    <meta http-equiv="cleartype" content="on">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!--删除苹果菜单-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!--默认颜色-->
+    <meta name="apple-mobile-web-app-title" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <!--加载全部后 显示-->
+    <meta content="telephone=no" name="format-detection"/>
+    <!--不识别电话-->
+    <meta content="email=no" name="format-detection"/>
+    <link rel="stylesheet" href="__PUBLIC__/App/css/style.css"/>
+    <script type="text/javascript" src="__PUBLIC__/App/js/zepto.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/App/js/canvas.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/App/js/qrcode.js"></script>
+    <style>
+        .home-item {
+            width: 50%;
+        }
+    </style>
+</head>
+<body class="back1">
+<div class="info-bg" style="text-align: center;display: none;z-index: 99;background:rgba(0, 0, 0, 0.7);">
+    <canvas id="canvas2" style="width: 90%;margin-top: 10%">
+
+    </canvas>
+</div>
+<div class="home-hd" style="background: url(__PUBLIC__/App/img/head-bg.png) no-repeat;background-size: 100% 100%;">
+    <div class="home-hdc ovflw">
+        <div style="margin: 16px;">
+            <img src="{$data.imgurl}?imageView2/1/format/webp/interlace/1/w/60/h/60"
+                 style="width: 62px;height: 62px;float: left">
+            <canvas id="canvas" style="width: 62px;height: 62px;float: right;"
+                    data="{$url}"></canvas>
+        </div>
+        <div class="fl home-info">
+            <p>{$data.name}</p>
+
+            <p style="font-size:0.8em;">结算价：<span>{$shopset.settlement_rate}折</span></p>
+        </div>
+    </div>
+    <div class="clr"></div>
+    <div class="home-panel ovflw">
+        <div class="fl home-item"><a href="{:U('App/Vip/dpOrder')}?type=1" class="home-br text-c"><span
+                id="home-jf">{$data.total_offline_money}</span><span class="home-add" id="add-jf"></span>
+
+            <p>营业总额</p></a></div>
+        <div class="fl home-item"><a href="{:U('App/Vip/unsettled')}" class="text-c"><span
+                id="home-jy">{$data.total_bonus_amount}</span><span
+                class="home-add" id="add-jy"></span>
+
+            <p>待结算额</p></a></div>
+    </div>
+</div>
+</div>
+<div class="home-cc">
+    <div class="home-lst2 border-b1 border-t1 ovflw back2">
+        <a href="{:U('App/Vip/dpOrder')}" class="border-b1 ovflw home-li">
+            <span class="iconfont fl icon text-c icon-bc5">&#xe699;</span>
+            <span class="home-tt color6">店铺订单</span>
+            <span class="iconfont fr icon-r">&#xe6a3</span>
+        </a>
+        <a href="{:U('App/Vip/createOrder')}" class="border-b1 ovflw home-li">
+            <span class="iconfont fl icon text-c icon-bc7">&#xe67c;</span>
+            <span class="home-tt color6">创建订单</span>
+            <span class="iconfont fr icon-r">&#xe6a3</span>
+        </a>
+    </div>
+    <div class="home-lst2 border-b1 border-t1 back2 ovflw">
+        <a href="{:U('App/Vip/checkOrder')}" class="border-b1 ovflw home-li">
+            <span class="iconfont fl icon text-c icon-bc1">&#xe6e0;</span>
+            <span class="home-tt color6">我的对账单</span>
+            <span class="iconfont fr icon-r">&#xe6a3</span>
+        </a>
+        <a href="{:U('App/Vip/check')}" class="border-b1 ovflw home-li">
+            <span class="iconfont fl icon text-c icon-bc2">&#xe649;</span>
+            <span class="home-tt color6">立即对账</span>
+            <span class="iconfont fr icon-r">&#xe6a3</span>
+        </a>
+    </div>
+    <div class="home-lst2 border-b1 border-t1 back2 ovflw">
+        <a href="javascript:showCode()" class="border-b1 ovflw home-li">
+            <span class="iconfont fl icon text-c icon-bc3">&#xe6b0;</span>
+            <span class="home-tt color6">店铺二维码</span>
+            <span class="iconfont fr icon-r">&#xe6a3</span>
+        </a>
+    </div>
+</div>
+<!-- 底部导航 -->
+<div class="dtl-ft ovflw">
+    <div class=" fl dtl-icon dtl-bck ovflw">
+        <a href="{:U('App/Vip/index')}">
+            <i class="iconfont">&#xe679</i>
+        </a>
+    </div>
+</div>
+</body>
+<script>
+    function showCode() {
+        var canvasObj2 = new createQRImage("canvas2");
+        canvasObj2.changeText($("#canvas").attr("data"));
+        $(".info-bg").show();
+    }
+
+    $(function () {
+        var canvasObj = new createQRImage("canvas");
+        canvasObj.changeText($("#canvas").attr("data"));
+        $(".info-bg").on("click", function () {
+            $(this).hide();
+        })
+    });
+</script>
+</html>

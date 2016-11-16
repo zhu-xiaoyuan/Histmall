@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>微信安全支付</title>
+	    <meta charset="utf-8" />
+		<!--页面优化-->
+		<meta name="MobileOptimized" content="320">
+		<!--默认宽度320-->
+		<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+		<!--viewport 等比 不缩放-->
+		<meta http-equiv="cleartype" content="on">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<!--删除苹果菜单-->
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		<!--默认颜色-->
+		<meta name="apple-mobile-web-app-title" content="yes">
+		<meta name="apple-touch-fullscreen" content="yes">
+		<!--加载全部后 显示-->
+		<meta content="telephone=no" name="format-detection" />
+		<!--不识别电话-->
+		<meta content="email=no" name="format-detection" />
+		
+	</head>
+	<body>
+		<script type="text/javascript">
+		document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+			WeixinJSBridge.invoke('getBrandWCPayRequest', {
+				'appId' : '{$payapi.appId}',
+				'timeStamp': '{$payapi.timeStamp}',
+				'nonceStr' : '{$payapi.nonceStr}',
+				'package' : '{$payapi.package}',
+				'signType' : '{$payapi.signType}',
+				'paySign' : '{$payapi.paySign}'
+			}, function(res) {
+				if(res.err_msg == 'get_brand_wcpay_request:ok') {
+					//location.search += '&done=1';
+					alert('启动成功 ');
+				} else {
+					alert('启动微信支付失败, 请检查你的支付参数. 详细错误为: ' + res.err_msg);
+					//history.go(-1);
+				}
+			});
+		}, false);
+		</script>
+	</body>
+</html>

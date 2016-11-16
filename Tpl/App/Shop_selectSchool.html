@@ -1,0 +1,129 @@
+<style>
+    .layer{width:100%;height:100%;position:fixed;}
+    td , .else{border:1px solid;padding:5px;float:left;margin:5px;border-radius:10px;}
+    .btn{color:#fff;padding:5px;height:30px;margin:0 auto;border-radius:10px;}
+    .able_btn{background-color:red;}
+    .disable_btn{background-color:#ccc;}
+    .container{padding:5%;}
+    .selected{background-color:red;}
+</style>
+<div class="layer" style="top:0;z-index:888;background-color:rgba(0, 0, 0, 0.7);">
+</div>
+<div class="layer" style="top:20px;z-index:999;color:#fff;">
+    <div class="container">
+        <div class="fonts18">
+            亲，为更好的为您服务，我们需要绑定您所在的学校：
+        </div>
+        <div class="text-c school_list">
+            加载学校列表中... <img src="__PUBLIC__/Admin/img/loading.gif" style="width:30px;vertical-align: middle;"/>
+        </div>
+        <div style="margin-top:20px;padding-bottom:100px;">
+            <div>您选择了：<span id="tips">（还未选择）</span></div>
+            <div>(绑定后不可修改)</div>
+            <div id="submit" class="btn disable_btn text-c" style="margin:0 auto;">确定</div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function(){
+        $('.layer').show();
+        $.ajax({
+            url : '{:U("App/Shop/selectSchool")}',
+            success : function(data){
+                var html = '<table id="two" style="">' +
+                        '<tr><td class="else" data-id="-1">其他</td>' +
+                        '<td class="td_input" style="display:none;padding-bottom:10px;"><input id="school_remark" type="text" name="school_remark" placeholder="请输入您所在的学校"/></td></tr>' +
+                        '</table>';
+                html += '<table id="one" style=""><tr>';
+                for(var i in data){
+                    html += '<td class="" data-id="'+data[i]['id']+'">'+data[i]['name']+'</td>';
+                }
+                html += '</tr></table>';
+                $('.school_list').html(html);
+                bind();
+            },
+            error   : function(){
+                alert('通信失败，请刷新后再次尝试');
+            }
+        })
+
+        //点击确定
+        $('#submit').click(function(){
+            if($(this).hasClass('able_btn')){
+                var id = $('.selected').data('id');
+                if(id == -1){
+                    var school = $.trim($('#school_remark').val());
+                    if(!school){
+                        alert('请输入您的学校名称');
+                        return;
+                    }
+                    data = {id:-1,school_remark:school};
+                }else{
+                    data = {id:id};
+                }
+
+                console.log(data);
+                $.ajax({
+                    url     : "{:U('App/Shop/saveSchool')}",
+                    data    : data,
+                    success : function(data){
+                        if(data.status == 1){
+                            $('.layer').hide();
+                            App_gmuMsg(data.msg);
+                        }else{
+                            alert(data.msg);
+                            $('.layer').hide();
+                        }
+                    },
+                    error   : function(){
+                        alert('网络连接错误，请刷新后再次尝试');
+                    }
+                })
+            }
+        })
+
+    })
+function bind() {
+    //选择学校
+    $('#one td').click(function () {
+        $('td').removeClass('selected');
+        $(this).addClass('selected');
+        $('.td_input').attr('style','display:none');
+        $('#tips').html($(this).html());
+        var id = $(this).data('id');
+        if(id != -1){
+            $('#submit').removeClass('disable_btn');
+            $('#submit').addClass('able_btn');
+        }
+    });
+    //选择“其他”
+    $('.else').click(function(){
+        $('td').removeClass('selected');
+        $(this).addClass('selected');
+        $('#tips').html($(this).html());
+        $('.td_input').attr('style','display:inline-block');
+        var school = $('#school_remark').val();
+        if(school){
+            $('#submit').removeClass('disable_btn');
+            $('#submit').addClass('able_btn');
+            $('#tips').html('其他 -- '+school);
+        }else{
+            $('#submit').removeClass('able_btn');
+            $('#submit').addClass('disable_btn');
+        }
+    });
+    //选择其他后，输入学校名称
+    $('#school_remark').on('input',function(){
+        var school = $(this).val();
+        if(school){
+            $('#submit').removeClass('disable_btn');
+            $('#submit').addClass('able_btn');
+            $('#tips').html('其他 -- '+school);
+        }else{
+            $('#submit').removeClass('able_btn');
+            $('#submit').addClass('disable_btn');
+            $('#tips').html('其他');
+        }
+    })
+}
+</script>

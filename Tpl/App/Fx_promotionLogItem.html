@@ -1,0 +1,29 @@
+<volist name="cache" id="vo">
+    <li style="padding:5px;">
+        <div style="float:left;">
+            <a href="#">
+                <i class="iconfont tb"><img class="hot-ico" src="{$vo.headimgurl}"/></i>
+                <div>
+                    <h3 style="color: #fa5600;">{$vo.apply_nickname}</h3>
+                    <p style="font-size:10px;">申请时间:{$vo.create_time|date="Y-m-d H:i:s",###}</p>
+                </div>
+            </a>
+        </div>
+        <div style="float:right;line-height:70px;">
+            <switch name="vo.status">
+                <case value="0">
+                    <a href="{:U('App/Fx/confirmTg',array('id'=>$vo['id']))}">
+                        <span style="color:#fa5600;padding:20px 0;">待审核  &gt;</span>
+                    </a>
+                </case>
+                <case value="1">
+                    <span style="color:#00f">审核通过</span>
+                </case>
+                <case value="2">
+                    <span style="color:#999">拒绝申请</span>
+                </case>
+            </switch>
+        </div>
+    </li>
+
+</volist>

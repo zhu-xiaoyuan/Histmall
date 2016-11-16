@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <include file="./Tpl/App/Business_header.html"/>
+    <script type="text/javascript" src="__PUBLIC__/App/gmu/gmu.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/App/gmu/app-basegmu.js"></script>
+    <style>
+        .bg {
+            font-weight: bold;
+            width: 100%;
+            height: 70px;
+            background-color: #e0e0e0;
+            line-height: 70px;
+            font-size: 20px;
+            text-align: center;
+        }
+
+        .weui_cell {
+            padding-top: 15px;
+        }
+    </style>
+
+</head>
+<body class="back1">
+<gt name="id" value="0">
+    <form id="orderform" method="post" action="{:U('App/Business/pay')}">
+        <div class="bg">
+            下单成功
+        </div>
+        <div class="weui_cells weui_cells_form" style="margin-top: 0px;">
+            <div class="weui_cell">
+                <div class="weui_cell_hd"><label class="weui_label">订单详情</label></div>
+            </div>
+            <div class="weui_cell">
+                <div class="weui_cell_hd"><label class="weui_label">订单号</label></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input class="weui_input" type="text" readonly value="{$order.order_code}">
+                </div>
+            </div>
+            <div class="weui_cell">
+                <div class="weui_cell_hd"><label class="weui_label">总价格</label></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input class="weui_input" type="number" readonly value="{$order.total_price}">
+                </div>
+            </div>
+        </div>
+        <div class="ads-lst border-t1 border-b1 ovflw mr-b back2" style="margin-top: 20px;">
+            <p class="ads-tt border-b1">支付方式</p>
+            <egt name="money" value="0">
+                <div class="ads_pay ovflw ads_border_dashed money" data-paytype="money" data-disable="0">
+                    <span class="iconfont fl ads_pay_lineh dtl_mar1">&#xe6d4</span>
+
+                    <div class="ads_orimg fl dtl_mar1">
+                        <img src="__PUBLIC__/App/img/tue.jpg"/>
+                    </div>
+                    <p class="ads_pay_p1 ads_pay_lineh1">余额：<i id='money' data-money="{$_SESSION['WAP']['vip']['money']}">￥{$_SESSION['WAP']['vip']['money']}</i>
+                    </p>
+
+                    <p class="ads_pay_p2 ads_pay_lineh1 color10 ads_font_size2">余额不足由其他方式支付</p>
+                </div>
+            </egt>
+            <!--<div class="ads_pay ovflw alipayApp" data-paytype="alipayApp" data-disable="0">
+                <span class="iconfont fl ads_pay_lineh dtl_mar1">&#xe656</span>
+
+                <div class="ads_orimg fl dtl_mar1">
+                    <img src="__PUBLIC__/App/img/zhif.jpg"/>
+                </div>
+                <p class="ads_pay_lineh">手机支付宝支付</p>
+            </div>-->
+            <div class="ads_pay ovflw wxpay" data-paytype="wxpay" data-disable="0">
+                <span class="iconfont fl ads_pay_lineh dtl_mar1">&#xe656</span>
+
+                <div class="ads_orimg fl dtl_mar1">
+                    <img src="__PUBLIC__/App/img/wxpay.jpg"/>
+                </div>
+                <p class="ads_pay_lineh">微信安全支付</p>
+            </div>
+            <!-- 银联支付备用 -->
+            <!--<div class="ads_pay ovflw " data-paytype = "yinlian">
+                <span class="iconfont fl ads_pay_lineh dtl_mar1">&#xe656</span>
+                <div class="ads_orimg fl dtl_mar1">
+                    <img src="__PUBLIC__/App/img/yl.jpg" />
+                </div>
+                <p class="ads_pay_lineh">银联支付</p>
+            </div>-->
+        </div>
+        <input name="orderid" value="{$order.id}" type="hidden">
+        <input type="hidden" name="sid" value="0">
+        <input id="paytype" name="type" type="hidden" value="{$type}"/>
+        <a id="orderconfirm" class="weui_btn weui_btn_primary" style="width: 90%;margin-top: 20px;"
+           href="#">提交支付</a>
+    </form>
+</gt>
+
+<elt name="id" value="0">
+    <div class="bg">
+        下单失败
+    </div>
+</elt>
+<a class="weui_btn weui_btn_default" style="width: 90%;margin-top: 20px;" href="{:U('App/Business/index')}">返回首页</a>
+</body>
+<script>
+    $(function () {
+        $("." + $("#paytype").val()).find("span").css('color', '#ff3000');
+        $('.ads_pay').click(function () {
+            var isdis = $(this).data('disable');
+            if (isdis == 0) {
+                var sp = $('.ads_pay span');
+                $(sp).css('color', ' #cfcfcf');
+                $(this).find('span').css('color', ' #ff3000');
+                $('#paytype').val($(this).data('paytype'));
+            } else {
+                App_gmuMsg('请使用其它方式！');
+            }
+        });
+        $('#orderconfirm').on('click', function () {
+            if (!$('#paytype').val()) {
+                App_gmuMsg('请选择支付方式！');
+                return false;
+            }
+            $('#orderform').submit();
+        });
+    });
+
+</script>
+</html>

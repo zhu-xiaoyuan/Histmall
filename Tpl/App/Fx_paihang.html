@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>{$_SESSION['SHOP']['set']['yjname']}排行榜</title>
+	    <meta charset="utf-8" />
+		<!--页面优化-->
+		<meta name="MobileOptimized" content="320">
+		<!--默认宽度320-->
+		<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+		<!--viewport 等比 不缩放-->
+		<meta http-equiv="cleartype" content="on">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<!--删除苹果菜单-->
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		<!--默认颜色-->
+		<meta name="apple-mobile-web-app-title" content="yes">
+		<meta name="apple-touch-fullscreen" content="yes">
+		<!--加载全部后 显示-->
+		<meta content="telephone=no" name="format-detection" />
+		<!--不识别电话-->
+		<meta content="email=no" name="format-detection" />
+		<link rel="stylesheet" href="__PUBLIC__/App/css/style.css" />
+		<script type="text/javascript" src="__PUBLIC__/App/js/zepto.min.js"></script>
+		<style>
+		.Appbox{ width:94%; margin:0 auto; margin-bottom:10px;}
+		.cp_list li{ border-bottom:1px solid #d9d9d9; overflow:hidden; height:70px; padding:2px 3%;}
+		.cp_list li i{ line-height:70px;}
+		.cp_list li div{ float:left; overflow:hidden;}
+		.cp_list li div h3{ font-size:1.05em; line-height:30px; padding-top:8px; color:#535353; font-weight:400;}
+		.cp_list li div p{ font-size:0.9em; line-height:20px; height:20px; width:100%; overflow:hidden;text-overflow: ellipsis; color:#9c9b9b; -o-text-overflow:ellipsis;white-space:nowrap;}
+		.tb{ padding-right: 10px; float: left;}
+		.ar{ width:9%;font-size:1.5em; color:#acacac; float: right;}
+		.top-name-red{ color: #B80F72 !important;}
+		.hot-ico{
+			width: 60px;
+			height: 60px;
+			border-radius: 100%;
+		}
+		</style>
+	</head>
+	<body class="back1">
+			<empty name="cache">
+				<div class="list_none text-c">
+					<p class="color6">暂无排行榜</p>
+				</div>
+				<else/>				
+				<div class="ovflw back2">
+					<div class="Appbox">
+				   	<ul class="cp_list">
+				   		<volist name="cache" id="vo">
+					   		<li style="padding-bottom: 10px;padding-top:10px;"><a href="#"><i class="iconfont tb"><img class="hot-ico" src="{$vo.headimgurl}" /> </i><div><h3  <elt name="i" value="3"> class="top-name-red" </elt> >{$vo.nickname}</h3>
+					    	<p> 第{$i}名&nbsp;&nbsp;&nbsp;&nbsp;{$_SESSION['SHOP']['set']['yjname']}收益:{$vo.total_xxyj}</p></div></a>
+					    	</li>
+				   		</volist>		    	
+				     </ul>
+		    		</div>
+	    		
+				</div>
+			</empty>
+			
+		<div class="insert1"></div>
+		<div class="dtl-ft ovflw">
+			<div class=" fl dtl-icon dtl-bck ovflw">
+				<a href="{:U('App/Fx/index')}">
+					<i class="iconfont">&#xe679</i>
+				</a>
+			</div>
+		</div>
+		<!--通用分享-->
+		<include file="./Tpl/App/Shop_share.html" />
+	</body>
+</html>

@@ -1,0 +1,551 @@
+<div class="row">
+    <div class="col-xs-12 col-xs-12">
+        <div class="widget radius-bordered">
+            <div class="widget-header bg-blue">
+                <i class="widget-icon fa fa-arrow-down"></i>
+                <span class="widget-caption">订单详情</span>
+                <div class="widget-buttons">
+                    <a href="#" data-toggle="maximize">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a href="#" data-toggle="collapse">
+                        <i class="fa fa-minus"></i>
+                    </a>
+                    <a href="#" data-toggle="dispose">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="widget-body">
+                <form id="AppForm" action="" method="post" class="form-horizontal"
+                      data-bv-message=""
+                      data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
+                      data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
+                      data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+                    <input type="hidden" name="id" value="{$cache.id}">
+                    <div class="form-title">
+                        <a class="btn btn-primary" data-loader="App-loader" data-loadername="团购订单" href="{:U('Admin/Group/groupList',array('status'=>$status))}"><i class="fa fa-reply"></i>返回</a>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">商品名称</label>
+                        <div class="col-lg-4">
+                            <input type="text" class="form-control" value="{$goods_info.name}" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">商品价格</label>
+                        <div class="col-lg-4">
+                            <input type="text" class="form-control" value="{$goods_info.price}" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">团购价格</label>
+                        <div class="col-lg-4">
+                            <input type="text" class="form-control" value="{$goods_info.group_buy_money}" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">已组团数</label>
+                        <div class="col-lg-4">
+                            <input type="text" class="form-control" value="{$goods_info.group_num}" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">团购开始时间</label>
+                        <div class="col-lg-4">
+                            <input type="text" class="form-control" <notempty name="goods_info.group_time_start">value='{$goods_info.group_time_start|date="Y/m/d H:i:s",###}'</notempty> readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">团购结束时间</label>
+                        <div class="col-lg-4">
+                            <input type="text" class="form-control" <notempty name="goods_info.group_time_end">value='{$goods_info.group_time_end|date="Y/m/d H:i:s",###}'</notempty> readonly>
+                        </div>
+                    </div>
+                    <div class="form-title">团购成员</div>
+                    <div class="form-group">
+                        <div class="col-lg-12">
+                            <table class="table table-hover">
+                                <thead class="bordered-darkorange">
+                                <tr>
+                                    <th>订单号</th>
+                                    <th>会员ID</th>
+                                    <th>收货人</th>
+                                    <th>联系方式</th>
+                                    <th>收货地址</th>
+                                    <th>客户留言</th>
+                                    <th>订单状态</th>
+                                    <th>支付金额</th>
+                                    <th>支付方式</th>
+                                    <th>支付时间</th>
+                                    <th>发货快递</th>
+                                    <th>发货快递单号</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="order_info" id="vo">
+                                    <tr>
+                                        <td>{$vo.oid}</td>
+                                        <td>{$vo.vipid}</td>
+                                        <td>{$vo.vipname}</td>
+                                        <td>{$vo.vipmobile}</td>
+                                        <td>{$vo.vipaddress}</td>
+                                        <td>{$vo.msg}</td>
+                                        <td>
+                                            <switch name="vo.status">
+                                                <case value="0">交易取消</case>
+                                                <case value="1"><label class="btn btn-sm btn-blue">未支付</label></case>
+                                                <case value="2"><label class="btn btn-sm btn-azure">已付款</label></case>
+                                                <case value="3"><label class="btn btn-sm btn-palegreen">已发货</label></case>
+                                                <case value="4"><label class="btn btn-sm btn-info">退货中</label></case>
+                                                <case value="5"><label class="btn btn-sm btn-success">交易完成</label></case>
+                                                <case value="7"><label class="btn btn-sm btn-warning">已退款</label></case>
+                                            </switch>
+                                        </td>
+                                        <td>
+                                            <notempty name="vo.payprice">{$vo.payprice}</notempty>
+                                        </td>
+                                        <td>
+                                            <switch name="vo.paytype">
+                                                <case value="money">余额支付</case>
+                                                <case value="alipaywap">支付宝WAP支付</case>
+                                                <case value="wxpay">微信支付</case>
+                                            </switch>
+                                        </td>
+                                        <td>
+                                            <notempty name="vo.paytime">{$vo.paytime|date="Y/m/d H:i:s",###}</notempty>
+                                        </td>
+                                        <td>{$vo.fahuokd}</td>
+                                        <td>{$vo.fahuokdnum}</td>
+                                        <td>
+                                            <switch name="status">
+                                                <case value="2">
+                                                    <eq name="vo.status" value="2">
+                                                        <div class="btn btn-success btn-xs orderdeliver" data-id = "{$vo.id}"><i class="fa fa-ambulance"></i> 发货</div>
+                                                    </eq>
+                                                    <span class="btn btn-azure  btn-xs orderfhkd" data-id = "{$vo.id}"><i class="glyphicon glyphicon-tags"></i> 快递</span>
+                                                </case>
+                                                <case value="3">
+                                                    <eq name="vo.status" value="2">
+                                                        <div class="btn btn-success btn-xs orderdeliver" data-id = "{$vo.id}"><i class="fa fa-ambulance"></i> 发货</div>
+                                                        </else>
+                                                    </eq>
+                                                    <span class="btn btn-azure  btn-xs orderfhkd" data-id="{$vo.id}"><i class="glyphicon glyphicon-tags"></i> 快递</span>
+                                                </case>
+                                                <case value="4">
+                                                    <switch name="vo.status">
+                                                        <case value="2">
+                                                            <span class="btn btn-warning  btn-xs refund" data-id="{$vo.id}" data-paytype="{$vo.paytype}" style="margin:3px;" title="款项将‘原路返回’至客户账户中"><i class="glyphicon glyphicon-ok"></i>退款</span>
+                                                            <span class="btn btn-danger  btn-xs mark_refund" data-id="{$vo.id}" style="margin:3px;" title="当您选择线下退款时，可以把此订单‘标记为已退款’"><i class="fa fa-info"></i>标记为已退款</span>
+                                                        </case>
+                                                    </switch>
+                                                </case>
+                                                <case value="7">
+                                                    <eq name="vo.status" value="3">
+                                                        <div class="btn btn-success btn-xs ordersuccess" data-id="{$vo.id}"><i class="glyphicon glyphicon-ok"></i> 交易完成</div>
+                                                    </eq>
+                                                </case>
+									        </switch>
+                                        </td>
+                                    </tr>
+                                </volist>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="form-title"></div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+<!--面包屑导航封装-->
+<div id="tmpbread" style="display: none;">{$breadhtml}</div>
+<script type="text/javascript">
+    setBread($('#tmpbread').html());
+
+    //全选
+    var checkall=$('#App-table .App-checkall');
+    var checks=$('#App-table .App-check');
+    var trs=$('#App-table tbody tr');
+    $(checkall).on('click',function(){
+        if($(this).is(":checked")){
+            $(checks).prop("checked","checked");
+        }else{
+            $(checks).removeAttr("checked");
+        }
+    });
+    $(trs).on('click',function(){
+        var c=$(this).find("input[type=checkbox]");
+        if($(c).is(":checked")){
+            $(c).removeAttr("checked");
+        }else{
+            $(c).prop("checked","checked");
+        }
+    });
+
+    //退货特效
+    var refund=$('.refund');
+    funok = function(){alert('tuikuan')}
+    $(refund).on('click',function(){
+        var id=$(this).data('id');
+        var paytype = $(this).data('paytype');
+        if( paytype == 'wxpay'){
+            var msg = '款项将原路退回至 <b><span style="color:red;">微信</span></b> 。';
+        }else if(paytype == 'money'){
+            var msg = '款项将原路退回至 <b><span style="color:red;">余额</span></b> 。';
+        }
+        $.App.confirm(msg+' 确认退款？', function() {
+            $.ajax({
+                type: "post",
+                url: "{:U('Admin/Group/groupRefund')}",
+                data: {"id": id},
+                dataType: "json",
+                async: false,
+                success: function (info) {
+                    if (info['status']) {
+                        $.App.alert('success', info['msg']);
+                        $('#App-reloader').trigger('click');
+                    } else {
+                        $.App.alert('danger', info['msg']);
+                    }
+                    return false;
+                },
+                error: function (xhr) {
+                    $.App.alert('danger', '通讯失败！请重试！');
+                    return false;
+                }
+            });
+        })
+    });
+    //标记为已退款
+    var mark_refund=$('.mark_refund');
+    $(mark_refund).on('click',function(){
+        var id=$(this).data('id');
+        $.App.confirm('此操作仅将订单标记为退款，不做真实的退款操作，确认做此操作？',function() {
+            $.ajax({
+                type: "post",
+                url: "{:U('Admin/Group/groupRefund_mark')}",
+                data: {"id": id},
+                dataType: "json",
+                async: false,
+                success: function (info) {
+                    if (info['status']) {
+                        $.App.alert('success', info['msg']);
+                        $('#App-reloader').trigger('click');
+                    } else {
+                        $.App.alert('danger', info['msg']);
+                    }
+                    return false;
+                },
+                error: function (xhr) {
+                    $.App.alert('danger', '通讯失败！请重试！');
+                    return false;
+                }
+            });
+        })
+    });
+    //批量发货
+    $('#App-fhok').on('click',function(){
+        var checks=$(".App-check:checked");
+        var chk='';
+        $(checks).each(function(){
+            chk+=$(this).val()+',';
+        });
+        if(!chk){
+            $.App.alert('danger','请选择要提现的项目！');
+            return false;
+        }
+        var toajax="{:U('Admin/Shop/orderDeliverAll')}"+"/id/"+chk;
+        var funok=function(){
+            var callok=function(){
+                //成功删除后刷新
+                $('#refresh-toggler').trigger('click');
+                return false;
+            };
+            var callerr=function(){
+                //拦截错误
+                return false;
+            };
+            $.App.ajax('post',toajax,'nodata',callok,callerr);
+        }
+        $.App.confirm("确认要批量完成发货吗？此操作不可逆转！",funok);
+    });
+    //全删
+    $('#App-delall').on('click',function(){
+        var checks=$(".App-check:checked");
+        var chk='';
+        $(checks).each(function(){
+            chk+=$(this).val()+',';
+        });
+        if(!chk){
+            $.App.alert('danger','请选择要删除的项目！');
+            return false;
+        }
+        var toajax="{:U('Admin/Shop/orderDel')}"+"/id/"+chk;
+        var callok=function(){
+            //主框架可以直接模拟点击刷新按钮
+            //$('#refresh-toggler').trigger('click');
+            $(AppLoaderReloader).trigger('click');
+            return false;
+        };
+        var callerr=function(){
+            //拦截错误
+            return false;
+        };
+        $.App.ajax('post',toajax,'nodata',callok,callerr);
+    });
+</script>
+
+
+<!--订单特效-->
+<script type="text/javascript">
+    //发货快递
+    var btnfhkd=$('.orderfhkd');
+    $(btnfhkd).on('click',function(){
+        var id=$(this).data('id');
+        $.ajax({
+            type:"post",
+            url:"{:U('Admin/Shop/orderFhkd')}",
+            data:{'id':id},
+            dataType: "json",
+            //beforeSend:$.App.loading(),
+            success:function(mb){
+                //$.App.loading();
+                bootbox.dialog({
+                    message: mb,
+                    title: "填写发货快递",
+                    className: "modal-darkorange",
+                    buttons: {
+                        success: {
+                            label: "确定",
+                            className: "btn-blue",
+                            callback: function () {
+                                var dtfhkd=$('#AppOrderFahuokd').val();
+                                var dtfhkdnum=$('#AppOrderFahuokdnum').val();
+                                if(!dtfhkd || !dtfhkdnum){
+                                    alert('请完整填写必添字段!');
+                                    return false;
+                                }
+                                var dt=$('#AppOrderFhkd').serialize();
+                                $.ajax({
+                                    type:"post",
+                                    url:"{:U('Admin/Shop/orderFhkdSave')}",
+                                    data:dt,
+                                    dataType:"json",
+                                    async:false,
+                                    success:function(info){
+                                        if(info['status']){
+                                            $.App.alert('success',info['msg']);
+                                            $('#App-reloader').trigger('click');
+                                        }else{
+                                            $.App.alert('danger',info['msg']);
+                                        }
+                                        return false;
+                                    },
+                                    error:function(xhr){
+                                        $.App.alert('danger','通讯失败！请重试！');
+                                        return false;
+                                    }
+                                });
+                            }
+                        },
+                        "取消": {
+                            className: "btn-danger",
+                            callback: function () { }
+                        }
+                    }
+                });
+            },
+            error:function(xhr){
+                $.App.alert('danger','通讯失败！请重试！');
+            }
+        });
+        return false;
+    });
+
+    //订单完成
+    var btnsuccess=$('.ordersuccess');
+    $(btnsuccess).on('click',function(){
+        var id=$(this).data('id');
+        var group_num = "{$goods_info.group_buy_num}";
+        var group_id = "{$_GET['id']}";
+        $.ajax({
+            type:"post",
+            url:"{:U('Admin/Shop/ordersuccess')}",
+            async:false,
+            data:{'id':id,'group_num':group_num,'group_id':group_id},
+            success:function(info){
+                if(info['status']){
+                    $.App.alert('success',info['msg']);
+                    $('#refresh-toggler').trigger('click');
+                }else{
+                    $.App.alert('danger',info['msg']);
+                }
+            },
+            error:function(xhr){
+                $.App.alert('danger','通讯失败！请重试！');
+                return false;
+            }
+        });
+    });
+
+    //订单改价
+    var btnchange=$('.orderchange');
+    $(btnchange).on('click',function(){
+        var id=$(this).data('id');
+        $.ajax({
+            type:"post",
+            url:"{:U('Admin/Shop/orderChange')}",
+            data:{'id':id},
+            dataType: "json",
+            //beforeSend:$.App.loading(),
+            success:function(mb){
+                //$.App.loading();
+                bootbox.dialog({
+                    message: mb,
+                    title: "订单改价",
+                    className: "modal-darkorange",
+                    buttons: {
+                        success: {
+                            label: "确定",
+                            className: "btn-blue",
+                            callback: function () {
+                                var dtprice=$('#AppOrderChangePrice').val();
+                                var dtadmin=$('#AppOrderChangeAdmin').val();
+                                var dtmsg=$('#AppOrderChangeMsg').val();
+                                if(!dtprice || !dtadmin || !dtmsg){
+                                    alert('请完整填写必添字段!');
+                                    return false;
+                                }
+                                var dt=$('#AppOrderChange').serialize();
+                                $.ajax({
+                                    type:"post",
+                                    url:"{:U('Admin/Shop/orderChangeSave')}",
+                                    data:dt,
+                                    dataType:"json",
+                                    async:false,
+                                    success:function(info){
+                                        if(info['status']){
+                                            $.App.alert('success',info['msg']);
+                                            $('#App-reloader').trigger('click');
+                                        }else{
+                                            $.App.alert('danger',info['msg']);
+                                        }
+                                        return false;
+                                    },
+                                    error:function(xhr){
+                                        $.App.alert('danger','通讯失败！请重试！');
+                                        return false;
+                                    }
+                                });
+                            }
+                        },
+                        "取消": {
+                            className: "btn-danger",
+                            callback: function () { }
+                        }
+                    }
+                });
+            },
+            error:function(xhr){
+                $.App.alert('danger','通讯失败！请重试！');
+            }
+        });
+        return false;
+    });
+
+    //订单关闭
+    var btnclose=$('.orderclose');
+    $(btnclose).on('click',function(){
+        var id=$(this).data('id');
+        $.ajax({
+            type:"post",
+            url:"{:U('Admin/Shop/orderClose')}",
+            data:{'id':id},
+            dataType: "json",
+            //beforeSend:$.App.loading(),
+            success:function(mb){
+                //$.App.loading();
+                bootbox.dialog({
+                    message: mb,
+                    title: "订单关闭",
+                    className: "modal-darkorange",
+                    buttons: {
+                        success: {
+                            label: "确定",
+                            className: "btn-blue",
+                            callback: function () {
+                                var dtadmin=$('#AppOrderCloseAdmin').val();
+                                var dtmsg=$('#AppOrderCloseMsg').val();
+                                if(!dtadmin || !dtmsg){
+                                    alert('请完整填写必添字段!');
+                                    return false;
+                                }
+                                var dt=$('#AppOrderClose').serialize();
+                                $.ajax({
+                                    type:"post",
+                                    url:"{:U('Admin/Shop/orderCloseSave')}",
+                                    data:dt,
+                                    dataType:"json",
+                                    async:false,
+                                    success:function(info){
+                                        if(info['status']){
+                                            $.App.alert('success',info['msg']);
+                                            $('#App-reloader').trigger('click');
+                                        }else{
+                                            $.App.alert('danger',info['msg']);
+                                        }
+                                        return false;
+                                    },
+                                    error:function(xhr){
+                                        $.App.alert('danger','通讯失败！请重试！');
+                                        return false;
+                                    }
+                                });
+                            }
+                        },
+                        "取消": {
+                            className: "btn-danger",
+                            callback: function () { }
+                        }
+                    }
+                });
+            },
+            error:function(xhr){
+                $.App.alert('danger','通讯失败！请重试！');
+            }
+        });
+        return false;
+    });
+
+    //订单发货
+    var btndeliver=$('.orderdeliver');
+    $(btndeliver).on('click',function(){
+        var id=$(this).data('id');
+        var group_num = "{$goods_info.group_buy_num}";
+        var group_id = "{$_GET['id']}";
+        $.ajax({
+            type:"post",
+            url:"{:U('Admin/Shop/orderDeliver')}",
+            async:false,
+            data:{'id':id,'group_num':group_num,'group_id':group_id},
+            success:function(info){
+                if(info['status']){
+                    $.App.alert('success',info['msg']);
+                    $('#refresh-toggler').trigger('click');
+                }else{
+                    $.App.alert('danger',info['msg']);
+                }
+                return false;
+            },
+            error:function(xhr){
+                $.App.alert('danger','通讯失败！请重试！');
+                return false;
+            }
+        });
+    });
+
+</script>
+<!--/面包屑导航封装-->

@@ -1,0 +1,135 @@
+<div class="row">
+    <div class="col-xs-12 col-md-12">
+        <div class="widget">
+            <div class="widget-header bg-blue">
+                <i class="widget-icon fa fa-arrow-down"></i>
+                <span class="widget-caption">角色管理</span>
+
+                <div class="widget-buttons">
+                    <a href="#" data-toggle="maximize">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a href="#" data-toggle="collapse">
+                        <i class="fa fa-minus"></i>
+                    </a>
+                    <a href="#" data-toggle="dispose">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="widget-body">
+                <div class="table-toolbar">
+                    <a data-loadername="设置分组" data-loader="App-loader" class="btn btn-primary" href="{:U('Admin/Auth/addRole')}">
+                        <i class="fa fa-plus"></i>新增角色
+                    </a>
+                    <a id="App-delall" class="btn btn-danger" href="#">
+                        <i class="fa fa-delicious"></i>批量删除
+                    </a>
+                    <div class="pull-right">
+                        <form id="App-search">
+                            <label style="margin-bottom: 0px;">
+                                <input type="search" value="" class="form-control input-sm" name="name">
+                            </label>
+                            <a data-search="App-search" data-loadername="管理员列表" data-loader="App-loader" class="btn btn-success" href="{:U('Admin/Auth/role')}">
+                                <i class="fa fa-search"></i>搜索
+                            </a>
+                        </form>
+                    </div>
+                    <table class="table table-bordered table-hover" id="App-table">
+                        <thead class="bordered-darkorange">
+                        <tr role="row">
+                            <th width="30px">
+                                <div style="margin-bottom: 0px; margin-top: 0px;" class="checkbox">
+                                    <label style="padding-left: 4px;"> <input type="checkbox" class="App-checkall colored-blue">
+                                        <span class="text"></span>
+                                    </label>
+                                </div>
+                            </th>
+                            <th>ID</th>
+                            <th>角色名称</th>
+                            <th>创建时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <empty name="roles">
+                            <tr><td colspan="5" class="text-center">暂无相关数据</td></tr>
+                        <else/>
+                            <volist name="roles" id="vo">
+                                <tr id="item1">
+                                    <td>
+                                        <div style="margin-bottom: 0px; margin-top: 0px;" class="checkbox">
+                                            <label style="padding-left: 4px;"> <input type="checkbox" value="{$vo.id}" class="colored-blue App-check" name="checkvalue">
+                                                <span class="text"></span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td>{$vo.id}</td>
+                                    <td>{$vo.name}</td>
+                                    <td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
+                                    <td class="center ">
+                                        <a data-loadername="角色编辑" data-loader="App-loader" class="btn btn-success btn-xs" href="{:U('Admin/Auth/addRole',array('id'=>$vo['id']))}"><i class="fa fa-edit"></i> 编辑</a>&nbsp;&nbsp;
+                                        <!--<a data-ajax="{:U('Admin/Auth/roleDisabled',array('id'=>$vo['id']))}" data-content="确定要禁用吗？" data-type="del" class="btn btn-warning btn-xs" href="javascript:void(0);"><i class="fa fa-trash-o"></i> 禁用</a>-->
+                                        <a data-ajax="{:U('Admin/Auth/roleDelete',array('id'=>$vo['id']))}" data-content="确定要删除吗？删除后不可恢复" data-type="del" class="btn btn-danger btn-xs" href="javascript:void(0);"><i class="fa fa-trash-o"></i> 删除</a>
+                                    </td>
+                                </tr>
+                            </volist>
+                        </empty>
+                        </tbody>
+                    </table>
+                    <div class="row DTTTFooter">
+                        {$page}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    //全选
+    var checkall=$('#App-table .App-checkall');
+    var checks=$('#App-table .App-check');
+    var trs=$('#App-table tbody tr');
+    $(checkall).on('click',function(){
+        if($(this).is(":checked")){
+            $(checks).prop("checked","checked");
+        }else{
+            $(checks).removeAttr("checked");
+        }
+    });
+    $(trs).on('click',function(){
+        var c=$(this).find("input[type=checkbox]");
+        if($(c).is(":checked")){
+            $(c).removeAttr("checked");
+        }else{
+            $(c).prop("checked","checked");
+        }
+    });
+    //批量提现完成
+    $('#App-delall').on('click',function(){
+        var checks=$(".App-check:checked");
+        var chk='';
+        $(checks).each(function(){
+            chk+=$(this).val()+',';
+        });
+        if(!chk){
+            $.App.alert('danger','请选择要删除的项目！');
+            return false;
+        }
+
+        toajax = "{:U('Admin/Auth/roleDelete')}"+'/id/'+chk;
+        var funok=function(){
+            var callok=function(){
+                //成功删除后刷新
+                $('#refresh-toggler').trigger('click');
+                return false;
+            };
+            var callerr=function(){
+                //拦截错误
+                return false;
+            };
+            $.App.ajax('post',toajax,'nodata',callok,callerr);
+        }
+        $.App.confirm("确认要批量删除吗？此操作不可逆转！",funok);
+    });
+</script>

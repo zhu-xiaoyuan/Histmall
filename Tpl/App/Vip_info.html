@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>资料绑定</title>
+	    <meta charset="utf-8" />
+		<!--页面优化-->
+		<meta name="MobileOptimized" content="320">
+		<!--默认宽度320-->
+		<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+		<!--viewport 等比 不缩放-->
+		<meta http-equiv="cleartype" content="on">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<!--删除苹果菜单-->
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		<!--默认颜色-->
+		<meta name="apple-mobile-web-app-title" content="yes">
+		<meta name="apple-touch-fullscreen" content="yes">
+		<!--加载全部后 显示-->
+		<meta content="telephone=no" name="format-detection" />
+		<!--不识别电话-->
+		<meta content="email=no" name="format-detection" />
+		<link rel="stylesheet" href="__PUBLIC__/App/css/style.css" />
+		<script type="text/javascript" src="__PUBLIC__/App/js/zepto.min.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/App/gmu/gmu.min.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/App/gmu/app-basegmu.js"></script>
+	</head>
+	<body class="back1">
+		<p class="add-hd color6">资料绑定</p>
+		<div class="add-ads back2">
+			<ul class="add-uls">
+				<li class="border-b1 ovflw"><span class="fl">手机号码<i class="color3">*</i></span><input type="text" value="{$data.mobile}" id="mobile" /></li>
+				<li class="border-b1 ovflw"><span class="fl">真实姓名<i class="color3">*</i></span><input type="text" placeholder="请输入姓名" value="{$data.name}" id="name"/></li>
+				<li class="ovflw"><span class="fl">电子邮箱</span><input type="text" placeholder="例如：email@youx.com(可选)" value="{$data.email}" id="email"/></li>
+				<li class="ovflw"><span class="fl">所在学校<br/>(不可更改)</span> <i style="color:#999;">{$school_name}</i></li>
+			</ul>		
+		</div>
+		<div class="insert1"></div>
+		<div class="dtl-ft ovflw">
+				<div class=" fl dtl-icon dtl-bck ovflw">
+					<a href="javascript:history.go(-1);">
+						<i class="iconfont">&#xe679</i>
+					</a>
+				</div>
+				<a href="#" class="fr ads-btn fonts9 back3">保存</a>
+		</div>
+		<!--通用分享-->
+		<include file="./Tpl/App/Shop_share.html" />
+	</body>
+	
+</html>
+<script>
+	$('#school_id').change(function(){
+		var $school_id = $(this).val();
+
+		if($school_id == -1){
+			$('#school_name').show();
+		}else{
+			$('#school_name').hide();
+		}
+		//var p1=$(this).children('option:selected').val();//这就是selected的值 
+	});
+
+
+	$('.ads-btn').click(function(){
+		var mobile = $('#mobile').val();
+		var name = $('#name').val();
+		var email = $('#email').val();
+		var school_id = $('#school_id').val();
+		var school_name = $('input[name=school_name]').val();
+
+		if (name=='') {
+			zbb_msg("请输入姓名！");
+			return;
+		}
+		if (mobile=='') {
+			zbb_msg("请输入手机！");
+			return;
+		}
+		if(school_id == 0){
+			zbb_msg("请选择学校");
+			return;
+		}else if(school_id == -1 && school_name == ''){
+			zbb_msg("请填写学校名称");
+			return;
+		}
+		var re = /^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/;
+		if(email){	//email选填，不为空时则判断格式
+			if (re.test(email)==false) {
+				zbb_msg("请输入正确的电子邮箱！");
+				return;
+			}
+		}
+	    $.ajax({
+			type:'post',
+			data:{'mobile':mobile,'name':name,'email':email,'school_id':school_id,'school_name':school_name},
+			url:"{:U('Vip/info')}",
+			dataType:'json',
+			success:function(e){
+				zbb_msg(e.msg);
+				window.location.href = "{:U('App/Vip/index')}";
+				return false;
+			},
+			error:function(){
+			    zbb_alert('通讯失败！');
+				return false;
+			}
+		});	
+		return false;
+	})
+</script>

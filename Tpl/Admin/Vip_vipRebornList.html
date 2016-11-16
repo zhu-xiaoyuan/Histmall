@@ -1,0 +1,147 @@
+<div class="row">
+    <div class="col-xs-12 col-md-12">
+        <div class="widget">
+            <div class="widget-header bg-blue">
+                <i class="widget-icon fa fa-arrow-down"></i>
+                <span class="widget-caption">会员调配中心</span>
+                <div class="widget-buttons">
+                    <a href="#" data-toggle="maximize">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a href="#" data-toggle="collapse">
+                        <i class="fa fa-minus"></i>
+                    </a>
+                    <a href="#" data-toggle="dispose">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="widget-body">
+                <sup>* 只能用于发展会员下线时，由于操作出错，导致会员关系无法确定的情况，调配后不可再调配配！</sup><br />
+                <sup>* 只有满足以下条件可重新调配：1、无上级会员（层级1）；2、未发展下线；3、未购买</sup><br />
+                <sup>* 调配的机会每个满足以上条件的会员仅有一次</sup>
+                <div class="table-toolbar">
+                    <button href="#" class="btn btn-primary" id="vipReborn">
+                        <i class="fa fa-delicious"> 调配</i>
+                    </button>
+
+                    <div class="pull-right">
+                        <form id="App-search">
+                            <label style="margin-bottom: 0px;">
+                                <input name="search" type="search" class="form-control input-sm" placeholder="会员昵称或者手机号">
+                            </label>
+                            <a href="{:U('Admin/Vip/vipRebornList/')}" class="btn btn-success" data-loader="App-loader" data-loadername="会员调配中心" data-search="App-search">
+                                <i class="fa fa-search"></i>搜索
+                            </a>
+                        </form>
+                    </div>
+                </div>
+                <table id="App-table" class="table table-bordered table-hover">
+                    <thead class="bordered-darkorange">
+                        <tr role="row">
+                            <th width="20px">
+                                <div class="checkbox" style="margin-bottom: 0px; margin-top: 0px;">
+                                    <label style="padding-left: 4px;">
+                                        <input type="checkbox" class="App-checkall colored-blue">
+                                        <span class="text"></span>
+                                    </label>
+                                </div>
+                            </th>
+                            <th width="80px">ID</th>
+                            <th width="50px">头像</th>
+                            <th width="200px">昵称</th>
+                            <th width="100px">手机号</th>
+                            <th width="100px">电子邮箱</th>
+                            <th width="100px">姓名</th>
+                            <th width="80px">导师</th>
+                            <th width="100px">账户金额</th>
+                            <th width="100px">积分</th>
+                            <th width="100px">注册时间</th>
+                            <th width="100px">最后访问</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <volist name="cache" id="vo">
+                            <tr id="item{$vo.id}">
+                                <td>
+                                    <div class="checkbox" style="margin-bottom: 0px; margin-top: 0px;">
+                                        <label style="padding-left: 4px;">
+                                            <input name="checkvalue" type="checkbox" class="colored-blue App-check" value="{$vo.id}">
+                                            <span class="text"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                                <td class=" sorting_1">{$vo.id}</td>
+                                <td class=" "><img width="50px" src="{$vo.headimgurl}" /></td>
+                                <td class=" ">{$vo.nickname}</td>
+                                <td class=" ">{$vo.mobile}</td>
+                                <td class=" ">{$vo.email}</td>
+                                <td class=" ">{$vo.name}</td>
+                                <td class=" ">{$vo.employee}</td>
+                                <td class=" ">{$vo.money}</td>
+                                <td class=" ">{$vo.score}</td>
+                                <td class=" ">{$vo.ctime|date='Y-m-d',###}</td>
+                                <td class=" ">{$vo.cctime|date='Y-m-d',###}</td>
+                            </tr>
+                        </volist>
+                    </tbody>
+                </table>
+                <div class="row DTTTFooter">
+                    {$page}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--面包屑导航封装-->
+<div id="tmpbread" style="display: none;">{$breadhtml}</div>
+<script type="text/javascript">
+setBread($('#tmpbread').html());
+</script>
+<!--/面包屑导航封装-->
+<!--全选特效封装/全部删除-->
+<script type="text/javascript">
+//全选
+var checkall = $('#App-table .App-checkall');
+var checks = $('#App-table .App-check');
+var trs = $('#App-table tbody tr');
+$(checkall).on('click', function() {
+    if ($(this).is(":checked")) {
+        $(checks).prop("checked", "checked");
+    } else {
+        $(checks).removeAttr("checked");
+    }
+});
+$(trs).on('click', function() {
+    var c = $(this).find("input[type=checkbox]");
+    if ($(c).is(":checked")) {
+        $(c).removeAttr("checked");
+    } else {
+        $(c).prop("checked", "checked");
+    }
+});
+
+$("#vipReborn").on('click', function () {
+    var checks=$(".App-check:checked");
+    if(checks.length==0){
+        $.App.alert('danger','请选择要调配的会员！');
+        return false;
+    }
+    if(checks.length>1){
+        $.App.alert('danger','单次仅能调配一个会员！');
+        return false;
+    }
+    var id=checks.val();
+
+    var msg='请填写上级会员ID，每个满足条件的会员仅可调配一次，请谨慎操作：';
+    
+    bootbox.prompt(msg, function (result) {
+        if (result != null) {
+            var data={'id':id,'ppid':result};
+            var tourl="{:U('Admin/vip/vipReborn')}";
+            $.App.ajax('post',tourl,data,function(){$('#refresh-toggler').trigger('click');});
+        }
+    });
+    
+});
+</script>

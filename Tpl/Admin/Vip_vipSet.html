@@ -1,0 +1,573 @@
+<div class="row" xmlns="http://www.w3.org/1999/html">
+    <div class="col-xs-12 col-xs-12">
+        <div class="widget radius-bordered">
+            <div class="widget-header bg-blue">
+                <i class="widget-icon fa fa-arrow-down"></i>
+                <span class="widget-caption">会员编辑</span>
+
+                <div class="widget-buttons">
+                    <a href="#" data-toggle="maximize">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a href="#" data-toggle="collapse">
+                        <i class="fa fa-minus"></i>
+                    </a>
+                    <a href="#" data-toggle="dispose">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="widget-body">
+                <form id="AppForm" action="" method="post" class="form-horizontal" data-bv-message=""
+                      data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
+                      data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
+                      data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+                    <input type="hidden" name="id" value="{$cache.id}">
+
+                    <div class="form-title">
+                        <a href="{:U('Admin/Vip/vipList/',array('status'=>$_GET['status']))}" class="btn btn-primary" data-loader="App-loader"
+                           data-loadername="会员列表">
+                            <i class="fa fa-mail-reply"></i>返回
+                        </a>
+                    </div>
+                    <div class="heading tabs" style2="background: transparent;">
+                        <ul class="nav nav-tabs pull-left" data-tabs="tabs" id="tabs">
+                            <li class="active">
+                                <a data-toggle="tab" href="#tab-profile"><i class="icon-comments"></i><span>个人资料</span></a>
+                            </li>
+                            <!--<li class="">
+                                <a data-toggle="tab" href="#tab-fxs"><i class="icon-user"></i><span>分销商</span></a>
+                            </li>
+                            <li class="">
+                                <a data-toggle="tab" href="#tab-sj"><i class="icon-user"></i><span>商家</span></a>
+                            </li>
+                            <li class="">
+                                <a data-toggle="tab" href="#tab-tz"><i class="icon-user"></i><span>VIA</span></a>
+                            </li>-->
+                        </ul>
+                    </div>
+                    <div class="tab-content padded" id="my-tab-content">
+                        <div class="tab-pane active" id="tab-profile">
+                            <div class="form-title"></div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">会员ID</label>
+
+                                <div class="col-lg-4">
+
+                                    <label class="control-label">
+                                        {$cache.id}</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">OPENID</label>
+
+                                <div class="col-lg-4">
+
+                                    <label class="control-label">
+                                        {$cache.openid}</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">会员昵称</label>
+
+                                <div class="col-lg-4">
+                                    <input type="text" name="nickname" class="form-control"
+                                           value="{$cache.nickname}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">真实姓名</label>
+
+                                <div class="col-lg-4">
+                                    <input type="text" name="name" class="form-control" value="{$cache.name}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">真实手机</label>
+
+                                <div class="col-lg-4">
+                                    <input type="text" name="mobile" class="form-control" value="{$cache.mobile}">
+                                </div>
+                            </div>
+
+                            <switch name="cache.role" >
+                                <case value="0">
+                                    <div class="form-group">
+                                        <label class="col-lg-2 control-label">设为推广</label>
+                                        <div class="col-lg-4">
+                                            <label>
+                                                <input type="hidden" name="is_promotion" value="1" id="is_promotion">
+                                                <input class="checkbox-slider slider-icon colored-darkorange isdialog" type="checkbox" id="promotion" <eq name="cache.role" value="3">checked="checked"</eq>>
+                                                <span class="text darkorange">&nbsp;&nbsp;←重要：设置此会员为所属学校的推广人员。</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </case>
+                                <case value="3">
+                                    <div class="form-group">
+                                        <label class="col-lg-2 control-label">设为推广</label>
+                                        <div class="col-lg-4">
+                                            <label>
+
+                                                <input type="hidden" name="is_promotion" value="1" id="is_promotion">
+                                                <input class="checkbox-slider slider-icon colored-darkorange isdialog" type="checkbox" id="promotion" <eq name="cache.role" value="3">checked="checked"</eq>>
+                                                <span class="text darkorange">&nbsp;&nbsp;←重要：设置此会员为所属学校的推广人员。</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </case>
+                            </switch>
+                            <!--<div class="form-group">
+                                <label class="col-lg-2 control-label">角色</label>
+                                <div class="col-lg-4">
+                                    <select class="form-control" name="role">
+                                        <if condition="$cache.role eq 0">
+                                            <option value="0" selected>消费者</option>
+                                            <else/>
+                                            <option value="0">消费者</option>
+                                        </if>
+                                        <if condition="$cache.role eq 1">
+                                            <option value="1" selected>总监</option>
+                                        <else/>
+                                            <option value="1">总监</option>
+                                        </if>
+                                        <if condition="$cache.role eq 2">
+                                            <option value="2" selected>VIA</option>
+                                        <else/>
+                                            <option value="2">VIA</option>
+                                        </if>
+                                        <if condition="$cache.role eq 3">
+                                            <option value="3" selected>推广</option>
+                                        <else/>
+                                            <option value="3">推广</option>
+                                        </if>
+                                    </select>
+                                </div>
+                            </div>-->
+
+
+                            <!--<div class="form-group">
+                                <label class="col-lg-2 control-label">会员积分</label>
+                                <div class="col-lg-4">
+                                    <input readonly type="text" class="form-control" value="{$cache.score}">
+                                </div>
+                            </div>-->
+                            <button class="btn btn-warning" data-toggle="modal" data-target="#modal-warning" id="ts" style="display:none">提示信息</button>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">所在学校</label>
+                                <div class="col-lg-4">
+                                    <input readonly type="text" class="form-control" value="{$cache.schoolname}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">会员余额</label>
+
+                                <div class="col-lg-4">
+                                    <div class="input-group input-group-sm">
+                                        <input readonly type="text" class="form-control"
+                                               value="{$cache.money}">
+                                    <span class="input-group-btn">
+                                          <a href="{:U('Admin/Vip/charge',['id'=>$cache['id']])}"
+                                             class="btn btn-default shiny" type="button" data-loader="App-loader" data-loadername="会员列表"><i class="glyphicon glyphicon-usd"></i>充值
+                                          </a>
+                                      </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">微信号</label>
+                                <div class="col-lg-4">
+                                    <input type="text" name="wx_code" class="form-control" value="{$cache.wx_code}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">电子邮件</label>
+
+                                <div class="col-lg-4">
+                                    <input type="email" name="email" class="form-control" value="{$cache.email}"
+                                           data-bv-emailaddress-message="请输入正确的邮箱">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">关注状态</label>
+
+                                <div class="col-lg-4">
+                                    <div class="input-group input-group-sm">
+                                        <div class="control-label">
+                                            <empty name="cache.subscribe">
+                                                <label class="label label-default">未关注</label>
+                                                <else/>
+                                                <label class="label label-success">已关注</label>
+                                                <span>{$cache.subscribe_time|date="Y-m-d H:i:s",###}</span>
+                                            </empty>
+                                        </div>
+                                    <span class="input-group-btn hidden">
+                                          <button class="btn btn-default shiny" type="button"
+                                                  onclick=""><i
+                                                  class="glyphicon glyphicon-refresh"></i>同步
+                                          </button>
+                                      </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">注册时间</label>
+
+                                <div class="col-lg-4">
+                                    <label class="control-label">{$cache.ctime|date="Y-m-d H:i:s",###}</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <if condition="$cache.role neq 0">
+                                    <label class="col-lg-2 control-label">管理学校</label>
+                                    <div class="col-lg-4">
+                                        <ol class="dd-list">
+                                            <foreach name="manageschool" item="vo" >
+                                                <li class="dd-item bordered-blue">
+                                                    <div class="dd-handle">{$vo.school_name}</div>
+                                                </li>
+                                            </foreach>
+                                        </ol>
+                                        <!--<input readonly type="text" class="form-control" value="{$cache.manageschool.school_name}">-->
+                                    </div>
+                                </if>
+                            </div>
+                            <!--消费返现-->
+                            <div class="form-title">消费返现</div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">累计消费</label>
+                                <div class="col-lg-4">
+                                    <label class="control-label">
+                                        {$cache.total_buy}</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">应返金额</label>
+
+                                <div class="col-lg-4">
+                                    <label class="control-label">
+                                        {$cache.total_bonus_amount}</label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">已返金额</label>
+                                <div class="col-lg-4">
+                                    <label class="control-label">
+                                        {$cache.total_got_bonus}</label>
+                                </div>
+                            </div>
+
+                            <!--提现信息-->
+                            <div class="form-title">提现资料</div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">提现姓名</label>
+
+                                <div class="col-lg-4">
+                                    <input type="text" name="txname" class="form-control" value="{$cache.txname}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">提现电话</label>
+
+                                <div class="col-lg-4">
+                                    <input type="text" name="txmobile" class="form-control"
+                                           value="{$cache.txmobile}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">提现银行</label>
+
+                                <div class="col-lg-4">
+                                    <input type="text" name="txyh" class="form-control" value="{$cache.txyh}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">提现分行</label>
+
+                                <div class="col-lg-4">
+                                    <input type="text" name="txfh" class="form-control" value="{$cache.txfh}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">提现所在地</label>
+
+                                <div class="col-lg-4">
+                                    <input type="text" name="txszd" class="form-control" value="{$cache.txszd}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">提现卡号</label>
+
+                                <div class="col-lg-4">
+                                    <input type="text" name="txcard" class="form-control" value="{$cache.txcard}">
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="tab-pane" id="tab-fxs">
+                            <div class="form-title"></div>
+
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">开启分销商</label>
+
+                                <div class="col-lg-4">
+                                    <label>
+                                        <input type="hidden" name="isfx" value="{$cache.isfx}" id="isfx">
+                                        <input class="checkbox-slider slider-icon colored-darkorange" type="checkbox"
+                                        <eq name="cache.isfx" value="1">checked="checked"</eq>
+                                        id="isfxbtn">
+                                        <span class="text darkorange">&nbsp;&nbsp;&larr;重要：启用后会员将变成分销商,可享受提成</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">上级分销商ID</label>
+                                <div class="col-lg-4">
+                                    <label class="control-label">
+                                        <eq name="cache.pid" value="0">
+                                            无
+                                            <else/>
+                                            {$cache.pid}
+                                        </eq>
+                                        </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">累计佣金</label>
+                                <div class="col-lg-4">
+                                    <label class="control-label">
+                                        {$cache.total_yj|number_format=###,2}</label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">下线人数</label>
+
+                                <div class="col-lg-4">
+                                    <label class="control-label">
+                                        {$cache.total_xxlink}</label>
+                                </div>
+                            </div>
+                            <!--<div class="form-group">-->
+                            <!--<label class="col-lg-2 control-label">下线关注</label>-->
+
+                            <!--<div class="col-lg-4">-->
+                            <!--<input type="text" class="form-control"-->
+                            <!--value="{$cache.total_xxsub}">-->
+                            <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class="form-group">-->
+                            <!--<label class="col-lg-2 control-label">下线累计消费人次</label>-->
+
+                            <!--<div class="col-lg-4">-->
+                            <!--<input type="text" class="form-control"-->
+                            <!--value="{$cache.total_xxbuy}">-->
+                            <!--</div>-->
+                            <!--</div>-->
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">成为分销商时间</label>
+
+                                <div class="col-lg-4">
+                                    <label class="control-label">
+                                        <notempty name="cache.reg_fx_time">{$cache.reg_fx_time|date="Y-m-d H:i:s",###}
+                                        </notempty>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane" id="tab-sj">
+                            <div class="form-title"></div>
+                            <empty name="cache.supplier_id">
+                                <div class="form-group">
+                                    <div class="col-lg-4">
+                                        <a href="{:U('Admin/Supplier/add',['redirect'=>think_encrypt('__SELF__')])}"
+                                           data-loader="App-loader"
+                                           data-loadername="管理商家" class="btn btn-default btn-lg">开通商家</a>
+                                    </div>
+                                </div>
+                                <else/>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">商家名称</label>
+
+                                    <div class="col-lg-4">
+                                        <label class="control-label">{$cache.supplier.name}</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">联系地址</label>
+
+                                    <div class="col-lg-4">
+                                        <label class="control-label" style="text-align:left;">{$cache.supplier.province}{$cache.supplier.city}{$cache.supplier.area}<br/>{$cache.supplier.address}</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">合同编号(纸质)</label>
+
+                                    <div class="col-lg-4">
+                                        <label class="control-label">{$cache.supplier.contract_code}</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">推荐人ID/姓名/手机号</label>
+
+                                    <div class="col-lg-4">
+                                        <empty name="cache.supplier.inviter_id">
+                                            <label class="form-control">平台</label>
+                                            <else/>
+                                            <label class="control-label">
+                                                {$cache.supplier.inviter_id}/{$cache.supplier.inviter_name}/{$cache.supplier.inviter_phone}</label>
+                                        </empty>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">订单量</label>
+
+                                    <div class="col-lg-4">
+                                        <label class="control-label">
+                                            {$cache.supplier.total_order}</label>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">营业额</label>
+
+                                    <div class="col-lg-4">
+                                        <label class="control-label">{$cache.supplier.total_money|number_format=###,2}</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-lg-offset-2 col-lg-4">
+                                        <a href="{:U('Admin/Supplier/view',['supplier_id'=>$cache['supplier_id'],'redirect'=>think_encrypt('__SELF__')])}"
+                                           data-loader="App-loader"
+                                           data-loadername="管理商家" class="btn btn-default btn-lg">商家详情</a>
+                                    </div>
+                                </div>
+                            </empty>
+                        </div>
+                        <div class="tab-pane" id="tab-tz">
+                            <div class="form-title"></div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">开启VIA</label>
+
+                                <div class="col-lg-4">
+                                    <label>
+                                        <input type="hidden" name="is_tuanzhang" value="{$cache.is_tuanzhang}"
+                                               id="is_tuanzhang">
+                                        <input class="checkbox-slider slider-icon colored-darkorange" type="checkbox"
+                                        <eq name="cache.is_tuanzhang" value="1">checked="checked"</eq>
+                                        id="is_tuanzhangbtn">
+                                        <span class="text darkorange">&nbsp;&nbsp;&larr;重要：启用后会员将变成VIA,可享受招商提成</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">成为VIA时间</label>
+
+                                <div class="col-lg-4">
+                                    <label class="control-label">
+                                        <notempty name="cache.reg_tuanzhang_time">{$cache.reg_tuanzhang_time|date="Y-m-d
+                                            H:i:s",###}
+                                        </notempty>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">招商数</label>
+
+                                <div class="col-lg-4">
+                                    <label class="control-label">
+                                        {$cache.total_supplier_number}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">提成</label>
+
+                                <div class="col-lg-4">
+                                    <label class="control-label">
+                                        {$cache.total_tuanzhang_tc|number_format=###,2}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-offset-2 col-lg-4">
+                            <button class="btn btn-primary btn-lg" type="submit">保存</button>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <button class="btn btn-palegreen btn-lg" type="reset">重填</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modal-warning" class="modal modal-message modal-warning fade" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <i class="fa fa-warning"></i>
+            </div>
+            <div class="modal-title">重要提示</div>
+            <div class="modal-body">取消此推广人员,将取消与此推广人员的关系。请慎重考虑！</div>
+            <div class="modal-footer">
+                <!--<button type="button" class="btn btn-warning" data-dismiss="modal">OK</button>-->
+            </div>
+        </div> <!-- / .modal-content -->
+    </div> <!-- / .modal-dialog -->
+</div>
+<!--面包屑导航封装-->
+<div id="tmpbread" style="display: none;">{$breadhtml}</div>
+<script type="text/javascript">
+    setBread($('#tmpbread').html());
+</script>
+<!--/面包屑导航封装-->
+<!--表单验证与提交封装-->
+<script type="text/javascript">
+    $('#promotion').on('click', function(){
+        var value = $(this).prop('checked') ? 1 : 0;
+        if ($(this).prop('checked')){
+            value = 1;
+        }else{
+            value = 0;
+            $('#ts').trigger('click');
+        }
+        $('#is_promotion').val(value);
+    });
+    $('#AppForm').bootstrapValidator({
+        submitHandler: function (validator, form, submitButton) {
+            var lid = '';
+            var checks = $('.label-check');
+            $(checks).each(function () {
+                if ($(this).is(":checked")) {
+                    lid += $(this).val() + ',';
+                }
+            });
+            $('#lid').val(lid);
+            var tourl = "{:U('Admin/Vip/vipSet')}";
+            var data = $('#AppForm').serialize();
+            $.App.ajax('post', tourl, data, function(){
+                $('#AppForm').find(":submit").removeAttr('disabled');
+            });
+            return false;
+        },
+    });
+    $('#isfxbtn').on('click', function () {
+        var value = $(this).prop('checked') ? 1 : 0;
+        $('#isfx').val(value);
+    });
+    $('#is_tuanzhangbtn').on('click', function () {
+        var value = $(this).prop('checked') ? 1 : 0;
+        $('#is_tuanzhang').val(value);
+    });
+    $('#isfxgdbtn').on('click', function () {
+        var value = $(this).prop('checked') ? 1 : 0;
+        $('#isfxgd').val(value);
+    });
+</script>
+<!--/表单验证与提交封装-->

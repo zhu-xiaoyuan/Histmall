@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>推广申请</title>
+	    <meta charset="utf-8" />
+		<!--页面优化-->
+		<meta name="MobileOptimized" content="320">
+		<!--默认宽度320-->
+		<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+		<!--viewport 等比 不缩放-->
+		<meta http-equiv="cleartype" content="on">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<!--删除苹果菜单-->
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		<!--默认颜色-->
+		<meta name="apple-mobile-web-app-title" content="yes">
+		<meta name="apple-touch-fullscreen" content="yes">
+		<!--加载全部后 显示-->
+		<meta content="telephone=no" name="format-detection" />
+        <!--weui-->
+        <link href="http://cdn.bootcss.com/weui/0.4.2/style/weui.min.css" rel="stylesheet">
+		<!--不识别电话-->
+		<meta content="email=no" name="format-detection" />
+		<link rel="stylesheet" href="__PUBLIC__/App/css/style.css" />
+		<script type="text/javascript" src="__PUBLIC__/App/js/zepto.min.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/App/gmu/gmu.min.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/App/gmu/app-basegmu.js"></script>
+		<style>
+			button:disabled{background-color:grey;}
+		</style>
+	</head>
+	<body class="back1">
+		<div class="weui_msg">
+			<div class="weui_icon_area"><i class="weui_icon_msg weui_icon_info"></i></i></div>
+			<div class="weui_text_area">
+				<h2 class="weui_msg_title">确认申请</h2>
+				<p class="weui_msg_desc">确定要加入【 {$data['via_nickname']} 】的团队，成为推广人员吗？</p>
+			</div>
+			<div class="weui_opr_area">
+				<p class="weui_btn_area">
+					<button id="submit" class="weui_btn weui_btn_primary">确定</button>
+					<button id="cancle" class="weui_btn weui_btn_default">取消</button>
+				</p>
+			</div>
+		</div>
+
+		<div class="insert1"></div>
+		<div class="dtl-ft ovflw">
+				<div class=" fl dtl-icon dtl-bck ovflw">
+					<a href="{:U('App/Vip/index')}">
+						<i class="iconfont">&#xe679</i>
+					</a>
+				</div>
+		</div>
+		<form id="apply_info" method="post">
+			<input type="hidden" name="apply_id" value="{$data['apply_id']}"/>
+			<input type="hidden" name="apply_nickname" value="{$data['apply_nickname']}"/>
+			<input type="hidden" name="via_id" value="{$data['via_id']}"/>
+			<input type="hidden" name="via_nickname" value="{$data['via_nickname']}"/>
+		</form>
+	</body>
+	<div class="weui_dialog_alert" style="display:none;">
+		<div class="weui_mask"></div>
+		<div class="weui_dialog">
+			<div class="weui_dialog_hd"><strong class="weui_dialog_title">申请成功</strong></div>
+			<div class="weui_dialog_bd">申请成功，请等待VIA审核</div>
+			<div class="weui_dialog_ft">
+				<a href="{:U('App/Vip/index')}" class="weui_btn_dialog primary">确定</a>
+			</div>
+		</div>
+	</div>
+</html>
+<script>
+$('#submit').click(function(){
+	$(this).html('提交中');
+	$(this).attr('disabled','disabled');
+	var data = $('#apply_info').serialize();
+	$.ajax({
+		url		: '{:U("App/Vip/applyTg")}',
+		type	: 'post',
+		data	: data,
+		success	: function(data){
+			if(data.status){
+				$('.weui_dialog_alert').attr('style','');
+			}else{
+                alert(data.msg);
+			}
+		},
+		error	: function(){
+			alert('网络错误，请重试');
+		}
+
+	})
+})
+$('#cancle').click(function(){
+	window.location.replace('{:U("App/Shop/index")}');
+})
+</script>

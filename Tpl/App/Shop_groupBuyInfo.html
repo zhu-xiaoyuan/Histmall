@@ -1,0 +1,185 @@
+<!doctype html>
+<html>
+<head>
+    <title>{$cache.name}</title>
+    <meta charset="utf-8"/>
+    <!--页面优化-->
+    <meta name="MobileOptimized" content="320">
+    <!--默认宽度320-->
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <!--viewport 等比 不缩放-->
+    <meta http-equiv="cleartype" content="on">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!--删除苹果菜单-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!--默认颜色-->
+    <meta name="apple-mobile-web-app-title" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <!--加载全部后 显示-->
+    <meta content="telephone=no" name="format-detection"/>
+    <!--不识别电话-->
+    <meta content="email=no" name="format-detection"/>
+    <link rel="stylesheet" href="__PUBLIC__/App/css/style.css"/>
+    <link rel="stylesheet" href="__PUBLIC__/App/css/appslider.css"/>
+    <!--组件依赖js begin-->
+    <script src="__PUBLIC__/App/js/zepto.min.js"></script>
+    <script src="__PUBLIC__/App/js/base.js"></script>
+    <!--组件依赖js end-->
+    <script type="text/javascript" src="__PUBLIC__/App/gmu/gmu.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/App/gmu/app-basegmu.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/App/js/appslider.min.js"></script>
+    <style>
+        small{font-size:10px;}
+        .layer{width:100%;height:100%;position:fixed;}
+    </style>
+</head>
+<body class="back1 overfl">
+<!--<div class="gb-pink1 fonts18" style="height:60px;padding:20px;color:#fff;line-height:30px;">
+    拼团还未成功<br/>
+    让小伙伴们都来拼团吧~
+</div>-->
+<notempty name="_GET['show_layer']">
+    <div class="layer" style="top:0;background-color:#000;opacity:0.5;z-index:888;">
+    </div>
+    <div class="layer" style="top:0;z-index:888;">
+        <div>
+            <img src="__PUBLIC__/Public/groupbuy/arrow4.png" style="width:150px;height:150px;position:fixed;right:10px;top:10px;"/>
+        </div>
+        <div style="margin-top:150px;padding:30px;color:#fff;font-weight:normal;line-height:30px;font-size:25px;" class=" text-c">
+            赶紧拉上你的小伙伴<br/>
+            一起拼团吧！！！
+        </div>
+    </div>
+</notempty>
+<a href="{:U('App/Shop/goods',array('sid'=>0,'id'=>$cache['id'],'ppid'=>$_SESSION['WAP']['vipid']))}">
+    <div class="back2" style="padding:20px 10px;height:80px;border-bottom:1px solid #eee;position:relative;">
+        <div class="fl" style="margin-right:10px;width:80px;height:80px;">
+            <img src="{$cache.goods_pic}?imageView2/1/interlace/1/w/80/h/80">
+        </div>
+        <div style="color:#434; line-height:25px;word-wrap:break-word;word-break:break-all;">
+            <h3>{$cache.name}</h3>
+            <p>
+                <span class="fonts12">{$cache.group_buy_num}人团</span>
+                :
+                <span class="red"><small>￥</small>
+                    <i class="fonts1">{$cache.group_buy_money}</i>
+                    <small>/{$cache.unit}</small>
+                </span>
+            </p>
+        </div>
+        <div style="position:absolute;right:0;bottom:0;z-index:666;height:100%;">
+            <in name="cache.g_status" value="2,3,4">
+                <img src="__PUBLIC__/Public/groupbuy/group_buy_success.png" style="width:80px;padding:20px;"/>
+            </in>
+            <in name="cache.g_status" value="1">
+                <img src="__PUBLIC__/Public/groupbuy/group_buy_fail.png" style="width:80px;padding:20px;"/>
+            </in>
+        </div>
+    </div>
+</a>
+<div style="padding:20px;font-size:12px;color:#444;">
+    <div>
+        <img src="{$cache.headimgurl}" style="width:40px;height:40px; border-radius: 40px;margin:0 auto;vertical-align: middle;"/>
+        团长 {$cache.nickname}
+        <span class="fr" style="line-height:40px;">
+        {$cache.create_time|date='Y-m-d H:i:s',###} 开团
+    </span>
+    </div>
+    <!--进度条-->
+    <div style="height:10px;border-radius: 10px;margin:10px 0;border:1px solid #ccc;">
+        <div style="height:10px;border-radius:10px;background-color:#086FB0;width:{$cache.process}"></div>
+    </div>
+    <div>
+        <span class="fl">
+            <span class="fr">{$cache.people_num} 人参团</span>
+        </span>
+        <span class="fr">{$cache.group_buy_num} 人成团</span>
+    </div>
+</div>
+<div style="height:50px;"></div>
+<div class="dtl-ft ovflw text-c">
+    <div style="line-height:50px;">
+        <a href="{:U('App/Shop/index')}" class="fl iconfont" style="font-size:22px;;width:15%;border-radius:0;color:#333;">
+            &#xe6b8
+        </a>
+        <a href="{:U('App/Shop/groupList')}" class="fl group_buy_btn bg-grey" id="more" style="color:#fff;font-weight:400;width:30%;border-radius:0;">
+            更多团购
+        </a>
+                <!--
+                    1. 开团
+                    2. 参团
+                        |-- 2.1 商品有sku
+                        |-- 2.2 商品没有sku
+                -->
+                <in name="cache.g_status" value="1,2,3,4">
+                    <a href="javascript:void(0);" class="fl group_buy_btn gb-pink1" id="groupBuy" style="color:#fff;font-weight: 400;width:55%;border-radius:0;">
+                        我也去开团
+                    </a>
+                <else/>
+                    <eq name="cache.issku" value="1">
+                        <a href="javascript:void(0);" class="fl group_buy_btn gb-pink1" id="groupBuy_withsku" style="color:#fff;font-weight: 400;width:55%;border-radius:0;">
+                            我也要参团
+                        </a>
+                    <else/>
+                        <a href="javascript:void(0);" class="fl group_buy_btn gb-pink1 joinGroupBuy" style="color:#fff;font-weight: 400;width:55%;border-radius:0;">
+                            我也要参团
+                        </a>
+                    </eq>
+                </in>
+            </a>
+    </div>
+</div>
+
+<script type="text/javascript">
+//开团
+$('#groupBuy').on('click',function(){
+    location.href="{$fromUrl}";
+})
+//参团 -- 带sku
+$('#groupBuy_withsku').on('click',function(){
+   App_gmuMsg('选择商品规格后，立即参团！', function(){
+        location.href="{$fromUrl}";
+    });
+})
+//参团 -- 不带sku
+    //当此商品没有sku 的时候，直接跳转到订单支付页面
+$('.joinGroupBuy').on('click',function(){
+
+    var groupbuyid = {$group_buy_id};
+    var goodsid = {$cache.id};
+    var vipid = {$_SESSION.WAP.vipid};
+    var num = 1;
+    var dt = {'sid': 0, 'goodsid': goodsid, 'vipid': vipid,'num': num,'is_group_buy':2,'group_buy_id':groupbuyid};//1开团 2：跟团
+    //保证订单生成页的返回
+    var orderurl = "{:U('App/Shop/orderMake',array('lasturl'=>$lasturl,'sid'=>0))}"
+    var fun = function () {
+        window.location.href = orderurl;
+    }
+    $.ajax({
+        type: "post",
+        url: "{:U('App/Shop/fastbuy')}",
+        dataType: 'json',
+        data: dt,
+        success: function (info) {
+            if (info['status']) {
+                App_gmuMsg(info['msg'], fun);
+            } else {
+                App_gmuMsg('发生未知错误,请重新尝试！');
+            }
+            return false;
+        },
+        error: function (xh, obj) {
+            App_gmuMsg('通讯失败，请重试！');
+        }
+    });
+    return false;
+})
+
+$('.layer').click(function(){
+    $('.layer').hide();
+})
+
+</script>
+</body>
+<include file="./Tpl/App/Shop_sharegoods.html"/>
+</html>

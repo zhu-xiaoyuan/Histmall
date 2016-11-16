@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>提现记录</title>
+    <meta charset="utf-8"/>
+    <!--页面优化-->
+    <meta name="MobileOptimized" content="320">
+    <!--默认宽度320-->
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <!--viewport 等比 不缩放-->
+    <meta http-equiv="cleartype" content="on">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!--删除苹果菜单-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!--默认颜色-->
+    <meta name="apple-mobile-web-app-title" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <!--加载全部后 显示-->
+    <meta content="telephone=no" name="format-detection"/>
+    <!--不识别电话-->
+    <meta content="email=no" name="format-detection"/>
+    <link rel="stylesheet" href="__PUBLIC__/App/css/style.css"/>
+    <link rel="stylesheet" href="__PUBLIC__/App/css/dropload.css"/>
+    <script type="text/javascript" src="__PUBLIC__/App/js/zepto.min.js"></script>
+    <style>
+        .plist-ul li > a {
+            background-color: white;
+        }
+    </style>
+</head>
+<body class="back1">
+<div class="ads-tabs ovflw">
+    <a href="{:U('App/Vip/txList')}?type=0" class="fl text-c" style="width: 50%;">
+        <span
+        <eq name='type' value='0'>class='active'</eq>
+        >微信提现记录</span></a>
+    <a href="{:U('App/Vip/txList')}?type=1" class="fl text-c" style="width: 50%;">
+        <span
+        <eq name='type' value='1'>class='active'</eq>
+        >银行提现记录
+        </span>
+    </a>
+</div>
+<div class="index-plist ovflw" id="index-plist" style="margin-bottom: 60px;margin-top: 42px;">
+    <ul class="plist-ul ovflw back1">
+
+    </ul>
+</div>
+<!-- 底部导航 -->
+<div class="dtl-ft ovflw">
+    <div class=" fl dtl-icon dtl-bck ovflw">
+        <a href="{:U('App/Vip/index')}" class="btnBack">
+            <i class="iconfont">&#xe679</i>
+        </a>
+    </div>
+</div>
+<div id="html" style="display: none"></div>
+</body>
+<script src="__PUBLIC__/App/js/dropload.min.js"></script>
+<script>
+    $(function () {
+        var num = 10;
+        var counter = 0;
+        var dropload = $("#index-plist").dropload({
+            scrollArea: window,
+            loadDownFn: function (me) {
+                $("#html").load("{:U('App/Vip/txItem')}?pg=" + counter + "&pc=" + num + "&type={$type}", function (html, status) {
+                    $("#html").html("");
+                    if (status == "success") {
+                        if (html == "") {
+                            dropload.noData();
+                            dropload.resetload();
+                            return;
+                        } else {
+                            $('#index-plist>ul').append(html);
+                            counter++;
+                            dropload.resetload();
+                        }
+                    } else {
+                        dropload.resetload();
+                    }
+                });
+            }
+        });
+    });
+</script>
+</html>

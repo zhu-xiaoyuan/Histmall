@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>帮助中心</title>
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    background: #fff;
+    position: relative;
+}
+.page {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    max-width: 640px;
+    display: none;
+}
+@media screen and (min-width: 321px) and (max-width: 374px) {
+}
+@media screen and (min-width: 375px) and (max-width: 413px) {
+}
+@media screen and (min-width: 414px) {
+}
+h2 {margin-left: 5%;}
+.subTitle {
+    margin-left: 5%;
+    color: #ccc;
+}
+.imageStyle {
+    width: 90%;
+    margin-left: 5%;
+    margin-bottom: 5%;
+}
+.title {
+    margin-left: 5%;
+    margin-top: 3%;
+    margin-bottom: 7%;
+}
+h3 {text-align: center;}
+.contentDiv {
+    width: 90%;
+    margin: 2% auto;
+    border-bottom: 1px solid #46a4f7;
+}
+.backBtn {
+    color: #fff;
+    background: #46a4f7;
+    padding: 2%;
+    font-size: 1.2em;
+    position: fixed;
+    right: 3%;
+    bottom: 2%;
+    border-radius: 10px;
+    z-index: 5;
+    opacity: 0.8;
+    display: none;
+}
+</style>
+</head>
+<body>
+    <span class="backBtn" onclick="backToMainFunc()">返回</span>
+
+    <div class="page" style="display:block">
+        <h2 style="text-align:center">帮助中心</h2>
+        <p class="subTitle"></p>
+        <img class="imageStyle" src="__PUBLIC__/Public/help/1.jpg">
+        <div class="title" onclick="selectContentFunc(1)">一、如何开通微信支付</div>
+        <div class="title" onclick="selectContentFunc(2)">二、如何关注公众号</div>
+        <div class="title" onclick="selectContentFunc(3)">三、如何购买商品</div>
+        <div class="title" onclick="selectContentFunc(4)">四、如何修改收货地址</div>
+        <div class="title" onclick="selectContentFunc(5)">五、如何确认收货</div>
+        <div class="title" onclick="selectContentFunc(6)">六、如何查询收益</div>
+        <div class="title" onclick="selectContentFunc(7)">七、如何推广分销</div>
+        <div class="title" onclick="selectContentFunc(8)">八、如何申请提现</div>
+        <div class="title" onclick="selectContentFunc(9)">九、怎样设置提现资料</div>
+        <div class="title" onclick="selectContentFunc(10)">十、怎样绑定资料</div>
+    </div>
+
+    <div class="page">
+        <h3>如何开通微信支付</h3>
+        <div class="contentDiv">
+            <p>1、手机登录微信，点击“我”的功能按钮，点击功能选项单中【钱包】</p>
+            <img class="imageStyle" src="__PUBLIC__/Public/help/page1_img1.png">
+            <img class="imageStyle" src="__PUBLIC__/Public/help/page1_img2.png">
+        </div>
+        <div class="contentDiv">
+            <p>2、点击“钱包”，进入银行卡页面添加银行卡</p>
+            <img class="imageStyle" src="__PUBLIC__/Public/help/page1_img3.png">
+            <img class="imageStyle" src="__PUBLIC__/Public/help/page1_img4.png">
+        </div>
+        <div class="contentDiv">
+            <p>3、设置一个6位数的微信支付密码，建议勿与银行卡取款密码相同</p>
+            <img class="imageStyle" src="__PUBLIC__/Public/help/page1_img5.png">
+        </div>
+        <div class="contentDiv">
+            <p>4、仔细填写银行卡号</p>
+            <img class="imageStyle" src="__PUBLIC__/Public/help/page1_img6.png">
+        </div>
+        <div class="contentDiv">
+            <p>5、仔细填写银行卡信息</p>
+            <img class="imageStyle" src="__PUBLIC__/Public/help/page1_img7.png">
+        </div>
+        <div class="contentDiv">
+            <p>6、系统会自动发送验证码到您的手机，输入手机验证码，绑定手机号，即可开通微信支付</p>
+            <img class="imageStyle" src="__PUBLIC__/Public/help/page1_img8.png">
+        </div>
+    </div>
+
+    <div class="page">
+        <h3>如何关注公众号</h3>
+        <div class="contentDiv">
+            <p>1、打开微信客户端，然后点击右上角“+”，在下拉菜单中选择【添加朋友】</p>
+            <img class="imageStyle" src="__PUBLIC__/Public/help/page2_img1.png">
+        </div>
+        <div class="contentDiv">
+            <p>2、点击进入【公众号】搜索</p>
+            <img class="imageStyle" src="__PUBLIC__/Public/help/page2_img2.png">
+        </div>
+        <div class="contentDiv">
+            <p>3、点击【公众号】选项进入后，在搜索框输入公众号名称进行搜索，点击进入</p>
+            <img class="imageStyle" src="__PUBLIC__/Public/help/page2_img3.png">
+        </div>
+        <div class="contentDiv">
+            <p>4、点击页面下方【关注】按钮进行关注即可</p>
+            <img class="imageStyle" src="__PUBLIC__/Public/help/page2_img4.png">
+        </div>
+        <div class="contentDiv">
+            <p>5、关注成功后，将进入相应页面，点击【进入公众号】，即可查看相关内容</p>
+            <img class="imageStyle" src="__PUBLIC__/Public/help/page2_img5.png">
+        </div>
+    </div>
+
+    <div class="page">
+        <h3>如何购买商品</h3>
+        <div class="contentDiv">
+            <p>1、打开微商城首页</p>
+            <img class="imageStyle" src="__PUBLIC__/Public/help/page3_img1.png">
+        </div>
+        <div class="contentDiv">
+            <p>2、进入首页之后，选择需要购买的商品，选择商品数量，然后点击“立即购买”</p>
+            <img class="imageStyle" src="__PUBLIC__/Public/help/page3_img2.png">
+        </div>
+        <div class="contentDiv">
+            <p>3、点击【请选择收货地址】，再点击【新增地址】，然后仔细填写收货地址，并点击【保存地址】</p>
+            <img class="imageStyle" src="__PUBLIC__/Public/help/page3_img3.png">
+        </div>
+        <div class="contentDiv">
+            <p>4、选择微信安全支付，点击右下方【确认】按钮</p>
+            <img class="imageStyle" src="__PUBLIC__/Public/help/page3_img4.png">
+        </div>
+        <div class="contentDiv">
+            <p>5、选择支付方式，输入支付密码完成支付，即可成功购买</p>
+            <img class="imageStyle" src="__PUBLIC__/Public/help/page3_img5.png">
+            <img class="imageStyle" src="__PUBLIC__/Public/help/page3_img6.png">
+        </div>
+    </div>
+
+    <div class="page">
+        <h3>如何修改收货地址</h3>
+        <div class="contentDiv">
+            <p>1、打开微商城，点击【个人中心】</p>
+            <img class="imageStyle" src="__PUBLIC__/Public/help/page4_img1.png">
+        </div>
+        <div class="contentDiv">
+            <p>2、点击【地址管理】</p>
+            <img class="imageStyle" src="__PUBLIC__/Public/help/page4_img2.png">
+        </div>
+        <div class="contentDiv">
+            <p>3、选择要修改的地址，进到地址填写信息，修改完成后点击【保存地址】按钮</p>
+            <img class="imageStyle" src="__PUBLIC__/Public/help/page4_img3.png">
+        </div>
+    </div>
+
+    <div class="page">
+        <h3>如何确认收货</h3>
+        <div class="contentDiv">
+            <p>1、点击下方菜单栏【订单】</p>
+            <img class="imageStyle" src="__PUBLIC__/Public/help/page5_img1.png">
+        </div>
+        <div class="contentDiv">
+            <p>2、选择页面中标识为【待收货】的产品，点击【确认收货】</p>
+            <img class="imageStyle" src="__PUBLIC__/Public/help/page5_img2.png">
+        </div>
+        <div class="contentDiv">
+            <p>3、页面显示为【完成】，即收货成功</p>
+            <img class="imageStyle" src="__PUBLIC__/Public/help/page5_img3.png">
+        </div>
+    </div>
+
+    <div class="page">
+        <h3>如何查询收益</h3>
+        <div class="contentDiv">
+            <p>1、打开商城，点击下方菜单栏【个人中心】</p>
+            <img class="imageStyle" src="__PUBLIC__/Public/help/page5_img1.png">
+        </div>
+        <div class="contentDiv">
+            <p>2、点击【团队中心】</p>
+            <img class="imageStyle" src="__PUBLIC__/Public/help/page6_img2.png">
+        </div>
+        <div class="contentDiv">
+            <p>3、分别点击【待收日志】、【收米日志】、【推广日志】，即可分别查看可待收收益、已收到收益、推广分销的记录</p>
+            <img class="imageStyle" src="__PUBLIC__/Public/help/page6_img3.png">
+        </div>
+    </div>
+
+    <div class="page">
+        <h3>如何推广分销</h3>
+        <div class="contentDiv">
+            <p>1、打开商城，点击下方菜单栏【个人中心】</p>
+            <img class="imageStyle" src="__PUBLIC__/Public/help/page4_img1.png">
+        </div>
+        <div class="contentDiv">
+            <p>2、点击【团队中心】</p>
+            <img class="imageStyle" src="__PUBLIC__/Public/help/page6_img2.png">
+        </div>
+        <div class="contentDiv">
+            <p>3、点击【我的专属商城二维码】，然后长按二维码即可分享发送给朋友</p>
+            <img class="imageStyle" src="__PUBLIC__/Public/help/page7_img1.png">
+            <img class="imageStyle" src="__PUBLIC__/Public/help/page7_img2.png">
+        </div>
+    </div>
+
+    <div class="page">
+        <h3>八、如何申请提现</h3>
+        <div class="contentDiv">
+            <p>1、打开商城，点击下方菜单栏【个人中心】</p>
+            <img class="imageStyle" src="__PUBLIC__/Public/help/page4_img1.png">
+        </div>
+        <div class="contentDiv">
+            <p>2、点击［提现］</p>
+            <img class="imageStyle" src="__PUBLIC__/Public/help/page8_img1.png">
+        </div>
+        <div class="contentDiv">
+            <p>3、填写提现资料，输入提现金额，在右下角点击［保存］等待系统审核处理即可</p>
+            <img class="imageStyle" src="__PUBLIC__/Public/help/page8_img2.png">
+        </div>
+    </div>
+
+    <div class="page">
+        <h3>怎样设置提现资料</h3>
+        <div class="contentDiv">
+            <p>1、打开商城，点击下方菜单栏【个人中心】</p>
+            <img class="imageStyle" src="__PUBLIC__/Public/help/page4_img1.png">
+        </div>
+        <div class="contentDiv">
+            <p>2、点击［提现资料］</p>
+            <img class="imageStyle" src="__PUBLIC__/Public/help/page9_img1.png">
+        </div>
+        <div class="contentDiv">
+            <p>3、填写提现资料设置的内容，在右下角点击［保存］</p>
+            <img class="imageStyle" src="__PUBLIC__/Public/help/page9_img2.png">
+        </div>
+    </div>
+
+    <div class="page">
+        <h3>怎样绑定资料</h3>
+        <div class="contentDiv">
+            <p>1、打开商城，点击下方菜单栏【个人中心】</p>
+            <img class="imageStyle" src="__PUBLIC__/Public/help/page4_img1.png">
+        </div>
+        <div class="contentDiv">
+            <p>2、填写手、电子邮箱信息，在右下角点击［保存］</p>
+            <img class="imageStyle" src="__PUBLIC__/Public/help/page10_img1.png">
+        </div>
+    </div>
+
+    <script type="text/javascript">
+    var oTitDivs = document.getElementsByClassName("title");
+    var oConDivs = document.getElementsByClassName("page");
+    function selectContentFunc(index) {
+        document.documentElement.scrollTop = document.body.scrollTop =0;
+        oConDivs[0].style.display = "none";
+        document.getElementsByClassName("backBtn")[0].style.display = "block";
+        for(var i=1; i<=oTitDivs.length; ++i) {
+            if(i == index) {
+                oConDivs[i].style.display = "block";
+            }else {
+                oConDivs[i].style.display = "none";
+            }
+        }
+    }
+    function backToMainFunc() {
+        document.getElementsByClassName("backBtn")[0].style.display = "none";
+        for(var i=0; i<oConDivs.length; ++i) {
+            if(i == 0) {
+                oConDivs[i].style.display = "block";
+            }else {
+                oConDivs[i].style.display = "none";
+            }
+        }
+    }
+    </script>
+</body>
+</html>

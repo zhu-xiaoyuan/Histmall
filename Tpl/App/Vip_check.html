@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>立即对账</title>
+    <meta charset="utf-8"/>
+    <!--页面优化-->
+    <meta name="MobileOptimized" content="320">
+    <!--默认宽度320-->
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <!--viewport 等比 不缩放-->
+    <meta http-equiv="cleartype" content="on">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!--删除苹果菜单-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!--默认颜色-->
+    <meta name="apple-mobile-web-app-title" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <!--加载全部后 显示-->
+    <meta content="telephone=no" name="format-detection"/>
+    <!--不识别电话-->
+    <meta content="email=no" name="format-detection"/>
+    <link rel="stylesheet" href="__PUBLIC__/App/css/style.css"/>
+    <link href="//cdn.bootcss.com/weui/0.4.2/style/weui.min.css" rel="stylesheet">
+    <script type="text/javascript" src="__PUBLIC__/App/js/zepto.min.js"></script>
+</head>
+<body>
+<div style="padding: 5px 10px;">
+    <p style="padding: 10px 0px;font-size: 13px;">对账时间段：最后一次对账结束到今天</p>
+
+    <div style="float: left;background-color:#04BE02;width: 49%; color: white;">
+        <h2 style="text-align: center;padding-top: 20px;">应收</h2>
+
+        <p style="padding:20px;text-align: center;">{$online}</p>
+    </div>
+    <div style="float: right;background-color: #F43530;width: 49%;color: white;">
+        <h2 style="text-align: center;padding-top: 20px;">应付</h2>
+
+        <p style="padding: 20px;text-align: center;">{$offline}</p>
+    </div>
+    <p style="padding: 10px 0px; clear: both;font-size: 13px;">应收表示平台应该打给商家的钱</p>
+    <p style="padding: 0px 0px; clear: both;font-size: 13px;">应付表示商家应该打给平台的钱 </p>
+    <p style="padding: 10px 0px; clear: both;font-size: 13px;">实际结算额 = 应收 - 应付</p>
+
+    <div class="weui_cells weui_cells_form" style="margin-top: 0px;margin-bottom: 20px;">
+        <div class="weui_cell">
+            <div class="weui_cell_hd"><label class="weui_label">结算类型</label></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <egt name="doSum" value="0">
+                    <input class="weui_input" type="text" readonly value="应收"/>
+                </egt>
+                <lt name="doSum" value="0">
+                    <input class="weui_input" type="text" readonly value="应付"/>
+                </lt>
+            </div>
+        </div>
+        <div class="weui_cell">
+            <div class="weui_cell_hd"><label class="weui_label">结算金额</label></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <input class="weui_input" type="number" readonly value="{$doSum|abs}"/>
+            </div>
+        </div>
+        <div class="weui_cell">
+            <div class="weui_cell_hd"><label class="weui_label">结算备注</label></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <input id="mm" class="weui_input"/>
+            </div>
+        </div>
+    </div>
+    <gt name="doSum|abs" value="0"><a class="weui_btn weui_btn_primary" style="background-color: #26b1fe;" href="#">提交对账申请</a>
+    </gt>
+</div>
+<!-- 底部导航 -->
+<div class="dtl-ft ovflw">
+    <div class=" fl dtl-icon dtl-bck ovflw">
+        <a href="{:U('App/Vip/store')}" class="btnBack">
+            <i class="iconfont">&#xe679</i>
+        </a>
+    </div>
+</div>
+</body>
+<script>
+    $(function () {
+        $('.weui_btn_primary').one("click", function () {
+            toDo();
+        });
+    });
+    function toDo() {
+        $.post("{:U('App/Vip/checkDo')}", {mm: $("#mm").val()}, function (d) {
+            alert(d.message);
+            location.reload()
+        }, "json");
+    }
+</script>
+</html>

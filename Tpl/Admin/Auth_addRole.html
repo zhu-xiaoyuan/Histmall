@@ -1,0 +1,170 @@
+<div class="row">
+    <div class="col-xs-12 col-xs-12">
+        <div class="widget radius-bordered">
+            <div class="widget-header bg-blue">
+                <i class="widget-icon fa fa-arrow-down"></i>
+                <span class="widget-caption">角色管理</span>
+                <div class="widget-buttons">
+                    <a href="#" data-toggle="maximize">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a href="#" data-toggle="collapse">
+                        <i class="fa fa-minus"></i>
+                    </a>
+                    <a href="#" data-toggle="dispose">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="widget-body">
+                <form id="AppForm" class="form-horizontal">
+                    <input type="hidden" name="id" value="{$role.id}">
+                    <div class="form-title">
+                        <a id="backBtn" href="{:U('Admin/Auth/role')}" class="btn btn-primary" data-loader="App-loader" data-loadername="角色管理">
+                            <i class="fa fa-mail-reply"></i>返回
+                        </a>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">角色名称<sup>*</sup></label>
+                        <div class="col-lg-4">
+                            <input type="text" class="form-control" name="name" placeholder="必填" value="{$role.name}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">角色权限<sup>*</sup>:</label>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-offset-1 col-lg-10">
+                            <table class="table table-striped table-bordered">
+                                <tr>
+                                    <td class="text-center h5">一级菜单</td>
+                                    <td class="text-center h5">二级菜单</td>
+                                </tr>
+                                <volist name="menus" id="menu">
+                                    <tr>
+                                        <td width="200">
+                                            <!--父菜单-->
+                                            <div class="checkbox pull-left">
+                                                <label>
+                                                    <input
+                                                        <in name="menu[0]['id']" value="$menu_ids">checked</in>
+                                                        <eq name="menu[0]['id']" value="1">checked onclick="return false;" id='index'</eq>
+                                                        name="menu[]" data-level="1" data-id="{$menu[0]['id']}" value="{$menu[0]['id']}" class="colored-success" type="checkbox"/>
+                                                    <span class="text">{$menu[0]['name']}</span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <empty name="menu[1]">
+                                            <td></td>
+                                        <else/>
+                                            <!--子菜单-->
+                                            <td>
+                                                <volist name="menu[1]" id="vo">
+                                                    <div class="checkbox pull-left">
+                                                        <label>
+                                                            <input <in name="vo.id" value="$menu_ids">checked</in> name="menu[]" data-level="2" data-pid="{$menu[0]['id']}" value="{$vo['id']}" class="colored-success" type="checkbox"/>
+                                                            <span class="text">{$vo['name']}</span>
+                                                        </label>
+                                                    </div>
+                                                </volist>
+                                            </td>
+                                        </empty>
+                                    </tr>
+                                </volist>
+                                <input type="hidden"/>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-offset-2 col-lg-4">
+                            <span class="btn btn-primary btn-lg" id="btn_submit">保存</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span class="btn btn-palegreen btn-lg" id="btn_reset">重填</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!--面包屑导航封装-->
+<div id="tmpbread" style="display: none;">{$breadhtml}</div>
+<script type="text/javascript">
+    setBread($('#tmpbread').html());
+</script>
+<!--/面包屑导航封装-->
+<!--表单验证与提交封装-->
+<script type="text/javascript">
+    $(function(){
+        //选择权限（点击）事件
+        $('input').change(function(){
+            //如果保存时disabled,则取消之
+            var btn_submit = $('button[type=submit]');
+            var is_disabled = btn_submit.prop('disabled');
+            //true，什么也不做
+            is_disabled ? btn_submit.prop('disabled',false):'';
+
+            var level = $(this).data('level');
+            //如果选择了父级，则子级全选
+            if(level == 1){
+                var id = $(this).val();
+                var ischecked = $(this).prop('checked');
+
+                var inputs = $('input[data-pid='+id+']');
+                //全选或全不选
+                ischecked ? inputs.prop('checked',true) : inputs.prop('checked',false);
+            }
+            //如果选择了子级，父级跟着被选
+            if(level == 2){
+                var pid = $(this).data('pid');
+                var p_input = $('input[data-id='+pid+']');
+                var ischecked = $(this).prop('checked');
+                if(ischecked){
+                    //若没有被选择，则选择之
+                    if(!p_input.prop('checked'))
+                        p_input.prop('checked',true);
+                }
+            }
+        })
+    })
+    //重置按钮
+    $('#btn_reset').click(function(){
+        $('input[name=name]').val('');
+        $('input[type=checkbox]').prop('checked',false);
+    })
+    $('#index').click(function(){
+        $.App.alert('danger','此菜单不可取消!');
+    })
+    //保存提交
+    $('#btn_submit').click(function(){
+        var name = $('input[name=name]').val();
+        if($.trim(name)==''){
+            $.App.alert('danger','请填写角色名称');
+            return;
+        }
+        var checked_num = $('input:checked').length;
+        if(checked_num<=0){
+            $.App.alert('danger','请选择权限');
+            return;
+        }
+        var data = $('#AppForm').serialize();
+        $.ajax({
+            type    : 'post',
+            url     : "{:U('Admin/Auth/addRoleSave')}",
+            data    : data,
+            success : function(data){
+                if(data.status==1){
+                    $.App.alert('success','保存成功');
+                    $('#backBtn').trigger('click');
+                }else{
+                    $.App.alert('danger','保存失败');
+                }
+            },
+            error   : function(){
+                $.App.alert('danger','something wrong，please refresh this page and try again.');
+            }
+        })
+
+    })
+</script>
+<!--/表单验证与提交封装-->

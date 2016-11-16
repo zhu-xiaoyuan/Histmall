@@ -1,0 +1,281 @@
+<div class="row">
+    <div class="col-xs-12 col-md-12">
+        <div class="widget">
+            <div class="widget-header bg-blue">
+                <i class="widget-icon fa fa-arrow-down"></i>
+                <span class="widget-caption">中奖设置</span>
+                <div class="widget-buttons">
+                    <a href="#" data-toggle="maximize">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a href="#" data-toggle="collapse">
+                        <i class="fa fa-minus"></i>
+                    </a>
+                    <a href="#" data-toggle="dispose">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="widget-body">
+                <div class="form-title">
+                    <a id="back" class="btn btn-primary" href="{:U('Admin/Lucky/luckyList')}" data-loadername="红包详情" data-loader="App-loader">
+                        <i class="fa fa-reply"></i>
+                        返回
+                    </a>
+                </div>
+                <form class="form-horizontal" id="set_config">
+                    <input type="hidden" name="id" value="{$config['id']}"/>
+                    <!--红包口令-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="command" class="control-label col-sm-2">红包口令 <span class="red">*</span></label>
+                                <div class="col-sm-4">
+                                    <input type="text" value="{$config['command']}" class="form-control" name="command" id="command" placeholder="输入红包口令"
+                                        data-bv-notempty="true" data-bv-notempty-message="红包口令不能为空"
+                                        data-bv-regexp="true" data-bv-regexp-regexp="^[\u0391-\uFFE5A-Za-z0-9]+$" data-bv-regexp-message="只能输入汉字、英文、数字等"
+                                    />
+                                </div>
+                                <div class="col-sm-4 help-block">
+                                    请只输入汉字、英文字母、数字等
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--红包总金额-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="total_money" class="control-label col-sm-2">红包总金额 <span class="red">*</span></label>
+                                <div class="col-sm-4">
+                                    <input type="text" value="{$config['total_money']}" class="form-control" name="total_money" id="total_money" placeholder="输入红包总金额"
+                                    data-bv-notempty="true" data-bv-notempty-message="总金额不能为空"
+                                    data-bv-numeric="true" data-bv-numeric-message="总金额只能为数字"
+                                    data-bv-greaterthan="true" data-bv-greaterthan-inclusive="false" data-bv-greaterthan-value="1" data-bv-greaterthan-message="红包总金额至少需大于1元"
+                                    onblur="var a = this.value; a?this.value = (Math.round(a*100)/100):'';"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--红包个数-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="total_num" class="control-label col-sm-2">红包个数 <span class="red">*</span></label>
+                                <div class="col-sm-4">
+                                    <input type="text" value="{$config['total_num']}" class="form-control" name="total_num" id="total_num" placeholder="输入红包个数"
+                                    data-bv-notempty="true" data-bv-notempty-message="红包个数不能为空"
+                                    data-bv-integer="true" data-bv-integer-message="红包个数只能为正整数"
+                                    data-bv-greaterthan="true" data-bv-greaterthan-inclusive="false" data-bv-greaterthan-value="1" data-bv-greaterthan-message="红包个数只能为正整数"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--开始时间-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="start_time" class="control-label col-sm-2">抽奖开始时间 <span class="red">*</span></label>
+                                <div class="col-sm-4">
+                                    <input readonly type="text" value="{$config['start_time']?date('Y-m-d H:i:s',$config['start_time']):''}" class="form-control" name="start_time" id="start_time" placeholder="请选择抽奖开始时间"
+                                           data-bv-notempty="true" data-bv-notempty-message="抽奖开始时间不能为空"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--已领取个数-->
+                    <eq name="is_edit" value="1">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="taken_num" class="control-label col-sm-2">已领取个数</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" value="{$config['taken_num']}" class="form-control" name="taken_num" id="taken_num" readonly/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </eq>
+
+                    <!--开启抽奖-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">开启抽奖</label>
+                                <div class="col-sm-8">
+                                    <div class="radio" style="margin-left: -20px">
+                                        <label>
+                                            <input type="hidden" name="is_enable" value="{$config.is_enable}" id="val">
+                                            <if condition="$config['is_enable'] eq 1">
+                                                <input class="checkbox-slider slider-icon colored-darkorange"  type="checkbox" checked="checked" id="k-button">
+                                                <else />
+                                                <input class="checkbox-slider slider-icon colored-darkorange"  type="checkbox" id="k-button">
+                                            </if>
+                                            <span class="text darkorange">
+                                                ← 重要：①同一时间只能开启一个红包，此红包开启后，其他将关闭。<br/>    ②开启后，到达抽奖时间后则可以开始抢红包
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--按钮-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2"></label>
+                                <div class="col-sm-4">
+                                    <button type='submit' class="btn btn-lg btn-blue next_step">
+                                        保存<eq name="is_edit" value="1">编辑</eq>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <eq name="is_edit" value="1">
+                    <div class="form-title">
+                        红包分配方案
+                        <button id="plan" class="btn btn-warning pull-right">重新生成分配方案</button>
+                    </div>
+                    <div class="col-sm-12" style="height:300px;" id="chart">
+
+                    </div>
+                    <!--分配方案列表-->
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>ID</th>
+                            <th>红包ID</th>
+                            <th>分配金额</th>
+                            <th>中奖用户</th>
+                            <th>中奖时间</th>
+                        </tr>
+                        <volist name="plan" id="vo">
+                            <tr>
+                                <td>{$vo.id}</td>
+                                <td>{$vo.lucky_id}</td>
+                                <td>{$vo.money}</td>
+                                <td>{$vo['vipid']?$vo['vipid']:''}</td>
+                                <td>{$vo['taken_time']?date('Y-m-d H:i:s',$vo['taken_time']):''}</td>
+                            </tr>
+                        </volist>
+                    </table>
+                </eq>
+            </div>
+        </div>
+    </div>
+</div>
+<!--面包屑导航封装-->
+<div id="tmpbread" style="display: none;">{$breadhtml}</div>
+<link rel="stylesheet" href="__PUBLIC__/Admin/css/jedate.css">
+<script src="__PUBLIC__/Admin/js/datetime/jedate.js"></script>
+<script src="__PUBLIC__/Admin/js/validation/bootstrapValidator.js"></script>
+<script src="__PUBLIC__/Admin/libs/echarts/echarts.min.js"></script>
+<script type="text/javascript">
+    var is_edit = {$is_edit?1:0};   //是否为编辑页面
+    setBread($('#tmpbread').html());<!--/面包屑导航封装-->
+    $(function(){
+        // 点击下一步、数据验证，成功后跳转
+        $('#set_config').bootstrapValidator({
+            submitHandler   : function(validator,form,submitButton){
+                //红包总金额除以红包个数需大于1;
+                var total_money = $('#total_money').val();
+                var total_num = $('#total_num').val();
+                if(total_money/total_num < 1){
+                    $.App.alert(0,'平均每个红包的金额需大于1元<br/>（微信红包限制）');
+                    return;
+                }
+                var toUrl = '{:U("Admin/Lucky/set")}';
+                var msg = is_edit?'确定保存？<br/>若红包金额、个数发生改变，则需要手动点击“重新生成分配方案”':'确认保存？<br/>保存后将自动生成红包分配方案';
+                $.App.confirm(msg,function(){
+                    var data = $('#set_config').serialize();
+                    $.App.ajax('post', toUrl, data,function(res){
+                        //成功以后跳转页面
+                        $('#back').trigger('click');
+                    });
+                })
+            }
+        });
+        //开启关闭按钮
+        $('#k-button').on('click', function() {
+            var value = $(this).prop('checked') ? 1 : 0;
+            $('#val').val(value);
+        });
+        //时间选择插件配置
+        jeDate({
+            dateCell:"#start_time",
+            format:"YYYY-MM-DD hh:mm:ss",
+            //isinitVal:true,
+            isTime:true,
+            isClear:true,
+            minDate:"2016-09-01 00:00:00",
+            okfun:function(val){
+            }
+        });
+        //重新生成红包分配方案
+        $('#plan').click(function(){
+            var id = $('input[name=id]').val();
+            $.App.confirm('确认重新生成红包分配方案？',function(){
+                $.ajax({
+                    url     : '{:U("Admin/Lucky/getAllocationPlanAgain")}',
+                    data    : {id:id},
+                    type    : 'post',
+                    success : function(data){
+                        if(data.status){
+                            $.App.alert('success',data.msg);
+                        }else{
+                            $.App.alert('danger',data.msg);
+                        }
+                        $('#refresh-toggler').trigger('click');
+                    },
+                    error   : function(){
+                        alert('通讯失败，请重试');
+                    }
+                })
+            })
+        })
+    });
+
+<eq name="is_edit" value="1">
+    var dataX = {$chart['x']|json_encode};
+    var dataY = {$chart['y']|json_encode};
+    var num = {$chart['num']};
+    var total_money = {$chart['total_money']};
+    //红包分配方案图表
+    var myChart = echarts.init(document.getElementById('chart'));
+    option = {
+        title: {
+            text: '分配金额 分布图(总金额：'+total_money+'元  红包个数：'+num+'个)'
+        },
+        tooltip: { trigger: 'axis',
+            axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+            }},
+        legend: {
+            data:['金额']
+        },
+        xAxis: {
+            data: dataX,
+            name: 'ID',
+            axisTick: {alignWithLabel: true}
+        },
+        yAxis: {
+            name : '金额'
+        },
+        series: [{
+            name: '金额',
+            type: 'bar',
+            data: dataY
+        }]
+    };
+    myChart.setOption(option);
+</eq>
+</script>

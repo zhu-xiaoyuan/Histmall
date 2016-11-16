@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{$_SESSION['SHOP']['set']['name']}-中奖详情</title>
+    <meta charset="utf-8"/>
+    <!--页面优化-->
+    <meta name="MobileOptimized" content="320">
+    <!--默认宽度320-->
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <!--viewport 等比 不缩放-->
+    <meta http-equiv="cleartype" content="on">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!--删除苹果菜单-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!--默认颜色-->
+    <meta name="apple-mobile-web-app-title" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <!--加载全部后 显示-->
+    <meta content="telephone=no" name="format-detection"/>
+    <!--不识别电话-->
+    <meta content="email=no" name="format-detection"/>
+    <script type="text/javascript" src="__PUBLIC__/App/js/zepto.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/App/js/dropload.min.js"></script>
+    <script src="http://cdn.bootcss.com/iScroll/5.2.0/iscroll.js"></script>
+    <style>
+        *{padding:0;margin:0;font-family: Microsoft YaHei, 宋体;}
+        body{max-width:640px;margin:0 auto;}
+        html,body, .full{width:100%;height:100%;over-flow:hidden;}
+        .margin-auto{margin:0 auto;}
+        img{display:block;border:0;}
+        .text-center{text-align:center;}
+        .bg-red{background-color:#B42C1E;}
+        .bg-yellow{background-color:#FBEBD2;}
+        .bg-grey{background-color:grey;}
+        .fonts18{font-size:25px;}
+        .yellow{color:#EEEA44;}
+        .fl{float:left;}
+        .fr{float:right;}
+        li{list-style: none;}
+        .myprize{background-color:#D4403A;width:50%;height:40px;box-shadow:4px 4px rgb(158,50,37);}
+        #scroller{padding:0 20px;}
+        #wrapper{height:100%;}
+        #wrapper li{padding:10px 0;border-bottom:1px solid #9D292C;height:45px;}
+    </style>
+</head>
+<body style="overflow:hidden;" onload="onloaded()">
+    <div style="background:url('__PUBLIC__/App/img/lucky/prize_top.jpg') no-repeat top center;background-size:cover;height:40%;">
+        <div class="margin-auto" style="width:80%;padding-top:5px;height:100%;">
+            <img src="__PUBLIC__/App/img/lucky/myprize_1.png" class="margin-auto" style="height:40%;max-width:100%;padding-bottom:5px;"/>
+            <img src="{$_SESSION['WAP']['vip']['headimgurl']}"
+                 class="margin-auto" style="height:40%;border-radius:100%;"/>
+            <div class="text-center" style="padding-top:10px;font-weight:bold;">
+                {$_SESSION['WAP']['vip']['nickname']}
+            </div>
+        </div>
+    </div>
+    <div style="height:60%; overflow: hidden;">
+        <div class="fonts18 bg-yellow" style="margin:0;">
+            <span class="yellow text-center margin-auto myprize" style="display:block;height:40px;line-height:40px;">
+                <empty name="vipPrize">
+                    好可惜...
+                <else/>
+                    <b>{$vipPrize['money']}</b> <small>元</small>
+                </empty>
+
+            </span>
+            <img src="__PUBLIC__/App/img/lucky/prize_middle.jpg" style="width:100%;height:80px;"/>
+        </div>
+        <div class="bg-red" style="font-size:14px;color:#F1EB3F;">
+            <div class="margin-auto" style="padding:5px 20px;border-top:2px solid #9A1611;border-bottom:2px solid #9A1611;">
+                已领取 {$config['taken_num']}/{$config['total_num']} 个红包 ， 共 {$config['taken_money']}/{$config['total_money']} 元
+            </div>
+        </div>
+        <div id="wrapper" style="overflow:hidden;" class="bg-red">
+            <div id="scroller" style="height:100px;">
+                <ul class="item" style="position: relative;top:-65px;">
+                    <li class="text-center" style="line-height:45px;color:#fff;">下拉刷新  &darr;</li>
+                    <volist name="prizeList" id="vo">
+                        <li>
+                            <img src="{$vo.headimgurl}"
+                                 class="fl" style="width:45px;height:45px;border-radius:100%;"/>
+                            <span style="color:#fff;line-height:25px;padding-left:10px;font-size:14px;" class="fl">
+                                {$vo.nickname}<br/>
+                                {$vo.taken_time|date='Y.m.d H:i:s',###}
+                            </span>
+                            <span class="fr yellow" style="line-height:45px; font-size:20px;">
+                                {$vo.money} <small>元</small>
+                            </span>
+                        </li>
+                    </volist>
+                    <li class="text-center" style="height:45px;border:0;">
+                        <div id="getmore" class="margin-auto" style="width:50%;display:none;color:#333;">
+                            加载更多... <img class="fr" src="__PUBLIC__/Admin/img/loading.gif" style="width:20px;vertical-align: middle;"/>
+                        </div>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    var myScroll;
+    function onloaded() {
+        myScroll = new IScroll('#wrapper');
+
+        myScroll.on('scrollEnd', function () {
+
+
+            myScroll.refresh();
+        });
+        myScroll.on('scrollStart', function () {
+
+
+            myScroll.refresh();
+        });
+    }
+    document.addEventListener('touchmove', function (e) { e.preventDefault();}, false);
+</script>
+</html>

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <title>我的专属</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            background: #000f22;
+        }
+
+        #bodybox {
+            position: relative;
+            margin: 0 auto;
+            overflow: hidden;
+            max-width: 640px;
+        }
+
+        .topDiv {
+            background-size: 100%;
+            width: 100%;
+        }
+
+        .msgDiv {
+            width: 85%;
+            margin: -10% auto 0 auto;
+            text-align: right;
+        }
+
+        .msgDiv span {
+            color: #00fff0
+        }
+
+        .msgDiv img {
+            width: 25%;
+            border-radius: 100%;
+        }
+
+        .titleDiv {
+            color: #00fff0;
+            font-weight: bolder;
+            font-size: 1.2em;
+            width: 95%;
+            margin: 2% auto;
+        }
+
+        .titleDiv img {
+            width: 10%;
+            margin-left: 10px;
+        }
+
+        .tigTitle {
+            color: #00fff0;
+            border-top: 2px solid #00fff0;
+            width: 95%;
+            margin: 0 auto;
+            text-align: center;
+            padding-top: 3%
+        }
+
+        .btmDiv {
+            background-size: 100%;
+            width: 100%
+        }
+
+        .imgDiv {
+            width: 90%;
+            margin: 5%;
+            overflow: hidden;
+        }
+
+        .imgDiv > img:first-child {
+            width: 70%;
+            float: left;
+        }
+
+        .imgDiv > img:last-child {
+            width: 27%;
+            float: right;
+        }
+
+        #tigDiv {
+            width: 100%;
+            margin: 0 auto;
+            color: #00fff0;
+            font-size: 0.9em;
+            display: none;
+        }
+
+        #tigDiv > p {
+            width: 95%;
+            margin-left: 2.5%
+        }
+
+        table {
+            color: #00fff0;
+            border: 1px solid #00fff0;
+            width: 95%;
+            margin: 0 auto;
+            font-size: 0.8em;
+            border-collapse: collapse;
+            border-spacing: 0;
+            background: #001c30;
+        }
+
+        tr > td:first-child {
+            font-weight: bolder;
+            font-size: 1.6em;
+            padding: 0 5px
+        }
+
+        th, td {
+            text-align: center;
+            border-right: 1px solid #00fff0;
+            border-bottom: 1px solid #00fff0;
+            padding: 3% 0
+        }
+
+        .zhanwei {
+            height: 200px;
+        }
+
+        .erweima {
+            width: 100%;
+            position: fixed;
+        }
+
+        @media screen and (max-width: 320px) {
+            .erweima {
+                width: 40%;
+                margin-left: 30%;
+                margin-bottom: 15%
+            }
+
+            .zhanwei {
+                height: 180px;
+            }
+        }
+
+        @media screen and (min-width: 375px) and (max-width: 413px) {
+            .zhanwei {
+                height: 210px;
+            }
+        }
+
+        @media screen and (min-width: 414px) {
+            .zhanwei {
+                height: 230px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div id="bodybox">
+    <div class="btmDiv">
+        <img class="erweima" src="{$img}"/>
+    </div>
+</div>
+<script src="http://libs.baidu.com/jquery/1.10.2/jquery.min.js"></script>
+<script type="text/javascript">
+    var i = 0;
+    function showContent() {
+        if (i == 0) {
+            document.getElementById("changeImg").src = "__PUBLIC__/App/img/close1.png";
+            $("#tigDiv").slideDown();
+            i = 1;
+        } else if (i == 1) {
+            document.getElementById("changeImg").src = "__PUBLIC__/App/img/open1.png";
+            $("#tigDiv").slideUp();
+            i = 0;
+        }
+    }
+</script>
+<!--     <include file="./Tpl/App/Shop_share.html" />
+ -->
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script>
+    //var share_url = "{$_SESSION['WAP']['shopset']['url']}/App/Shop/goods/ppid/{$_SESSION['WAP']['vipid']}/id/{$cache.id}";
+    var share_url = "http://{$_SERVER['HTTP_HOST']}__ROOT__/App/Fx/myqrcode/ppid/{$_SESSION['WAP']['vipid']}";
+    var share_title = "我的专属";
+    var share_content = "欢迎光顾我的专属";
+    //var share_img="{$_SESSION['WAP']['shopset']['url']}{$apppic.imgurl}";
+    var share_img = "{$vip.headimgurl}";
+    wx.config({
+        debug: false,
+        appId: "{$jsapi['appId']}",
+        timestamp: "{$jsapi['timestamp']}",
+        nonceStr: "{$jsapi['nonceStr']}",
+        signature: "{$jsapi['signature']}",
+        jsApiList: [
+            'checkJsApi',
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage',
+            'onMenuShareQQ',
+            'onMenuShareWeibo',
+            'hideMenuItems',
+            'showMenuItems',
+            'hideAllNonBaseMenuItem',
+            'showAllNonBaseMenuItem',
+//      'translateVoice',
+//      'startRecord',
+//      'stopRecord',
+//      'onRecordEnd',
+//      'playVoice',
+//      'pauseVoice',
+//      'stopVoice',
+//      'uploadVoice',
+//      'downloadVoice',
+//      'chooseImage',
+//      'previewImage',
+//      'uploadImage',
+//      'downloadImage',
+//      'getNetworkType',
+//      'openLocation',
+//      'getLocation',
+//      'hideOptionMenu',
+//      'showOptionMenu',
+//      'closeWindow',
+//      'scanQRCode',
+//      'chooseWXPay',
+//      'openProductSpecificView',
+//      'addCard',
+//      'chooseCard',
+//      'openCard'
+        ]
+    });
+
+    wx.ready(function () {
+        //开启菜单
+        wx.showOptionMenu();
+        //隐藏菜单
+        //wx.hideOptionMenu();
+        //分享给朋友
+        wx.onMenuShareAppMessage({
+            title: share_title,
+            desc: share_content,
+            link: share_url,
+            imgUrl: share_img,
+            trigger: function (res) {
+                //alert('用户点击发送给朋友');
+            },
+            success: function (res) {
+                //alert('已分享');
+            },
+            cancel: function (res) {
+                //alert('已取消');
+            },
+            fail: function (res) {
+                //alert(JSON.stringify(res));
+            }
+        });
+        //分享到朋友圈
+        wx.onMenuShareTimeline({
+            title: share_title,
+            link: share_url,
+            imgUrl: share_img,
+            trigger: function (res) {
+                //alert('用户点击分享到朋友圈');
+            },
+            success: function (res) {
+                //alert('已分享');
+            },
+            cancel: function (res) {
+                //alert('已取消');
+            },
+            fail: function (res) {
+                //alert(JSON.stringify(res));
+            }
+        });
+        //分享到QQ
+        wx.onMenuShareQQ({
+            title: share_title,
+            desc: share_content,
+            link: share_url,
+            imgUrl: share_img,
+            trigger: function (res) {
+                //alert('用户点击分享到QQ');
+            },
+            complete: function (res) {
+                //alert(JSON.stringify(res));
+            },
+            success: function (res) {
+                //alert('已分享');
+            },
+            cancel: function (res) {
+                //alert('已取消');
+            },
+            fail: function (res) {
+                //alert(JSON.stringify(res));
+            }
+        });
+    });
+</script>
+</body>
+
+</html>

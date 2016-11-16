@@ -1,0 +1,75 @@
+<div class="row">
+    <div class="col-xs-12 col-md-12">
+        <div class="widget">
+            <div class="widget-header bg-blue">
+                <i class="widget-icon fa fa-arrow-down"></i>
+                <span class="widget-caption">VIA列表</span>
+                <div class="widget-buttons">
+                    <a href="#" data-toggle="maximize">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a href="#" data-toggle="collapse">
+                        <i class="fa fa-minus"></i>
+                    </a>
+                    <a href="#" data-toggle="dispose">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="widget-body">
+                <div class="pull-right" style="margin-bottom:5px;">
+                    <form id="App-search">
+                        <label style="margin-bottom: 0px;">
+                            <input class="form-control input-sm" name="name" placeholder="搜索VIA ID/昵称" type="search">
+                        </label>
+                        <a class="btn btn-success" data-search="App-search" data-loadername="商城订单" data-loader="App-loader" href="{:U('Admin/Tuanzhang/lists')}">
+                            <i class="fa fa-search"></i>
+                            搜索
+                        </a>
+                    </form>
+                </div>
+
+                <table id="App-table" class="table table-bordered table-hover">
+                    <thead class="bordered-darkorange">
+                    <tr role="row">
+                        <th>VIA ID/会员ID</th>
+                        <th>VIA昵称</th>
+                        <th>VIA姓名</th>
+                        <th>手机号码</th>
+                        <th>招商数</th>
+                        <th style="text-align:center;">VIA提成总额(￥)</th>
+                        <th>成为VIA时间</th><!--打开直接可以用-->
+                        <th class="text-center">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <volist name="lists" id="vo">
+                            <tr>
+                                <td>{$vo.id}</td>
+                                <td>{$vo.nickname}</td>
+                                <td>{$vo.name}</td>
+                                <td>{$vo.mobile}</td>
+                                <td>{$vo.total_supplier_number}</td>
+                                <td>{$vo.total_tuanzhang_tc|number_format=###,2}</span></td>
+                                <td>{$vo.reg_tuanzhang_time|date='Y-m-d H:i:s',###}</td>
+                                <td class="text-center">
+                                    <a data-loadername="VIA信息详情" data-loader="App-loader" class="btn btn-primary btn-xs" href="{:U('Admin/Tuanzhang/detail')}/id/{$vo.id}">
+                                    <i class="fa fa-eye"></i> 详情</a>
+                                </td>
+                            </tr>
+                        </volist>
+                    </tbody>
+                </table>
+                <div class="row DTTTFooter">
+                    {$page}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--面包屑导航封装-->
+<div id="tmpbread" style="display: none;">{$breadhtml}</div>
+<script type="text/javascript">
+    setBread($('#tmpbread').html());
+</script>
+<!--/面包屑导航封装-->

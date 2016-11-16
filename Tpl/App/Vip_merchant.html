@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>招商中心</title>
+    <meta charset="utf-8"/>
+    <!--页面优化-->
+    <meta name="MobileOptimized" content="320">
+    <!--默认宽度320-->
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <!--viewport 等比 不缩放-->
+    <meta http-equiv="cleartype" content="on">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!--删除苹果菜单-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!--默认颜色-->
+    <meta name="apple-mobile-web-app-title" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <!--加载全部后 显示-->
+    <meta content="telephone=no" name="format-detection"/>
+    <!--不识别电话-->
+    <meta content="email=no" name="format-detection"/>
+    <link rel="stylesheet" href="__PUBLIC__/App/css/style.css"/>
+    <link rel="stylesheet" href="__PUBLIC__/App/css/dropload.css"/>
+    <script type="text/javascript" src="__PUBLIC__/App/js/zepto.min.js"></script>
+    <style>
+        .home-item {
+            width: 50%;
+        }
+        .plist-ul li > a {
+            background-color: white;
+        }
+    </style>
+</head>
+<body class="back1">
+<div class="home-hd" style="background: url(__PUBLIC__/App/img/head-bg.png) no-repeat;background-size: 100% 100%;">
+    <div class="home-hdc ovflw">
+        <h2 style="text-align: center;font-size: 20px;font-weight: bold;padding-top: 10px;">招商中心</h2>
+    </div>
+    <div class="clr"></div>
+    <div class="home-panel ovflw">
+        <div class="fl home-item"><a href="javascript:void(0)" class="home-br text-c"><span
+                id="home-jf">{$count}</span><span class="home-add" id="add-jf"></span>
+
+            <p>招商总数</p></a></div>
+        <div class="fl home-item"><a href="javascript:void(0)" class="text-c"><span
+                id="home-jy">{$money}</span><span
+                class="home-add" id="add-jy"></span>
+
+            <p>奖金总额</p></a></div>
+    </div>
+</div>
+<div id="main" style="margin-bottom: 60px;">
+    <div class="ads-cc" style="margin-top: 10px;">
+
+    </div>
+</div>
+<div id="html" style="display: none;"></div>
+<!-- 底部导航 -->
+<div class="dtl-ft ovflw">
+    <div class=" fl dtl-icon dtl-bck ovflw">
+        <a href="{:U('App/Vip/index')}" class="btnBack">
+            <i class="iconfont">&#xe679</i>
+        </a>
+    </div>
+</div>
+</body>
+<script src="__PUBLIC__/App/js/dropload.min.js"></script>
+<script>
+    $(function () {
+        var num = 10;
+        var counter = 0;
+        var dropload = $("#main").dropload({
+            scrollArea: window,
+            loadDownFn: function (me) {
+                $("#html").load("{:U('App/Vip/merchantItem')}?pg=" + counter + "&pc=" + num, function (html, status) {
+                    $("#html").html("");
+                    if (status == "success") {
+                        if (html == "") {
+                            dropload.noData();
+                            dropload.resetload();
+                            return;
+                        } else {
+                            $('.ads-cc').append(html);
+                            counter++;
+                            dropload.resetload();
+                        }
+                    } else {
+                        dropload.resetload();
+                    }
+                });
+            }
+        });
+    });
+</script>
+</html>

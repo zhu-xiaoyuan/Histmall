@@ -1,0 +1,129 @@
+<div class="row">
+    <div class="col-xs-12 col-md-12">
+        <div class="widget">
+            <div class="widget-header bg-blue">
+                <i class="widget-icon fa fa-arrow-down"></i>
+                <span class="widget-caption">商家统计</span>
+
+                <div class="widget-buttons">
+                    <a href="#" data-toggle="maximize">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a href="#" data-toggle="collapse">
+                        <i class="fa fa-minus"></i>
+                    </a>
+                    <a href="#" data-toggle="dispose">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="widget-body">
+                <div class="table-toolbar">
+                    <div class="pull-right">
+                        <form id="App-search" class="margin-bottom-10 form-inline">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <select id="s_type" class="form-control">
+                                        <option value="0">总营业额</option>
+                                        <option value="1">商城营业额</option>
+                                        <option value="2">商盟营业额</option>
+                                    </select>
+                                    <input id="s_begin_money" name="s_begin_money" type="search"
+                                           class="form-control input-sm" value="{$s_begin_money}" placeholder="">
+                                    -
+                                    <input id="s_end_money" name="s_end_money" type="search"
+                                           class="form-control input-sm" value="{$s_end_money}" placeholder="">
+                                    <input id="s_keyword" name="s_keyword" type="search" class="form-control input-sm"
+                                           value="{$s_keyword}" placeholder="会员ID/手机号">
+
+                                    <a href="{:U('Admin/Stat/business/')}" class="btn btn-success"
+                                       data-loader="App-loader" data-loadername="商家统计" data-search="App-search">
+                                        <i class="fa fa-search"></i>搜索
+                                    </a>
+
+                                    <a href="#" class="btn btn-success" onclick="stat_export()">
+                                        <i class="fa fa-table"></i>导出Excel
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <table id="App-table" class="table table-bordered table-hover">
+                    <thead class="bordered-darkorange">
+                    <tr role="row">
+                        <th>会员ID</th>
+                        <th>会员姓名</th>
+                        <th>会员手机号</th>
+                        <th>商家名称</th>
+                        <th>总营业额</th>
+                        <th>商城营业额</th>
+                        <th>商盟营业额</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <volist name="cache" id="vo">
+                        <tr id="item{$vo.id}">
+                            <td class=" sorting_1">{$vo.vip_id}</td>
+                            <td class=" ">{$vo.vip_name}</td>
+                            <td class=" ">{$vo.vip_mobile}</td>
+                            <td class=" ">{$vo.name}</td>
+                            <td class=" ">{$vo.total_money|number_format=###,2}</td>
+                            <td class=" ">{$vo.total_online_money|number_format=###,2}</td>
+                            <td class=" ">{$vo.total_offline_money|number_format=###,2}</td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </table>
+                <div class="row DTTTFooter">
+                    {$page}
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!--面包屑导航封装-->
+<div id="tmpbread" style="display: none;">{$breadhtml}</div>
+<script type="text/javascript">
+    setBread($('#tmpbread').html());
+</script>
+<!--/面包屑导航封装-->
+
+<script>
+
+    function stat_export() {
+        var s_keyword = $('#s_keyword').val();
+        var s_begin_money = $('#s_begin_money').val();
+        var s_end_money = $('#s_end_money').val();
+        var s_type = $('#s_type').val();
+        window.open("{:U('Admin/Stat/supplierExport')}?s_type=" + s_type + "&s_keyword=" + encodeURI(s_keyword) + "&s_begin_money=" + s_begin_money + "&s_end_money=" + s_end_money);
+    }
+
+    //    $(function () {
+    //
+    //        $('#complete_date').dateRangePicker({
+    //                    //batchMode:'week',
+    //                    showShortcuts:true,
+    //                    shortcuts:{
+    //                        'prev':['week'],
+    //                        'next':['week']
+    //                    },
+    //                    showWeekNumbers: true,
+    //                    startOfWeek: 'monday',
+    //                    separator: ' ~ '
+    //                })
+    //                .bind('datepicker-apply',function(event,obj)
+    //                {
+    //                    /* This event will be triggered when second date is selected */
+    //
+    //                    //var start = Date.parse(obj.date1);
+    //                    //var end = Date.parse(obj.date2);
+    //                    // console.log(end);
+    //                    //$('#currentQuery').val(start+","+end);
+    //                    //查询数据
+    //
+    //                });
+    //    });
+</script>
