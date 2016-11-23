@@ -958,7 +958,6 @@ class ShopController extends BaseController
         if (IS_POST) {      //处理付款结果
             $morder = M('Shop_order');
             $data = I('post.');
-
             //TODO 缓存商品所属店铺及商家
             $mgoods = M('Shop_goods');
             $itemsData = unserialize(stripslashes(htmlspecialchars_decode($data['items'])));
@@ -1284,9 +1283,9 @@ class ShopController extends BaseController
         $cache_sc = $m->where($map)->order('ctime desc')->select();
         if ($cache_sc) {
             foreach ($cache_sc as $k => $v) {
-                if ($v['items']) {
+                if($v['items']){
                     $cache_sc[$k]['items'] = unserialize($v['items']);
-                } else {
+                }else{
                     $cache_sc[$k]['items'] = array();
                 }
                 $cache[$k]["order_type"] = 0;

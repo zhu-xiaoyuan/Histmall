@@ -39,7 +39,7 @@
         >待付款</span></a>
     <a href="{:U('App/Shop/orderList',array('sid'=>0,'type'=>2))}" class="fl text-c"><span
         <eq name='type' value='2'>class='active'</eq>
-        >待收货</span></a>
+        >待领货</span></a>
     <a href="{:U('App/Shop/orderList',array('sid'=>0,'type'=>3))}" class="fl text-c"><span
         <eq name='type' value='3'>class='active'</eq>
         >已完成</span></a>
@@ -51,13 +51,12 @@
 				<switch name="vo.status">
                     <case value="0">已取消</case>
                     <case value="1">待付款</case>
-                    <case value="2">待发货</case>
-                    <case value="3">待收货</case>
+                    <case value="2">待领货</case>
+                    <!--<case value="3">待收货</case>-->
                     <case value="4">退货中</case>
                     <case value="5">已完成</case>
                     <case value="6">已关闭</case>
                     <case value="7">退货完成</case>
-
                     <case value="10">待付款 </case>
                     <case value="14">已付款 </case>
                     <case value="11">审核中</case>
@@ -166,9 +165,9 @@
 <include file="./Tpl/App/Shop_footer.html"/>
 <!--通用分享-->
 <include file="./Tpl/App/Shop_share.html"/>
-<eq name="_SESSION['WAP']['vip']['school_id']" value="0">
+<!--<eq name="_SESSION['WAP']['vip']['school_id']" value="0">
     <include file="./Tpl/App/Shop_selectSchool.html"/>
-</eq>
+</eq>-->
 </body>
 <script>
     $(function () {

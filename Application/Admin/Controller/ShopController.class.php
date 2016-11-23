@@ -833,7 +833,7 @@ class ShopController extends BaseController
         //dump($finaltmpsku);
         //die();
         if ($finaltmpsku) {
-            $dsku;
+            $dsku = [];
             foreach ($finaltmpsku as $k => $v) {
                 $dsku[$k]['goodsid'] = $id;
                 $dsku[$k]['sku'] = $v;
@@ -1146,12 +1146,19 @@ class ShopController extends BaseController
         $name = I('name') ? I('name') : '';
         if ($name) {
             //订单号邦定
-            $map['vipid|oid|vipmobile'] = array('like', "%$name%");
+            $map['vipid'] = array('like', "%$name%");
             $this->assign('name', $name);
         }
         $map['is_group_buy'] = '0';
         $psize = self::$CMS['set']['pagesize'] ? self::$CMS['set']['pagesize'] : 20;
         $cache = $m->where($map)->page($p, $psize)->order('ctime desc')->select();
+        foreach ($cache as $k => $v) {
+            if ($v['items']) {
+                $cache[$k]['items'] = unserialize($v['items']);
+            } else {
+                $cache[$k]['items'] = array();
+            }
+        }
         $count = $m->where($map)->count();
         $this->getPage($count, $psize, 'App-loader', '商城订单', 'App-search');
         $this->assign('cache', $cache);
@@ -1301,6 +1308,7 @@ class ShopController extends BaseController
         $mb = $this->fetch();
         $this->ajaxReturn($mb);
     }
+
 
     public function orderCloseSave()
     {
@@ -1597,12 +1605,22 @@ class ShopController extends BaseController
 
         $this->ajaxReturn($info);
     }
+    //完成订单填写信息
+    public function accessInfo()
+    {
+        $map['id'] = I('id');
+        $cache = M('Shop_order')->where($map)->find();
+        $this->assign('cache', $cache);
+        $mb = $this->fetch();
+        $this->ajaxReturn($mb);
+    }
 
     //完成订单
     public function orderSuccess()
     {
 
         $id = I('id');
+        $data = I('post.');
         if (!$id) {
             $info['status'] = 0;
             $info['msg'] = '未正常获取ID数据！';
@@ -1624,14 +1642,13 @@ class ShopController extends BaseController
         $group_id = I('post.group_id');
         //分销流程介入
         $m = M('shop_order');
-        $map['id'] = $id;
-        $cache = $m->where($map)->find();
+        $cache = $m->where($data)->find();
         if (!$cache) {
             $info['status'] = 0;
-            $info['msg'] = '操作失败！';
+            $info['msg'] = '信息有误，请核实！';
             $this->ajaxReturn($info);
         }
-        if ($cache['status'] != 3) {
+        if ($cache['status'] != 2) {
             $info['status'] = 0;
             $info['msg'] = '操作失败！';
             $this->ajaxReturn($info);
@@ -1649,7 +1666,7 @@ class ShopController extends BaseController
         if (FALSE !== $rod) {
             //状态（0：交易取消，1：未支付，2：已付款，3：已发货，4：退货中，5：交易完成，6：交易关闭，7：退货完成）
             //TODO 检查逻辑是否正确
-            $count = $m->where(array('group_buy_id' => $group_id, 'status' => 3))->select();
+            $count = $m->where(array('group_buy_id' => $group_id, 'status' => 2))->select();
             if (empty($count)) {
                 $rel = M('group_buy')->where(array('id' => $group_id))->setField('status', 4);
                 if ($rel) {

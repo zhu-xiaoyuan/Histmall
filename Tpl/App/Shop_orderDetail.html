@@ -36,8 +36,8 @@
             <switch name="cache.status">
                 <case value="0">已取消</case>
                 <case value="1">待付款</case>
-                <case value="2">待发货</case>
-                <case value="3">待收货</case>
+                <case value="2">待领货</case>
+                <!--<case value="3">待收货</case>-->
                 <case value="4">退货中</case>
                 <case value="5">已完成-{$cache.etime|date="Y/m/d",###}</case>
                 <case value="6">已关闭-{$cache.closetime|date="Y/m/d",###}</case>
@@ -67,12 +67,12 @@
 
         <p>创建时间：{$cache.ctime|date="Y/m/d H:i:s",###}</p>
 
-        <notempty name="cache.vipname"><p>收件人：{$cache.vipname}</p></notempty>
+        <notempty name="cache.vipname"><p>领货人：{$cache.vipname}</p></notempty>
 
         <notempty name="cache.vipmobile"><p>联系方式：{$cache.vipmobile}</p></notempty>
-
+<!--
         <notempty name='cache.vipaddress'><p>收货地址：{$cache.vipaddress}</p></notempty>
-        <gt name="cache.yf" value="0"><p>邮费：{$cache.yf}元</p></gt>
+        <gt name="cache.yf" value="0"><p>邮费：{$cache.yf}元</p></gt>-->
         <notempty name='djq'><p>代金卷：{$djq.money}元代金卷</p></notempty>
         <notempty name='cache.msg'><p>备注：{$cache.msg}</p></notempty>
     </div>

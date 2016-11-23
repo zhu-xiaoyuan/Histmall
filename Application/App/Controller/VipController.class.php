@@ -1267,10 +1267,10 @@ class VipController extends BaseController
 
             if (FALSE !== $r) {
                 $info['status'] = 1;
-                $info['msg'] = "地址保存成功！";
+                $info['msg'] = "信息保存成功！";
             } else {
                 $info['status'] = 0;
-                $info['msg'] = "地址保存失败！";
+                $info['msg'] = "信息保存失败！";
             }
             $this->ajaxReturn($info);
         } else {
@@ -1305,10 +1305,10 @@ class VipController extends BaseController
             $r = $m->where('id=' . I('id') . ' and vipid=' . $vipid)->delete();
             if ($r) {
                 $info['status'] = 1;
-                $info['msg'] = "地址删除成功！";
+                $info['msg'] = "信息删除成功！";
             } else {
                 $info['status'] = 0;
-                $info['msg'] = "地址删除失败！";
+                $info['msg'] = "信息删除失败！";
             }
             $this->ajaxReturn($info);
         }

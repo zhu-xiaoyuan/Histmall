@@ -50,8 +50,8 @@
 					</if>-->
 				</li>
 				<li class='border-b1' id='school_name' hidden><span class="fl">学校名称</span><input type='text' placeholder='请输入学校名称' name='school_name'/></li>
-				<li class="border-b1 ovflw"><span class="fl">地址详情</span><input type="text" placeholder="例：河南省郑州市中原区科学大道100号x号宿舍楼xxx室" value="{$address}" id="address"/></li>
-				<li class="border-b1 ovflw"><span class="fl">收货人</span><input type="text" value="{$data.name}" id="name"/></li>
+				<li class="border-b1 ovflw" hidden><span class="fl">地址详情</span><input type="text" placeholder="例：河南省郑州市中原区科学大道100号x号宿舍楼xxx室" value=" " id="address"/></li>
+				<li class="border-b1 ovflw"><span class="fl">领货人姓名</span><input type="text" value="{$data.name}" id="name"/></li>
 				<li class="ovflw"><span class="fl">手机号码</span><input type="text" value="{$data.mobile}" id="mobile"/></li>
 			</ul>			
 			<p>
@@ -60,7 +60,7 @@
 				 ?>
 			</p>
 		</div>
-		<p class="add-tips color3 fonts2">注：请仔细填写联系电话与收货地址。</p>
+		<p class="add-tips color3 fonts2">注：请仔细填写领货人姓名与联系电话。</p>
 		<input type="hidden" value="{$data.id}" id="id"/>
 		<div class="insert1"></div>
 		<div class="dtl-ft ovflw">
@@ -69,8 +69,8 @@
 						<i class="iconfont">&#xe679</i>
 					</a>
 				</div>
-				<a href="#" class="fr ads-btn fonts9 back3" onclick="addrese(this)">保存地址</a>
-				<if condition="$data.id neq ''"><a href="#" class="fr ads-del fonts9 back4">删除地址</a></if>
+				<a href="#" class="fr ads-btn fonts9 back3" onclick="addrese(this)">保存信息</a>
+				<if condition="$data.id neq ''"><a href="#" class="fr ads-del fonts9 back4">删除信息</a></if>
 		</div>
 	</body>
 </html>
@@ -87,7 +87,6 @@
 	});
 
      function addrese(obj){
-         console.log(obj);
         var id=$('#id').val();
         var xqid=1;//取消小区ID
         var address=$('#address').val();
@@ -103,11 +102,8 @@
         }else if(school_id == -1 && school_name == ''){
             zbb_msg("请填写学校名称");
             return;
-        }else if(address==''){
-            zbb_msg("请填写地址详情!！");
-            return;
         }else if(name==''){
-            zbb_msg("请填写收货人！");
+            zbb_msg("请填写领货人姓名！");
             return;
         }else if(mobile==''){
             zbb_msg("请填写手机号码！");

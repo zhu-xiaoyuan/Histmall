@@ -48,7 +48,7 @@ $.extend($.fn, {
         var _this = $(this);
         $.each(_this, function () {
             var src = $(this).data("src");
-            $(this).removeAttr("data-src");
+            //$(this).removeAttr("data-src");
             $(this).attr("src", src + "?imageView2/1/interlace/1/w/120/h/120");
         });
     }

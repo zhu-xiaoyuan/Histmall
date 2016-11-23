@@ -36,11 +36,9 @@
         <div class="ads-line"></div>
         <a href="#" class="ads-chs" id="changeaddress">
             <empty name="vip">
-                请选择收货地址<i class="iconfont fr">&#xe6a3</i>
+                请选择领货人信息：<i class="iconfont fr">&#xe6a3</i>
                 <else/>
-                收货人：{$vip.name}&nbsp;&nbsp;&nbsp;{$vip.mobile}<i class="iconfont fr">&#xe6a3</i>
-
-                <p class="fonts9">收货地址：{$vip.address}</p>
+                领货人：{$vip.name}&nbsp;&nbsp;&nbsp;{$vip.mobile}<i class="iconfont fr">&#xe6a3</i>
             </empty>
         </a>
         <input type="hidden" name="sid" value="{$sid}">
@@ -97,12 +95,12 @@
                 </foreach>
             </empty>
         </select></span></p>
-        <p class="border-b1 ads_ortt3 fonts85">&nbsp;邮费政策：
+        <!--<p class="border-b1 ads_ortt3 fonts85">&nbsp;邮费政策：
             <eq name="isyf" value="1">全场定邮{$yf}元，订单满{$yftop}元包邮。
                 <else/>
                 全场包邮
             </eq>
-        </p>
+        </p>-->
         <p class="border-b1 ads_ortt3 fonts85 ads"><input type="text" name="msg" class="ads_orinput"
                                                           placeholder="给卖家留言"/></p>
 
