@@ -1,45 +1,42 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<!--Head-->
+<html lang="en">
 <head>
-    <meta charset="utf-8"/>
+	<meta charset="UTF-8">
     <title>{$_SESSION['CMS']['set']['name']}-登录</title>
 
     <meta name="description" content="login page"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="shortcut icon" href="__PUBLIC__/Admin/img/favicon.png" type="image/x-icon">
-
     <!--Basic Styles-->
     <link href="__PUBLIC__/Admin/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="__PUBLIC__/Admin/css/bootstrap.extend.css" rel="stylesheet"/>
-    <link href="__PUBLIC__/Admin/css/font-awesome.min.css" rel="stylesheet"/>
-
-    <!--Beyond styles-->
-    <link id="beyond-link" href="__PUBLIC__/Admin/css/beyond.min.css" rel="stylesheet"/>
-    <link href="__PUBLIC__/Admin/css/demo.min.css" rel="stylesheet"/>
-    <link href="__PUBLIC__/Admin/css/typicons.min.css" rel="stylesheet"/>
-    <link href="__PUBLIC__/Admin/css/animate.min.css" rel="stylesheet"/>
-
-    <!--Skin Script: Place this script in head to load scripts for skins and rtl support-->
-    <!--<script src="__PUBLIC__/Admin/js/skins.min.js"></script>-->
-    <style type="text/css">
-        .common_footer {
-            color: #eee;
-            position: absolute;
-            bottom: 0px;
-            text-align: center;
-            width: 100%;
-            background: #444;
-            background: rgba(0,0,0,0.3);
-            padding: 10px;
-        }
-    </style>
 </head>
-<!--Head Ends-->
-<!--Body-->
-<body style="background-image:url('{$wallpaper}');background-position: center;background-repeat: no-repeat;background-size: cover;">
-<div class="login-container animated fadeInDown" style="width: 100%;height: 100%">
+<style>
+	.login-container{
+		width: 100%;
+		/*height: 100%;*/
+		padding-top: 37px;
+	}
+	#loginForm div {
+		margin-top: 30px;
+	}
+	.loginbox-title{
+		margin: 0 auto;
+		font-weight: 700;
+		font-size: 20px;
+		text-align: center;
+	}
+	.loginbox {
+		margin: auto;
+		width: 280px;
+	}
+	img {
+		height: 60px;
+	}
+</style>
+<body>
+	<div class="login-container animated fadeInDown">
     <div class="loginbox bg-white" style="height: 460px!important;">
         <div class="loginbox-title" style="padding-top: 20px;margin-bottom: 20px">登陆</div>
         <form id="loginForm" action="" method="post">
@@ -64,19 +61,15 @@
         </form>
     </div>
 </div>
-<div class="common_footer">Powered by Gamma | Copyright © <a href="{$_SESSION['CMS']['set']['url']}" target="_blank">{$_SESSION['CMS']['set']['name']}</a>
-    All rights reserved.
-</div>
-<!--Basic Scripts-->
 <script src="__PUBLIC__/Admin/js/jquery-2.0.3.min.js"></script>
-<script src="__PUBLIC__/Admin/js/bootstrap.min.js"></script>
-<script src="__PUBLIC__/Admin/js/bootstrap.extend.js"></script>
-<!--Beyond Scripts-->
-<script src="__PUBLIC__/Admin/js/beyond.min.js"></script>
-<!--Page Related Scripts-->
-<script src="__PUBLIC__/Admin/js/toastr/toastr.js"></script>
 <script>
-
+// $(document).ready(
+//     function(){
+//         // if(screen.availWidth>800){
+//             location.href = "Admin/Public/applogin"
+//         // }
+//     }
+// );
     $('#loginForm').on('submit', function () {
         var username = $('#username');
         var userpass = $('#userpass');
@@ -102,5 +95,4 @@
     });
 </script>
 </body>
-<!--Body Ends-->
 </html>

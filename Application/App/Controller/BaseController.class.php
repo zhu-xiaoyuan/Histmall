@@ -167,7 +167,7 @@ class BaseController extends Controller
 
         }
 
-        $token = self::$WECHAT->getJsSign("http://" . $_SERVER['HTTP_HOST'] . __SELF__);
+        // $token = self::$WECHAT->getJsSign("http://" . $_SERVER['HTTP_HOST'] . __SELF__);
         $this->assign('jssdktoken', $token);
     }
 

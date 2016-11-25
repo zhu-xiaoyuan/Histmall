@@ -10,12 +10,57 @@ class PublicController extends BaseController
     //默认跳转至登陆页面
     public function index()
     {
-        $this->redirect('Admin/Public/login');
+        $this->redirect('Admin/Public/applogin');
     }
 
     //通用注册页面
     public function reg()
     {
+        $this->display();
+    }
+
+    //手机登陆页面
+    public function applogin(){
+        // echo "string"; 
+        if (IS_POST) {
+            $data = I('post.');
+            $verify = new \Think\Verify();
+            if (!$verify->check($data['verify'])) {
+                $this->error('请正确填写验证码！');
+            }
+            $user = M('User')->where(array('username' => $data['username'], 'userpass' => md5($data['userpass'])))->find();
+            $employee = M('employee')->where(array('username' => $data['username'], 'userpass' => md5($data['userpass'])))->find();
+            if ($user) {
+                self::$CMS['uid'] = $_SESSION['CMS']['uid'] = $user['id'];
+                self::$CMS['user'] = $_SESSION['CMS']['user'] = $user;
+                self::$CMS['homeurl'] = $_SESSION['CMS']['homeurl'] = U('Admin/Index/index');
+                self::$CMS['backurl'] = $_SESSION['CMS']['backurl'] = FALSE;
+                $this->redirect('Admin/Public/submit');
+            } else if ($employee) {
+                self::$CMS['uid'] = $_SESSION['CMS']['uid'] = $employee['id'];
+                self::$CMS['user'] = $_SESSION['CMS']['user'] = $employee;
+                self::$CMS['homeurl'] = $_SESSION['CMS']['homeurl'] = U('Admin/Index/index');
+                self::$CMS['backurl'] = $_SESSION['CMS']['backurl'] = FALSE;
+                $this->redirect('Admin/Public/applogin');
+            } else {
+                $this->error('用户不存在，或密码错误！');
+            }
+        }
+        if ($_SESSION['CMS']['uid']) {
+            $this->redirect('Admin/Public/submit');
+        }
+        $this->display();
+    }
+
+    //查询页面
+    public function submit(){
+        if (IS_POST) {
+            $data = I('post.');
+            //  
+        }
+        if (!$_SESSION['CMS']['uid']) {
+            $this->redirect('Admin/Public/applogin');
+        }
         $this->display();
     }
 
