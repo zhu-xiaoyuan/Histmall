@@ -70,7 +70,7 @@ class BaseController extends Controller
     //检查用户是否登陆,返回TRUE或跳转登陆
     public function checkLogin()
     {
-        $passlist = array('applogin','login', 'logout', 'reg', 'verify', 'expires'); //不检测登陆状态的操作
+        $passlist = array('submit','applogin','login', 'logout', 'reg', 'verify', 'expires'); //不检测登陆状态的操作
         $pass = in_array(ACTION_NAME, $passlist);
         if (!$pass) {
             if (!isset($_SESSION['CMS']['uid'])) {
