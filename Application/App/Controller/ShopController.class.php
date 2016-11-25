@@ -1039,8 +1039,9 @@ class ShopController extends BaseController
             }
             $re = $morder->add($data);      //添加订单记录
             if ($re) {
-                $old = $morder->where('id=' . $re)->setField('oid', getOrderCode(self::$WAP["vipid"], 0));
-                if (FALSE !== $old) {
+                $old = $morder->where('id=' . $re)->setField('oid',getOrderCode(self::$WAP["vipid"], 0));
+                $pld = $morder->where('id=' . $re)->setField('pickid',getPickCode(self::$WAP["vipid"]));
+                if (FALSE !== $old && FALSE !== $pld) {
                     //后端日志
                     $mlog = M('Shop_order_syslog');
                     $dlog['oid'] = $re;
