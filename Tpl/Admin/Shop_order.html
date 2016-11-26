@@ -55,6 +55,7 @@
                                 </div></th>
 							<th>ID</th>
 							<th>会员ID</th>
+                            <th>订单编号</th>
                             <th>商品名称</th>
 							<empty name="status">
 							<th>订单状态</th>
@@ -62,8 +63,8 @@
 							<th>订单总额</th>
 							<th>收货姓名</th>
 							<th>收货电话</th>
-                            <!--	<th>收货地址</th>
-                                <th>邮费合计</th>-->
+                            <th>收货地址</th>
+                            <!-- <th>邮费合计</th>-->
 							<th>支付金额</th>
 							<eq name='status' value='4'>
 								<th>申请退款</th>
@@ -87,6 +88,7 @@
 								</td>
 								<td class=" sorting_1">{$vo.id}</td>
 								<td class=" ">{$vo.vipid}</td>
+                                <td class=" ">{$vo.oid}</td>
                                 <td class=" ">{$vo.items.0.name}</td>
 								<empty name="status">
 								<td class=" "><switch name="vo.status">
@@ -103,8 +105,8 @@
 								<td class=" ">{$vo.totalprice|number_format=###,2}</td>
 								<td class=" ">{$vo.vipname}</td>
 								<td class=" ">{$vo.vipmobile}</td>
-                                <!--<td class=" ">{$vo.vipaddress}</td>
-                                <td class=" ">{$vo.yf}</td>-->
+                                <td class=" ">{$vo.vipaddress}</td>
+                                <!--<td class=" ">{$vo.yf}</td>-->
 								<td class=" ">{$vo.payprice|number_format=###,2}</td>
 								<eq name='status' value='4'>
 									<td class=" ">{$vo.tuihuoprice|number_format=###,2}</td>
@@ -559,10 +561,10 @@ var btnfhkd=$('.orderfhkd');
                             label: "确定",
                             className: "btn-blue",
                             callback: function () {
-                                var oid=$('#oid').val();
+                                var pickid=$('#pickid').val();
                                 var vipname=$('#vipname').val();
                                 var vipmobile=$('#vipmobile').val();
-                                if(!oid || !vipname || !vipmobile){
+                                if(!pickid || !vipname || !vipmobile){
                                     alert('请完整填写必添字段!');
                                     return false;
                                 }

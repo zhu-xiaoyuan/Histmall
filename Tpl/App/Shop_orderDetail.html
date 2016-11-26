@@ -64,16 +64,16 @@
         </em></p>
 
         <p>订单编号：{$cache.oid}</p>
-
+        <p>领货号：{$cache.pickid}　<em class="color3">请妥善保管此领货号。</em></p>
         <p>创建时间：{$cache.ctime|date="Y/m/d H:i:s",###}</p>
 
         <notempty name="cache.vipname"><p>领货人：{$cache.vipname}</p></notempty>
 
         <notempty name="cache.vipmobile"><p>联系方式：{$cache.vipmobile}</p></notempty>
-<!--
+
         <notempty name='cache.vipaddress'><p>收货地址：{$cache.vipaddress}</p></notempty>
-        <gt name="cache.yf" value="0"><p>邮费：{$cache.yf}元</p></gt>-->
-        <notempty name='djq'><p>代金卷：{$djq.money}元代金卷</p></notempty>
+
+        <!--<notempty name='djq'><p>代金卷：{$djq.money}元代金卷</p></notempty>-->
         <notempty name='cache.msg'><p>备注：{$cache.msg}</p></notempty>
     </div>
 </div>
