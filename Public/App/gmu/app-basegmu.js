@@ -146,7 +146,7 @@ function zbb_input(title, ok, cancel) {
     };
     var alt = new gmu.Dialog(opts);
     $('.ui-dialog').css('top', '100px');
-    $('#ui-dialog-content').append('<div class="tx ovflw"><span class="iconfont">&#xe6ac</span><input type="number" id="inputobj"/></div>');
+    $('#ui-dialog-content').append('<div class="tx ovflw"><span class="iconfont">提货码</span><input id="inputobj"/></div>');
     $('#ui-dialog-content').append('<div style="height:10px"><span id="msgobj" style="font-size:0.8em;color:#ff3000;"></span></div>');
     $('#inputobj').focus();
 

@@ -1146,7 +1146,7 @@ class ShopController extends BaseController
         $name = I('name') ? I('name') : '';
         if ($name) {
             //订单号邦定
-            $map['vipid'] = array('like', "%$name%");
+            $map['vipid|oid|vipmobile'] = array('like', "%$name%");
             $this->assign('name', $name);
         }
         $map['is_group_buy'] = '0';

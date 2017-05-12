@@ -94,7 +94,7 @@
 
             <eq name="vo.order_type" value="0">
                 <p class="ads_ortt3 fonts85 ovflw">
-                    <span class="iconfont" style="color: #7e3794;">&#xe670;</span>
+                    <span class="iconfont" style="color: #7e3794;">&#xe670;&nbsp;{$vo.pickid}</span>
                     <span class="fr">
                           <eq name="vo.status" value='1'>
                               <a href="{:U('App/Shop/orderCancel',array('sid'=>0,'orderid'=>$vo['id']))}"
@@ -124,7 +124,7 @@
             </eq>
             <eq name="vo.order_type" value="1">
                 <p class="ads_ortt3 fonts85 ovflw">
-                    <span class="iconfont" style="color: #ed4e2a">&#xe676;</span>
+                    <span class="iconfont" style="color: #ed4e2a">&#xe676;{$vo.pickid}</span>
                     <span class="fr">
                           <eq name="vo.status" value='10'>
                               <eq name="vo.is_pay" value='0'>
@@ -135,21 +135,16 @@
                                   </eq>
                               </eq>
                           </eq>
-                              <a href="{:U('App/Shop/orderDetail',array('sid'=>0,'orderid'=>$vo['id'],'cate'=>1,'type'=>$_GET['type']))}"
-                                 class="home-cz">查看订单
-                              </a>
-                              <eq name="vo.status" value='10'>
-                                  <eq name="vo.is_play" value="0">
-                                      <a href="{:U('App/Business/pay',array('sid'=>0,'orderid'=>$vo['id'],'paytype'=>$vo['paytype']))}"
-                                         class="home-rz">付款
-                                      </a>
-                                  </eq>
+                          <a href="{:U('App/Shop/orderDetail',array('sid'=>0,'orderid'=>$vo['id'],'cate'=>1,'type'=>$_GET['type']))}"
+                             class="home-cz">查看订单
+                          </a>
+                          <eq name="vo.status" value='10'>
+                              <eq name="vo.is_play" value="0">
+                                  <a href="{:U('App/Business/pay',array('sid'=>0,'orderid'=>$vo['id'],'paytype'=>$vo['paytype']))}"
+                                     class="home-rz">付款
+                                  </a>
                               </eq>
-                        <!--<eq name="vo.status" value='2'>
-                            <a href="{:U('App/Shop/orderOK',array('sid'=>0,'orderid'=>$vo['id']))}"
-                               class="home-rz">确认收货
-                            </a>
-                        </eq>-->
+                          </eq>
                     </span>
                 </p>
             </eq>

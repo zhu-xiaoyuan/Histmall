@@ -74,6 +74,9 @@ class BaseController extends Controller
         $pass = in_array(ACTION_NAME, $passlist);
         if (!$pass) {
             if (!isset($_SESSION['CMS']['uid'])) {
+                if(ACTION_NAME == 'showsubmit'){
+                    $this->redirect(U('Admin/App/applogin'));
+                }
                 if (IS_AJAX) {
                     $this->redirect(U('Admin/Public/expires'));
                 } else {

@@ -1,0 +1,158 @@
+<!doctype html>
+<html>
+<head>
+    <title>订单列表</title>
+    <meta charset="utf-8"/>
+    <!--页面优化-->
+    <meta name="MobileOptimized" content="320">
+    <!--默认宽度320-->
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <!--viewport 等比 不缩放-->
+    <meta http-equiv="cleartype" content="on">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!--删除苹果菜单-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!--默认颜色-->
+    <meta name="apple-mobile-web-app-title" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <!--加载全部后 显示-->
+    <link href="__PUBLIC__/Admin/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="__PUBLIC__/Admin/css/bootstrap.extend.css" rel="stylesheet"/>
+    <meta content="telephone=no" name="format-detection"/>
+    <!--不识别电话-->
+    <meta content="email=no" name="format-detection"/>
+    <link rel="stylesheet" href="__PUBLIC__/App/css/style.css"/>
+    <!--组件依赖js begin-->
+    <script src="__PUBLIC__/App/js/zepto.min.js"></script>
+    <script src="__PUBLIC__/App/js/base.js"></script>
+    <!--组件依赖js end-->
+    <script type="text/javascript" src="__PUBLIC__/App/gmu/gmu.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/App/gmu/app-basegmu.js"></script>
+    <style>
+        .ads-input{
+            width: 100%;
+            background: #fbfbfb;
+            position: fixed;
+            top: 42px;
+            z-index: 100;
+            height: 58px;
+        }
+        .zwdd{
+            width: 60%;
+            margin: 180px auto 0 auto;
+        }
+
+    </style>
+
+</head>
+<body class="back1">
+<div class="ads-tabs ovflw">
+    <a href="{:U('Admin/Submit/showsubmit',array('type'=>2))}" data-value="2"  class="fl text-c lq" style="width:50%"><span
+        <eq name='type' value='2'>class='active'</eq>
+        >未领取</span></a>
+    <a href="{:U('Admin/Submit/showsubmit',array('type'=>5))}" data-value="5" class="fl text-c lq" style="width:50%"><span
+        <eq name='type' value='5'>class='active'</eq>
+        >已领取</span></a>
+
+</div>
+<div class="ads-input ovflw">
+    <form id="loginForm" action="{:U('Admin/Submit/showsubmit')}" method="post">
+        <div class="loginbox-textbox">
+            <input id="number" name="number" type="text" value="{$name}" class="form-control" style="width: 85%" placeholder="请输入单号，手机号，领货人"/>
+            <input type="hidden" name="type" value="{$type}" id="type">
+            <input class="btn btn-primary" value="查询" type="submit" style="float: right;position: relative;top: -35px;">
+        </div>
+    </form>
+</div>
+<div class="ads-cc" style="margin-top: 95px">
+    <volist name="cache" id="vo">
+        <div class="ads-lst border-b1 ovflw mr-b back2 color6">
+            <p class="ads-tt border-b1">{$vo.oid}<span class="fr color3">{$vo.vipname}
+				</span></p>
+            <volist name="vo.items" id="vt">
+                <div class="ads_orinfo ads_padding3 ovflw border-b1">
+                    <div class="ads_orinfol ovflw fl">
+                        <div class="ads_or_img fl">
+                            <!-- 图片大小为147*101 -->
+                            <img class="minPic" data-src="{$vt.pic}"/>
+                        </div>
+                        <h3>{$vt.name}</h3>
+                        <notempty name="vt.skuattr">
+                            <p class="color3 fonts2">{$vt.skuattr}</p>
+                        </notempty>
+                    </div>
+                    <div class="ads_orprice ovflw ">
+                        <p><em class="fonts85">￥</em><em class="fonts18">{$vt.price|number_format=###,2}</em></p>
+
+                        <p class="ads_ornum fonts85">X{$vt.num}</p>
+                    </div>
+                </div>
+            </volist>
+            <p class=" ads_ortt3 fonts85 ovflw border-b1"><span class="fl">共{$vo.totalnum}件商品</span>
+                <span class="fr">实付：<em
+                        class="fonts18">￥{$vo.payprice}</em></span>
+            </p>
+
+
+            <p class="ads_ortt3 fonts85 ovflw">
+                <span class="iconfont" style="color: #7e3794;">&#xe670;&nbsp;{$vo.vipmobile}</span>
+                <span class="fr">
+                    <eq name='type' value='2'>
+                        <a href="#" data-id="{$vo['id']}"
+                           class="home-rz">确认收货
+                        </a>
+                    </eq>
+                </span>
+            </p>
+        </div>
+    </volist>
+</div>
+<empty name="cache">
+    <div class="zwdd text-c">
+        <p class="color3">暂无订单</p>
+    </div>
+</empty>
+</body>
+<script>
+    $(function () {
+        $('.minPic').minThumb();
+        $("#ftvip").attr("style", "color: rgb(25, 165, 243)");
+    });
+    $('.home-rz').click(function(){
+        var id = $(this).data("id");
+        zbb_input("请输入提货码!",function(){
+            var val = $("#inputobj").val();
+            $.ajax({
+                type:'post',
+                data:{'id':id,num:val},
+                url:"{:U('Submit/completion')}",
+                dataType:'json',
+                success:function(e){
+                    if (e.status==1) {
+                        zbb_msg(e.msg,function(){location.href="{:U('Admin/Submit/showsubmit')}";});
+                    } else {
+                        zbb_msg(e.msg);
+                    }
+                    return false;
+                },
+                error:function(){
+                    zbb_alert('通讯失败！');
+                    return false;
+                }
+            });
+
+        });
+
+
+    });
+</script>
+<script>
+    $('#loginForm').on('submit', function () {
+        var number = $('#number');
+        if (number.val() == "") {
+            $(number).focus();
+            return false;
+        }
+    });
+</script>
+</html>

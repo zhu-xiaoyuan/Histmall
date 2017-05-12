@@ -8,7 +8,7 @@ class AppController extends BaseController
 {
 	//手机登陆页面
     public function applogin(){
-        // echo "string"; 
+        // echo "string";
         if (IS_POST) {
             $data = I('post.');
             $verify = new \Think\Verify();
@@ -22,7 +22,7 @@ class AppController extends BaseController
                 self::$CMS['user'] = $_SESSION['CMS']['user'] = $user;
                 self::$CMS['homeurl'] = $_SESSION['CMS']['homeurl'] = U('Admin/Index/index');
                 self::$CMS['backurl'] = $_SESSION['CMS']['backurl'] = FALSE;
-                $this->redirect('Admin/Submit/submit');
+                $this->redirect('Admin/Submit/showsubmit');
             } else if ($employee) {
                 self::$CMS['uid'] = $_SESSION['CMS']['uid'] = $employee['id'];
                 self::$CMS['user'] = $_SESSION['CMS']['user'] = $employee;
@@ -34,7 +34,7 @@ class AppController extends BaseController
             }
         }
         if ($_SESSION['CMS']['uid']) {
-            $this->redirect('Admin/Submit/submit');
+            $this->redirect('Admin/Submit/showsubmit');
         }
         $this->display();
     }

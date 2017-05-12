@@ -1296,6 +1296,7 @@ class ShopController extends BaseController
                 $cache[$k]["totalnum"] = $cache_sc[$k]['totalnum'];
                 $cache[$k]["payprice"] = $cache_sc[$k]['payprice'];
                 $cache[$k]["id"] = $cache_sc[$k]['id'];
+                $cache[$k]["pickid"] = $cache_sc[$k]['pickid'];
                 $cache[$k]["paytype"] = $cache_sc[$k]['paytype'];
                 $cache[$k]["items"] = $cache_sc[$k]['items'];
                 $cache[$k]["ctime"] = $cache_sc[$k]['ctime'];

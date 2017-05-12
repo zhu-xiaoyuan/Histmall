@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-    <title>查询</title>
+    <title>订单完成</title>
 
     <meta name="description" content="login page"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -41,60 +41,10 @@
 <body>
 	<div class="login-container animated fadeInDown">
     <div class="loginbox bg-white" style="height: 460px!important;">
-        <div class="loginbox-title" style="padding-top: 20px;margin-bottom: 20px">订单</div>
-        <form id="loginForm" action="" method="post">
-            <div class="loginbox-textbox">
-                单&nbsp;&nbsp;号：<input id="number" name="number" type="text" class="form-control"/>
-            </div>
-            <div class="loginbox-textbox">
-                <span>领货人：</span><input id="leadman" name="leadman" type="text" class="form-control"/>
-            </div>
-            <div class="loginbox-textbox">
-                联系电话：<input id="phone" type="text" name="phone" class="form-control"/>
-            </div>
-            <div class="loginbox-textbox">
-                <span>送货人：</span><input id="sender" name="sender" type="text" class="form-control"/>
-            </div>
-            <!-- <div class="loginbox-textbox">
-                <img src="{:U('Admin/Public/verify')}" width="100%" id="verifyimg"/>
-            </div> -->
-<!--             <div class="loginbox-forgot">
-                <a href="javascript:alert('请联系管理员')">忘记密码?</a>
-            </div> -->
-            <div class="loginbox-submit">
-                <input class="btn btn-primary btn-block" value="完成交易" type="submit">
-            </div>
-        </form>
+        <div class="loginbox-title" style="padding-top: 20px;margin-bottom: 20px">订单查询</div>
+
     </div>
 </div>
-<script src="__PUBLIC__/Admin/js/jquery-2.0.3.min.js"></script>
-<script>
-    $('#loginForm').on('submit', function () {
-        var number = $('#number');
-        var leadman = $('#leadman');
-        var phone = $('#phone');
-        var sender = $('#sender');
-        if (!$(number).val()) {
-            Notify('单号不能为空!', 'top-right', '5000', 'danger', 'fa-bolt', true);
-            $(number).focus();
-            return false;
-        }
-        if (!$(leadman).val()) {
-            Notify('领货人不能为空!', 'top-right', '5000', 'danger', 'fa-bolt', true);
-            $(leadman).focus();
-            return false;
-        }
-        if (!$(phone).val()) {
-            Notify('验证码不能为空!', 'top-right', '5000', 'danger', 'fa-bolt', true);
-            $(phone).focus();
-            return false;
-        }
-         if (!$(sender).val()) {
-            Notify('送货人不能为空!', 'top-right', '5000', 'danger', 'fa-bolt', true);
-            $(sender).focus();
-            return false;
-        }
-    });
-</script>
+
 </body>
 </html>
